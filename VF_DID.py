@@ -462,12 +462,12 @@ def ECU_Resp_Data(readstate,ECU_ID,ECU,TypeRead,Header_Text,PN_DID,Rev_PN):
             if mess.data[0] == 33:
                 if readstate == 1:
                     print("EEP",hex(mess.data[1])[2:],hex(mess.data[2])[2:],hex(mess.data[3])[2:],hex(mess.data[4])[2:])
-                    DID_Infor = "EEP" + str(hex(mess.data[1])[2:2]) + str(hex(mess.data[2])[2:2]) + str(hex(mess.data[3])[2:2]) + str(hex(mess.data[4])[2:2])
+                    DID_Infor = "EEP" + str(hex(mess.data[1])[2:].zfill(2)) + str(hex(mess.data[2])[2:].zfill(2)) + str(hex(mess.data[3])[2:].zfill(2)) + str(hex(mess.data[4])[2:].zfill(2))
                     ECU_Text(ECU,TypeRead,Header_Text,DID_Infor)
                     Write_Data(ECU,DID_Infor,PN_DID,Rev_PN)
                 if readstate == 2:
                     print("SOW",hex(mess.data[1])[2:],hex(mess.data[2])[2:],hex(mess.data[3])[2:],hex(mess.data[4])[2:])
-                    DID_Infor = "SOW" + str(hex(mess.data[1])[2:]) + str(hex(mess.data[2])[2:]) + str(hex(mess.data[3])[2:]) + str(hex(mess.data[4])[2:])
+                    DID_Infor = "SOW" + str(hex(mess.data[1])[2:].zfill(2)) + str(hex(mess.data[2])[2:].zfill(2)) + str(hex(mess.data[3])[2:].zfill(2)) + str(hex(mess.data[4])[2:].zfill(2))
                     ECU_Text(ECU,TypeRead,Header_Text,DID_Infor)
                     Write_Data(ECU,DID_Infor,PN_DID,Rev_PN)
         else :
@@ -489,12 +489,12 @@ def ECU_Resp(message,readstate,ECU_ID,ECU,TypeRead,Header_Text,PN_DID,Rev_PN):
                         ECU_Req(message,readstate,ECU_ID,ECU,TypeRead,Header_Text,PN_DID,Rev_PN)                    
                     if  mess.data[0] == 4:
                         print("REV",hex(mess.data[4])[2:])
-                        DID_Infor = str(hex(mess.data[4])[2:])
+                        DID_Infor = str(hex(mess.data[4])[2:].zfill(2))
                         ECU_Text(ECU,TypeRead,Header_Text,DID_Infor)
                         Write_Data(ECU,DID_Infor,PN_DID,Rev_PN)
                     if  mess.data[0] == 5:
                         print("Bld",hex(mess.data[4])[2:],hex(mess.data[5])[2:])
-                        DID_Infor = str(hex(mess.data[4])[2:]) + str(hex(mess.data[5])[2:])
+                        DID_Infor = str(hex(mess.data[4])[2:].zfill(2)) + str(hex(mess.data[5])[2:].zfill(2))
                         ECU_Text(ECU,TypeRead,Header_Text,DID_Infor)
                         Write_Data(ECU,DID_Infor,PN_DID,Rev_PN)
         else:
