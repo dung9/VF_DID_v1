@@ -932,20 +932,24 @@ def VF6Window():
         Templete_sheet = Templete.get_sheet_by_name('ECU_DID')
         ReadDID_sheet = ReadDID.get_sheet_by_name('ECU_DID')
         BOM_sheet = BOM.get_sheet_by_name(BOM.sheetnames[1])
-
+        Location = IntVar()
+        for i in range(1,10):
+            if BOM_sheet.cell(row=i, column=13).value == 'X':
+               Location.set(i - 1) 
+               break
         for i in range(1, Templete_sheet.max_row+1):
             for j in range(1, Templete_sheet.max_column+1):
                 ReadDID_sheet.cell(row=i, column=j).value = Templete_sheet.cell(row=i, column=j).value
         for i in range(1,ReadDID_sheet.max_row+1):
-            if BOM_sheet.cell(row=i + 2, column=13).value == 'X':
-                if BOM_sheet.cell(row=i + 2, column=2).value == 'BootLoader':
-                    ReadDID_sheet.cell(row=i + 1,column=4).value = BOM_sheet.cell(row=i + 2, column=3).value
+            if BOM_sheet.cell(row=i + Location.get(), column=13).value == 'X':
+                if BOM_sheet.cell(row=i + Location.get(), column=2).value == 'BootLoader':
+                    ReadDID_sheet.cell(row=i + 1,column=4).value = BOM_sheet.cell(row=i + Location.get(), column=3).value
                 else:
-                    ReadDID_sheet.cell(row=i + 1,column=4).value = BOM_sheet.cell(row=i + 2, column=7).value
+                    ReadDID_sheet.cell(row=i + 1,column=4).value = BOM_sheet.cell(row=i + Location.get(), column=7).value
 
         for i in range(1,ReadDID_sheet.max_row+1):
-            if BOM_sheet.cell(row=i + 2, column=13).value == 'X':
-                ReadDID_sheet.cell(row=i + 1,column=6).value = BOM_sheet.cell(row=i + 2, column=9).value
+            if BOM_sheet.cell(row=i + Location.get(), column=13).value == 'X':
+                ReadDID_sheet.cell(row=i + 1,column=6).value = BOM_sheet.cell(row=i + Location.get(), column=9).value
 
         ReadDID.save('Read DID.xlsx')
         Read_Excel()
