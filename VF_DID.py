@@ -18,7 +18,9 @@ from ReadDID import*
 
 # creating tkinter window 
 root = Tk() 
-root.title('VTOOL') 
+root.title('VINFAST') 
+root.geometry("150x10") 
+root.resizable(0, 0)
 tabControl = ttk.Notebook(root)
 
 HW = 1
@@ -536,7 +538,7 @@ def VF5Window():
 #====================================VF6 Window============================================		
 def VF6Window():     
     VF6 = Toplevel(root)
-    VF6.title("New Window")
+    VF6.title("VF6 DID")
     VF6.geometry("1200x600") 
     VF6.resizable(0, 0)
     Label(VF6, text ="VF6 DID").pack()
