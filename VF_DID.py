@@ -1,5 +1,4 @@
 # importing only  those functions  
-#Author :DungHoang88
 from tkinter import *
 from tkinter.ttk import * 
 import subprocess
