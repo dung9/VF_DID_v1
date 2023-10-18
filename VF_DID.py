@@ -21,7 +21,6 @@ root = Tk()
 root.title('VTOOL') 
 tabControl = ttk.Notebook(root)
 
-global DID_Infor 
 HW = 1
 SW = 2
 HW_rv = 3
@@ -672,7 +671,7 @@ def VF6Window():
             MCR_RR_RADAR_Status.set(1)
             MCR_RL_RADAR_Status.set(1)
             MFR1_RADAR_Status.set(1)
-        elif ALL_Status.get() == 1:
+        elif ALL_Status.get() == 0:
             VCU_Status.set(0)
             DCDC_Status.set(0)
             POD_Status.set(0)
