@@ -1,4 +1,5 @@
 # importing only  those functions  
+# Author: HoangDung88
 from tkinter import *
 from tkinter import PhotoImage 
 from tkinter.ttk import * 
