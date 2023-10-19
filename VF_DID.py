@@ -1,11 +1,13 @@
 # importing only  those functions  
 from tkinter import *
+from tkinter import PhotoImage 
 from tkinter.ttk import * 
 import subprocess
 import cantools
 from tkinter import Tk, filedialog
 from openpyxl import load_workbook,Workbook  
 from tkinter import ttk
+from pathlib import Path
 import tkinter as tk
 from tkinter import filedialog as fd
 from tkinter.messagebox import showinfo
@@ -14,15 +16,15 @@ import time
 import can
 import can.interfaces.vector
 import pandas as pd
+from openpyxl.styles import Alignment
 from ReadDID import*
 
 # creating tkinter window 
 root = Tk() 
-root.title('VINFAST') 
-root.geometry("150x10") 
-root.resizable(0, 0)
+root.title('VTOOL') 
 tabControl = ttk.Notebook(root)
 
+global DID_Infor 
 HW = 1
 SW = 2
 HW_rv = 3
@@ -464,12 +466,12 @@ def ECU_Resp_Data(readstate,ECU_ID,ECU,TypeRead,Header_Text,PN_DID,Rev_PN):
             if mess.data[0] == 33:
                 if readstate == 1:
                     print("EEP",hex(mess.data[1])[2:],hex(mess.data[2])[2:],hex(mess.data[3])[2:],hex(mess.data[4])[2:])
-                    DID_Infor = "EEP" + str(hex(mess.data[1])[2:].zfill(2)) + str(hex(mess.data[2])[2:].zfill(2)) + str(hex(mess.data[3])[2:].zfill(2)) + str(hex(mess.data[4])[2:].zfill(2))
+                    DID_Infor = "EEP" + str(hex(mess.data[1])[2:2]) + str(hex(mess.data[2])[2:2]) + str(hex(mess.data[3])[2:2]) + str(hex(mess.data[4])[2:2])
                     ECU_Text(ECU,TypeRead,Header_Text,DID_Infor)
                     Write_Data(ECU,DID_Infor,PN_DID,Rev_PN)
                 if readstate == 2:
                     print("SOW",hex(mess.data[1])[2:],hex(mess.data[2])[2:],hex(mess.data[3])[2:],hex(mess.data[4])[2:])
-                    DID_Infor = "SOW" + str(hex(mess.data[1])[2:].zfill(2)) + str(hex(mess.data[2])[2:].zfill(2)) + str(hex(mess.data[3])[2:].zfill(2)) + str(hex(mess.data[4])[2:].zfill(2))
+                    DID_Infor = "SOW" + str(hex(mess.data[1])[2:]) + str(hex(mess.data[2])[2:]) + str(hex(mess.data[3])[2:]) + str(hex(mess.data[4])[2:])
                     ECU_Text(ECU,TypeRead,Header_Text,DID_Infor)
                     Write_Data(ECU,DID_Infor,PN_DID,Rev_PN)
         else :
@@ -491,12 +493,12 @@ def ECU_Resp(message,readstate,ECU_ID,ECU,TypeRead,Header_Text,PN_DID,Rev_PN):
                         ECU_Req(message,readstate,ECU_ID,ECU,TypeRead,Header_Text,PN_DID,Rev_PN)                    
                     if  mess.data[0] == 4:
                         print("REV",hex(mess.data[4])[2:])
-                        DID_Infor = str(hex(mess.data[4])[2:].zfill(2))
+                        DID_Infor = str(hex(mess.data[4])[2:])
                         ECU_Text(ECU,TypeRead,Header_Text,DID_Infor)
                         Write_Data(ECU,DID_Infor,PN_DID,Rev_PN)
                     if  mess.data[0] == 5:
                         print("Bld",hex(mess.data[4])[2:],hex(mess.data[5])[2:])
-                        DID_Infor = str(hex(mess.data[4])[2:].zfill(2)) + str(hex(mess.data[5])[2:].zfill(2))
+                        DID_Infor = str(hex(mess.data[4])[2:]) + str(hex(mess.data[5])[2:])
                         ECU_Text(ECU,TypeRead,Header_Text,DID_Infor)
                         Write_Data(ECU,DID_Infor,PN_DID,Rev_PN)
         else:
@@ -538,7 +540,7 @@ def VF5Window():
 #====================================VF6 Window============================================		
 def VF6Window():     
     VF6 = Toplevel(root)
-    VF6.title("VF6 DID")
+    VF6.title("New Window")
     VF6.geometry("1200x600") 
     VF6.resizable(0, 0)
     Label(VF6, text ="VF6 DID").pack()
@@ -673,7 +675,7 @@ def VF6Window():
             MCR_RR_RADAR_Status.set(1)
             MCR_RL_RADAR_Status.set(1)
             MFR1_RADAR_Status.set(1)
-        elif ALL_Status.get() == 0:
+        elif ALL_Status.get() == 1:
             VCU_Status.set(0)
             DCDC_Status.set(0)
             POD_Status.set(0)
@@ -891,8 +893,8 @@ def VF6Window():
     def Terminal_clear():
             text_box.delete(1.0,'end')
     # Write data in excel file=============================================================
-# Adding File Menu and commands Path("VF6.xlsx").resolve()
-    def load_data_Eco():
+# Import data from BOM VSR ECO
+    def load_data_VSR_Eco():
         filetypes = (
             ('text files', '*.xlsx'),
             ('All files', '*.*')
@@ -906,12 +908,7 @@ def VF6Window():
             message=filename
         )
         try:
-            excel_filename = r"{}".format(filename)
-            if excel_filename[-4:] == ".csv":
-                df = pd.read_csv(excel_filename)
-            else:
-                df = pd.read_excel(excel_filename)
-
+            tk.messagebox.showerror("Information", "The file you have chosen is valid")
         except ValueError:
             tk.messagebox.showerror("Information", "The file you have chosen is invalid")
             return None
@@ -938,7 +935,8 @@ def VF6Window():
                break
         for i in range(1, Templete_sheet.max_row+1):
             for j in range(1, Templete_sheet.max_column+1):
-                ReadDID_sheet.cell(row=i, column=j).value = Templete_sheet.cell(row=i, column=j).value
+                ReadDID_sheet.cell(row=i, column=j).value = Templete_sheet.cell(row=i, column=j)
+
         for i in range(1,ReadDID_sheet.max_row+1):
             if BOM_sheet.cell(row=i + Location.get(), column=13).value == 'X':
                 if BOM_sheet.cell(row=i + Location.get(), column=2).value == 'BootLoader':
@@ -952,8 +950,8 @@ def VF6Window():
 
         ReadDID.save('Read DID.xlsx')
         Read_Excel()
-# Adding File Menu and commands Path("VF6.xlsx").resolve()
-    def load_data_Plus():
+# Import data from BOM VSR PLUS
+    def load_data_VSR_Plus():
         filetypes = (
             ('text files', '*.xlsx'),
             ('All files', '*.*')
@@ -967,12 +965,7 @@ def VF6Window():
             message=filename
         )
         try:
-            excel_filename = r"{}".format(filename)
-            if excel_filename[-4:] == ".csv":
-                df = pd.read_csv(excel_filename)
-            else:
-                df = pd.read_excel(excel_filename)
-
+            tk.messagebox("Information", "The file you have chosen is valid")
         except ValueError:
             tk.messagebox.showerror("Information", "The file you have chosen is invalid")
             return None
@@ -993,9 +986,15 @@ def VF6Window():
         ReadDID_sheet = ReadDID.get_sheet_by_name('ECU_DID')
         BOM_sheet = BOM.get_sheet_by_name(BOM.sheetnames[1])
 
+        Location = IntVar()
         for i in range(1, Templete_sheet.max_row+1):
             for j in range(1, Templete_sheet.max_column+1):
                 ReadDID_sheet.cell(row=i, column=j).value = Templete_sheet.cell(row=i, column=j).value
+        
+        for i in range(1,10):
+            if BOM_sheet.cell(row=i, column=13).value == 'X':
+               Location.set(i - 1) 
+               break
         for i in range(1,ReadDID_sheet.max_row+1):
             if BOM_sheet.cell(row=i + 2, column=14).value == 'X':
                 if BOM_sheet.cell(row=i + 2, column=2).value == 'BootLoader':
@@ -1009,7 +1008,188 @@ def VF6Window():
 
         ReadDID.save('Read DID.xlsx')
         Read_Excel()
-# Load file excel=====================================================================
+# Import Bom from JIRA ECO
+    def load_data_Jira_Eco():
+        Location = IntVar()
+        filetypes = (
+            ('text files', '*.xlsx'),
+            ('All files', '*.*')
+        )
+        filename = fd.askopenfilename(
+            title='Open a file',
+            initialdir='/',
+            filetypes=filetypes)
+        showinfo(
+            title='Selected File',
+            message=filename
+        )
+        try:
+            tk.messagebox.showerror("Information", "The file you have chosen is valid")
+        except ValueError:
+            tk.messagebox.showerror("Information", "The file you have chosen is invalid")
+            return None
+        except FileNotFoundError:
+            tk.messagebox.showerror("Information", f"No such file as {filename}")
+            return None
+        
+        VSR_BOM = load_workbook("VF6_FRS_VSR.xlsx")
+        VSR_BOM_sheet = VSR_BOM.get_sheet_by_name('VF6')
+
+        BOM = load_workbook(filename,data_only=True)
+        BOM_sheet = BOM.get_sheet_by_name('Rich Filter Results')
+
+        for i in range(1,BOM_sheet.max_row + 1):
+            if ( 'ECO' in BOM_sheet.cell(row = i,column = 6).value) == True:
+                for j in range(1,VSR_BOM_sheet.max_row + 1):
+                    if VSR_BOM_sheet.cell(row = j,column = 13).value == 'X':
+                        if BOM_sheet.cell(row = i,column = 5).value == VSR_BOM_sheet.cell(row = j,column = 17).value:
+                            if (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 8).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 8).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 9).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 9).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 10).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 10).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 11).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 11).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 12).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 12).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 13).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 13).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 14).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 14).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 15).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 15).value
+        VSR_BOM.save("VF6_FRS_VSR.xlsx")
+
+        Wb_test = Workbook()
+        Wb_test.save("Read DID.xlsx")
+
+        sheet = Wb_test.active
+        sheet.title = "ECU_DID"
+        Wb_test.save("Read DID.xlsx")
+
+        Templete = load_workbook('Templete_VF6.xlsx')
+        Templete_sheet = Templete.get_sheet_by_name('ECU_DID')
+
+        ReadDID = load_workbook('Read DID.xlsx')
+        ReadDID_sheet = ReadDID.get_sheet_by_name('ECU_DID')
+
+        VSR_BOM = load_workbook("VF6_FRS_VSR.xlsx",data_only= True)
+        VSR_BOM_sheet = VSR_BOM.get_sheet_by_name('VF6')
+
+        for i in range(1, Templete_sheet.max_row+1):
+            for j in range(1, Templete_sheet.max_column+1):
+                ReadDID_sheet.cell(row=i, column=j).value = Templete_sheet.cell(row=i, column=j).value
+
+        for i in range(1,10):
+            if VSR_BOM_sheet.cell(row=i, column=13).value == 'X':
+               Location.set(i - 1) 
+               break
+        for i in range(1,ReadDID_sheet.max_row+1):
+            if VSR_BOM_sheet.cell(row=i + 2, column=14).value == 'X':
+                if VSR_BOM_sheet.cell(row=i + 2, column=2).value == 'BootLoader':
+                    ReadDID_sheet.cell(row=i + 1,column=4).value = VSR_BOM_sheet.cell(row=i + 2, column=3).value
+                else:
+                    ReadDID_sheet.cell(row=i + 1,column=4).value = VSR_BOM_sheet.cell(row=i + 2, column=7).value
+
+        for i in range(1,ReadDID_sheet.max_row+1):
+            if VSR_BOM_sheet.cell(row=i + 2, column=14).value == 'X':
+                ReadDID_sheet.cell(row=i + 1,column=6).value = VSR_BOM_sheet.cell(row=i + 2, column=9).value
+
+        ReadDID.save('Read DID.xlsx')
+        Read_Excel()
+# Import Bom from JIRA Plus
+    def load_data_Jira_Plus():
+        Location = IntVar()
+        filetypes = (
+            ('text files', '*.xlsx'),
+            ('All files', '*.*')
+        )
+        filename = fd.askopenfilename(
+            title='Open a file',
+            initialdir='/',
+            filetypes=filetypes)
+        showinfo(
+            title='Selected File',
+            message=filename
+        )
+        try:
+            tk.messagebox.showerror("Information", "The file you have chosen is valid")
+
+        except ValueError:
+            tk.messagebox.showerror("Information", "The file you have chosen is invalid")
+            return None
+        except FileNotFoundError:
+            tk.messagebox.showerror("Information", f"No such file as {filename}")
+            return None
+
+        VSR_BOM = load_workbook("VF6_FRS_VSR.xlsx")
+        VSR_BOM_sheet = VSR_BOM.get_sheet_by_name('VF6')
+
+        BOM = load_workbook(filename,data_only=True)
+        BOM_sheet = BOM.get_sheet_by_name('Rich Filter Results')
+
+        for i in range(1,BOM_sheet.max_row + 1):
+            if ( 'PLUS' in BOM_sheet.cell(row = i,column = 6).value) == True:
+                for j in range(1,VSR_BOM_sheet.max_row + 1):
+                    if VSR_BOM_sheet.cell(row = j,column = 14).value == 'X':
+                        if BOM_sheet.cell(row = i,column = 5).value == VSR_BOM_sheet.cell(row = j,column = 17).value:
+                            if (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 8).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 8).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 9).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 9).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 10).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 10).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 11).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 11).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 12).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 12).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 13).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 13).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 14).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 14).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 15).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 15).value
+        VSR_BOM.save("VF6_FRS_VSR.xlsx")
+
+        Wb_test = Workbook()
+        Wb_test.save("Read DID.xlsx")
+
+        sheet = Wb_test.active
+        sheet.title = "ECU_DID"
+        Wb_test.save("Read DID.xlsx")
+
+        Templete = load_workbook('Templete_VF6.xlsx')
+        Templete_sheet = Templete.get_sheet_by_name('ECU_DID')
+
+        ReadDID = load_workbook('Read DID.xlsx')
+        ReadDID_sheet = ReadDID.get_sheet_by_name('ECU_DID')
+
+        VSR_BOM = load_workbook("VF6_FRS_VSR.xlsx",data_only= True)
+        VSR_BOM_sheet = VSR_BOM.get_sheet_by_name('VF6')
+
+        for i in range(1, Templete_sheet.max_row+1):
+            for j in range(1, Templete_sheet.max_column+1):
+                ReadDID_sheet.cell(row=i, column=j).value = Templete_sheet.cell(row=i, column=j).value
+
+        for i in range(1,10):
+            if VSR_BOM_sheet.cell(row=i, column=13).value == 'X':
+               Location.set(i - 1) 
+               break
+        for i in range(1,ReadDID_sheet.max_row+1):
+            if VSR_BOM_sheet.cell(row=i + 2, column=14).value == 'X':
+                if VSR_BOM_sheet.cell(row=i + 2, column=2).value == 'BootLoader':
+                    ReadDID_sheet.cell(row=i + 1,column=4).value = VSR_BOM_sheet.cell(row=i + 2, column=3).value
+                else:
+                    ReadDID_sheet.cell(row=i + 1,column=4).value = VSR_BOM_sheet.cell(row=i + 2, column=7).value
+
+        for i in range(1,ReadDID_sheet.max_row+1):
+            if VSR_BOM_sheet.cell(row=i + 2, column=14).value == 'X':
+                ReadDID_sheet.cell(row=i + 1,column=6).value = VSR_BOM_sheet.cell(row=i + 2, column=9).value
+
+        ReadDID.save('Read DID.xlsx')
+        Read_Excel()
+# Load file excel= ====================================================================
     def Read_Excel():
         clear_data()
         df = pd.read_excel('Read DID.xlsx')
@@ -1033,10 +1213,10 @@ def VF6Window():
     file = Menu(menubar1, tearoff = 0) 
     menubar1.add_cascade(label ='Import', menu = file) 
     file.add_separator()     
-    file.add_command(label ='BOM VSR ECO', command = load_data_Eco)
-    file.add_command(label ='BOM VSR PLUS', command = load_data_Plus)    
-    file.add_command(label ='BOM JIRA ECO', command = None)
-    file.add_command(label ='BOM JIRA PLUS', command = None)
+    file.add_command(label ='BOM VSR ECO', command = load_data_VSR_Eco)
+    file.add_command(label ='BOM VSR PLUS', command = load_data_VSR_Plus)    
+    file.add_command(label ='BOM JIRA ECO', command = load_data_Jira_Eco)
+    file.add_command(label ='BOM JIRA PLUS', command = load_data_Jira_Plus)
 
 # Adding Help Menu 
     RUN = Menu(menubar1, tearoff = 0) 
