@@ -1,5 +1,4 @@
 # importing only  those functions  
-# Author: HoangDung88
 from tkinter import *
 from tkinter import PhotoImage 
 from tkinter.ttk import * 
@@ -893,8 +892,8 @@ def VF6Window():
     def Terminal_clear():
             text_box.delete(1.0,'end')
     # Write data in excel file=============================================================
-# Adding File Menu and commands Path("VF6.xlsx").resolve()
-    def load_data_Eco():
+# Import data from BOM VSR ECO
+    def load_data_VSR_Eco():
         filetypes = (
             ('text files', '*.xlsx'),
             ('All files', '*.*')
@@ -954,8 +953,8 @@ def VF6Window():
 
         ReadDID.save('Read DID.xlsx')
         Read_Excel()
-# Adding File Menu and commands Path("VF6.xlsx").resolve()
-    def load_data_Plus():
+# Import data from BOM VSR PLUS
+    def load_data_VSR_Plus():
         filetypes = (
             ('text files', '*.xlsx'),
             ('All files', '*.*')
@@ -995,9 +994,15 @@ def VF6Window():
         ReadDID_sheet = ReadDID.get_sheet_by_name('ECU_DID')
         BOM_sheet = BOM.get_sheet_by_name(BOM.sheetnames[1])
 
+        Location = IntVar()
         for i in range(1, Templete_sheet.max_row+1):
             for j in range(1, Templete_sheet.max_column+1):
                 ReadDID_sheet.cell(row=i, column=j).value = Templete_sheet.cell(row=i, column=j).value
+        
+        for i in range(1,10):
+            if BOM_sheet.cell(row=i, column=13).value == 'X':
+               Location.set(i - 1) 
+               break
         for i in range(1,ReadDID_sheet.max_row+1):
             if BOM_sheet.cell(row=i + 2, column=14).value == 'X':
                 if BOM_sheet.cell(row=i + 2, column=2).value == 'BootLoader':
@@ -1011,6 +1016,120 @@ def VF6Window():
 
         ReadDID.save('Read DID.xlsx')
         Read_Excel()
+# Import Bom from JIRA ECO
+    def load_data_Jira_Eco():
+
+        filetypes = (
+            ('text files', '*.xlsx'),
+            ('All files', '*.*')
+        )
+        filename = fd.askopenfilename(
+            title='Open a file',
+            initialdir='/',
+            filetypes=filetypes)
+        showinfo(
+            title='Selected File',
+            message=filename
+        )
+        try:
+            excel_filename = r"{}".format(filename)
+            if excel_filename[-4:] == ".csv":
+                df = pd.read_csv(excel_filename)
+            else:
+                df = pd.read_excel(excel_filename)
+
+        except ValueError:
+            tk.messagebox.showerror("Information", "The file you have chosen is invalid")
+            return None
+        except FileNotFoundError:
+            tk.messagebox.showerror("Information", f"No such file as {filename}")
+            return None
+        
+        VSR_BOM = load_workbook("VF6 LS FRS VSR.xlsx")
+        VSR_BOM_sheet = VSR_BOM.get_sheet_by_name('FRS6.1.1.1 US')
+        BOM = load_workbook(filename)
+        BOM_sheet = BOM.get_sheet_by_name('Rich Filter Results')
+
+        for i in range(1,BOM_sheet.max_row + 1):
+            if ( 'ECO' in BOM_sheet.cell(row = i,column = 6).value) == True:
+                for j in range(1,VSR_BOM_sheet.max_row + 1):
+                    if VSR_BOM_sheet.cell(row = j,column = 13).value == 'X':
+                        if BOM_sheet.cell(row = i,column = 5).value == VSR_BOM_sheet.cell(row = j,column = 17).value:
+                            if (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 8).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 8).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 9).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 9).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 10).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 10).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 11).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 11).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 12).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 12).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 13).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 13).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 14).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 14).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 15).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 15).value
+
+        VSR_BOM.save("VF6 LS FRS VSR.xlsx")
+# Import Bom from JIRA Plus
+    def load_data_Jira_Plus():
+
+        filetypes = (
+            ('text files', '*.xlsx'),
+            ('All files', '*.*')
+        )
+        filename = fd.askopenfilename(
+            title='Open a file',
+            initialdir='/',
+            filetypes=filetypes)
+        showinfo(
+            title='Selected File',
+            message=filename
+        )
+        try:
+            excel_filename = r"{}".format(filename)
+            if excel_filename[-4:] == ".csv":
+                df = pd.read_csv(excel_filename)
+            else:
+                df = pd.read_excel(excel_filename)
+
+        except ValueError:
+            tk.messagebox.showerror("Information", "The file you have chosen is invalid")
+            return None
+        except FileNotFoundError:
+            tk.messagebox.showerror("Information", f"No such file as {filename}")
+            return None
+        
+        VSR_BOM = load_workbook("VF6 LS FRS VSR.xlsx")
+        VSR_BOM_sheet = VSR_BOM.get_sheet_by_name('FRS6.1.1.1 US')
+        BOM = load_workbook(filename)
+        BOM_sheet = BOM.get_sheet_by_name('Rich Filter Results')
+
+        for i in range(1,BOM_sheet.max_row + 1):
+            if ( 'PLUS' in BOM_sheet.cell(row = i,column = 6).value) == True:
+                for j in range(1,VSR_BOM_sheet.max_row + 1):
+                    if VSR_BOM_sheet.cell(row = j,column = 14).value == 'X':
+                        if BOM_sheet.cell(row = i,column = 5).value == VSR_BOM_sheet.cell(row = j,column = 17).value:
+                            if (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 8).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 8).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 9).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 9).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 10).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 10).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 11).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 11).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 12).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 12).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 13).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 13).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 14).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 14).value
+                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 15).value) == True:
+                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 15).value
+
+        VSR_BOM.save("VF6 LS FRS VSR.xlsx")
 # Load file excel=====================================================================
     def Read_Excel():
         clear_data()
@@ -1035,10 +1154,10 @@ def VF6Window():
     file = Menu(menubar1, tearoff = 0) 
     menubar1.add_cascade(label ='Import', menu = file) 
     file.add_separator()     
-    file.add_command(label ='BOM VSR ECO', command = load_data_Eco)
-    file.add_command(label ='BOM VSR PLUS', command = load_data_Plus)    
-    file.add_command(label ='BOM JIRA ECO', command = None)
-    file.add_command(label ='BOM JIRA PLUS', command = None)
+    file.add_command(label ='BOM VSR ECO', command = load_data_VSR_Eco)
+    file.add_command(label ='BOM VSR PLUS', command = load_data_VSR_Plus)    
+    file.add_command(label ='BOM JIRA ECO', command = load_data_Jira_Eco)
+    file.add_command(label ='BOM JIRA PLUS', command = load_data_Jira_Plus)
 
 # Adding Help Menu 
     RUN = Menu(menubar1, tearoff = 0) 
