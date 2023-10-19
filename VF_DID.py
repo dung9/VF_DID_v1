@@ -907,12 +907,7 @@ def VF6Window():
             message=filename
         )
         try:
-            excel_filename = r"{}".format(filename)
-            if excel_filename[-4:] == ".csv":
-                df = pd.read_csv(excel_filename)
-            else:
-                df = pd.read_excel(excel_filename)
-
+            tk.messagebox.showerror("Information", "The file you have chosen is valid")
         except ValueError:
             tk.messagebox.showerror("Information", "The file you have chosen is invalid")
             return None
@@ -968,12 +963,7 @@ def VF6Window():
             message=filename
         )
         try:
-            excel_filename = r"{}".format(filename)
-            if excel_filename[-4:] == ".csv":
-                df = pd.read_csv(excel_filename)
-            else:
-                df = pd.read_excel(excel_filename)
-
+            tk.messagebox.showerror("Information", "The file you have chosen is valid")
         except ValueError:
             tk.messagebox.showerror("Information", "The file you have chosen is invalid")
             return None
@@ -1032,12 +1022,7 @@ def VF6Window():
             message=filename
         )
         try:
-            excel_filename = r"{}".format(filename)
-            if excel_filename[-4:] == ".csv":
-                df = pd.read_csv(excel_filename)
-            else:
-                df = pd.read_excel(excel_filename)
-
+            tk.messagebox.showerror("Information", "The file you have chosen is valid")
         except ValueError:
             tk.messagebox.showerror("Information", "The file you have chosen is invalid")
             return None
@@ -1089,11 +1074,7 @@ def VF6Window():
             message=filename
         )
         try:
-            excel_filename = r"{}".format(filename)
-            if excel_filename[-4:] == ".csv":
-                df = pd.read_csv(excel_filename)
-            else:
-                df = pd.read_excel(excel_filename)
+            tk.messagebox.showerror("Information", "The file you have chosen is valid")
 
         except ValueError:
             tk.messagebox.showerror("Information", "The file you have chosen is invalid")
