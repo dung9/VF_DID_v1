@@ -1,6 +1,7 @@
 # importing only  those functions  
 from tkinter import *
-from tkinter import PhotoImage 
+from tkinter import PhotoImage
+import tkinter 
 from tkinter.ttk import * 
 import subprocess
 import cantools
@@ -15,6 +16,7 @@ from tkinter.scrolledtext import ScrolledText
 import time
 import can
 import can.interfaces.vector
+import openpyxl
 import pandas as pd
 from openpyxl.styles import Alignment
 from ReadDID import*
@@ -556,14 +558,9 @@ def VF6Window():
     Excel_frame.pack_propagate(False)
     Excel_frame.configure(width=1400,height=400)
 
-    tv1 = ttk.Treeview(Excel_frame)
-    tv1.place(relheight=1, relwidth=1) # set the height and width of the widget to 100% of its container (frame1).
-
-    treescrolly = tk.Scrollbar(Excel_frame, orient="vertical", command=tv1.yview) # command means update the yaxis view of the widget
-    treescrollx = tk.Scrollbar(Excel_frame, orient="horizontal", command=tv1.xview) # command means update the xaxis view of the widget
-    tv1.configure(xscrollcommand=treescrollx.set, yscrollcommand=treescrolly.set) # assign the scrollbars to the Treeview Widget
-    treescrollx.pack(side="bottom", fill="x") # make the scrollbar fill the x axis of the Treeview widget
-    treescrolly.pack(side="right", fill="y") # make the scrollbar fill the y axis of the Treeview widget
+    cols1 = ['a','b','c','a','b','c']
+    tv1 = ttk.Treeview(Excel_frame, column= cols1, show="headings")
+    tv1.pack(expand=True, fill='y')
 
     Terminal_frame = tk.LabelFrame(VF6,text= 'Terminal',bg = '#c3c3c3',borderwidth=1,relief='solid')
     Terminal_frame.pack(side=tk.BOTTOM,padx=1,pady=1)
@@ -1010,7 +1007,6 @@ def VF6Window():
         Read_Excel()
 # Import Bom from JIRA ECO
     def load_data_Jira_Eco():
-        Location = IntVar()
         filetypes = (
             ('text files', '*.xlsx'),
             ('All files', '*.*')
@@ -1031,35 +1027,6 @@ def VF6Window():
         except FileNotFoundError:
             tk.messagebox.showerror("Information", f"No such file as {filename}")
             return None
-        
-        VSR_BOM = load_workbook("VF6_FRS_VSR.xlsx")
-        VSR_BOM_sheet = VSR_BOM.get_sheet_by_name('VF6')
-
-        BOM = load_workbook(filename,data_only=True)
-        BOM_sheet = BOM.get_sheet_by_name('Rich Filter Results')
-
-        for i in range(1,BOM_sheet.max_row + 1):
-            if ( 'ECO' in BOM_sheet.cell(row = i,column = 6).value) == True:
-                for j in range(1,VSR_BOM_sheet.max_row + 1):
-                    if VSR_BOM_sheet.cell(row = j,column = 13).value == 'X':
-                        if BOM_sheet.cell(row = i,column = 5).value == VSR_BOM_sheet.cell(row = j,column = 17).value:
-                            if (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 8).value) == True:
-                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 8).value
-                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 9).value) == True:
-                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 9).value
-                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 10).value) == True:
-                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 10).value
-                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 11).value) == True:
-                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 11).value
-                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 12).value) == True:
-                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 12).value
-                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 13).value) == True:
-                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 13).value
-                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 14).value) == True:
-                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 14).value
-                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 15).value) == True:
-                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 15).value
-        VSR_BOM.save("VF6_FRS_VSR.xlsx")
 
         Wb_test = Workbook()
         Wb_test.save("Read DID.xlsx")
@@ -1074,33 +1041,39 @@ def VF6Window():
         ReadDID = load_workbook('Read DID.xlsx')
         ReadDID_sheet = ReadDID.get_sheet_by_name('ECU_DID')
 
-        VSR_BOM = load_workbook("VF6_FRS_VSR.xlsx",data_only= True)
-        VSR_BOM_sheet = VSR_BOM.get_sheet_by_name('VF6')
+        JIJA_BOM = load_workbook(filename,data_only= True)
+        JIJA_BOM_BOM_sheet = JIJA_BOM.get_sheet_by_name('Rich Filter Results')
 
         for i in range(1, Templete_sheet.max_row+1):
             for j in range(1, Templete_sheet.max_column+1):
                 ReadDID_sheet.cell(row=i, column=j).value = Templete_sheet.cell(row=i, column=j).value
-
-        for i in range(1,10):
-            if VSR_BOM_sheet.cell(row=i, column=13).value == 'X':
-               Location.set(i - 1) 
-               break
-        for i in range(1,ReadDID_sheet.max_row+1):
-            if VSR_BOM_sheet.cell(row=i + 2, column=14).value == 'X':
-                if VSR_BOM_sheet.cell(row=i + 2, column=2).value == 'BootLoader':
-                    ReadDID_sheet.cell(row=i + 1,column=4).value = VSR_BOM_sheet.cell(row=i + 2, column=3).value
-                else:
-                    ReadDID_sheet.cell(row=i + 1,column=4).value = VSR_BOM_sheet.cell(row=i + 2, column=7).value
-
-        for i in range(1,ReadDID_sheet.max_row+1):
-            if VSR_BOM_sheet.cell(row=i + 2, column=14).value == 'X':
-                ReadDID_sheet.cell(row=i + 1,column=6).value = VSR_BOM_sheet.cell(row=i + 2, column=9).value
+        
+        for i in range(1,JIJA_BOM_BOM_sheet.max_row + 1):
+            if ( 'ECO' in JIJA_BOM_BOM_sheet.cell(row = i,column = 6).value) == True:
+                for j in range(1,ReadDID_sheet.max_row + 1):
+                    if ReadDID_sheet.cell(row = j,column = 10).value == 'X':
+                        if JIJA_BOM_BOM_sheet.cell(row = i,column = 5).value == ReadDID_sheet.cell(row = j,column = 13).value:
+                            if (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 8).value) == True:
+                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 8).value
+                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 9).value) == True:
+                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 9).value
+                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 10).value) == True:
+                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 10).value
+                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 11).value) == True:
+                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 11).value
+                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 12).value) == True:
+                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 12).value
+                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 13).value) == True:
+                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 13).value
+                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 14).value) == True:
+                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 14).value
+                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 15).value) == True:
+                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 15).value                            
 
         ReadDID.save('Read DID.xlsx')
         Read_Excel()
 # Import Bom from JIRA Plus
     def load_data_Jira_Plus():
-        Location = IntVar()
         filetypes = (
             ('text files', '*.xlsx'),
             ('All files', '*.*')
@@ -1123,37 +1096,7 @@ def VF6Window():
             tk.messagebox.showerror("Information", f"No such file as {filename}")
             return None
 
-        VSR_BOM = load_workbook("VF6_FRS_VSR.xlsx")
-        VSR_BOM_sheet = VSR_BOM.get_sheet_by_name('VF6')
-
-        BOM = load_workbook(filename,data_only=True)
-        BOM_sheet = BOM.get_sheet_by_name('Rich Filter Results')
-
-        for i in range(1,BOM_sheet.max_row + 1):
-            if ( 'PLUS' in BOM_sheet.cell(row = i,column = 6).value) == True:
-                for j in range(1,VSR_BOM_sheet.max_row + 1):
-                    if VSR_BOM_sheet.cell(row = j,column = 14).value == 'X':
-                        if BOM_sheet.cell(row = i,column = 5).value == VSR_BOM_sheet.cell(row = j,column = 17).value:
-                            if (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 8).value) == True:
-                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 8).value
-                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 9).value) == True:
-                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 9).value
-                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 10).value) == True:
-                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 10).value
-                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 11).value) == True:
-                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 11).value
-                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 12).value) == True:
-                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 12).value
-                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 13).value) == True:
-                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 13).value
-                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 14).value) == True:
-                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 14).value
-                            elif (VSR_BOM_sheet.cell(row = j,column = 6).value in BOM_sheet.cell(row = 1,column = 15).value) == True:
-                                VSR_BOM_sheet.cell(row = j,column = 3).value = BOM_sheet.cell(row = i,column = 15).value
-        VSR_BOM.save("VF6_FRS_VSR.xlsx")
-
         Wb_test = Workbook()
-        Wb_test.save("Read DID.xlsx")
 
         sheet = Wb_test.active
         sheet.title = "ECU_DID"
@@ -1165,44 +1108,46 @@ def VF6Window():
         ReadDID = load_workbook('Read DID.xlsx')
         ReadDID_sheet = ReadDID.get_sheet_by_name('ECU_DID')
 
-        VSR_BOM = load_workbook("VF6_FRS_VSR.xlsx",data_only= True)
-        VSR_BOM_sheet = VSR_BOM.get_sheet_by_name('VF6')
+        JIJA_BOM = load_workbook(filename,data_only= True)
+        JIJA_BOM_BOM_sheet = JIJA_BOM.get_sheet_by_name('Rich Filter Results')
 
         for i in range(1, Templete_sheet.max_row+1):
             for j in range(1, Templete_sheet.max_column+1):
                 ReadDID_sheet.cell(row=i, column=j).value = Templete_sheet.cell(row=i, column=j).value
-
-        for i in range(1,10):
-            if VSR_BOM_sheet.cell(row=i, column=13).value == 'X':
-               Location.set(i - 1) 
-               break
-        for i in range(1,ReadDID_sheet.max_row+1):
-            if VSR_BOM_sheet.cell(row=i + 2, column=14).value == 'X':
-                if VSR_BOM_sheet.cell(row=i + 2, column=2).value == 'BootLoader':
-                    ReadDID_sheet.cell(row=i + 1,column=4).value = VSR_BOM_sheet.cell(row=i + 2, column=3).value
-                else:
-                    ReadDID_sheet.cell(row=i + 1,column=4).value = VSR_BOM_sheet.cell(row=i + 2, column=7).value
-
-        for i in range(1,ReadDID_sheet.max_row+1):
-            if VSR_BOM_sheet.cell(row=i + 2, column=14).value == 'X':
-                ReadDID_sheet.cell(row=i + 1,column=6).value = VSR_BOM_sheet.cell(row=i + 2, column=9).value
+        
+        for i in range(1,JIJA_BOM_BOM_sheet.max_row + 1):
+            if ( 'PLUS' in JIJA_BOM_BOM_sheet.cell(row = i,column = 6).value) == True:
+                for j in range(1,ReadDID_sheet.max_row + 1):
+                    if ReadDID_sheet.cell(row = j,column = 11).value == 'X':
+                        if JIJA_BOM_BOM_sheet.cell(row = i,column = 5).value == ReadDID_sheet.cell(row = j,column = 13).value:
+                            if (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 8).value) == True:
+                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 8).value
+                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 9).value) == True:
+                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 9).value
+                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 10).value) == True:
+                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 10).value
+                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 11).value) == True:
+                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 11).value
+                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 12).value) == True:
+                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 12).value
+                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 13).value) == True:
+                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 13).value
+                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 14).value) == True:
+                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 14).value
+                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 15).value) == True:
+                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 15).value                            
 
         ReadDID.save('Read DID.xlsx')
         Read_Excel()
 # Load file excel= ====================================================================
     def Read_Excel():
         clear_data()
-        df = pd.read_excel('Read DID.xlsx')
-        tv1["column"] = list(df.columns)
-        tv1["show"] = "headings"
-        for column in tv1["columns"]:
-            tv1.heading(column, text=column) # let the column heading = column name
-
-        df_rows = df.to_numpy().tolist() # turns the dataframe into a list of lists
-        for row in df_rows:
-            tv1.insert("", "end", values=row) # inserts each list into the treeview. For parameters see https://docs.python.org/3/library/tkinter.ttk.html#tkinter.ttk.Treeview.insert
-        tv1.focus(None)
-        return None
+        ReadDID = load_workbook('Read DID.xlsx',data_only=True)
+        ReadDID_sheet = ReadDID.get_sheet_by_name('ECU_DID')
+        list_values = list(ReadDID_sheet.values)
+        
+        for value_tuple in list_values[1:]:
+            tv1.insert('',tkinter.END, values=value_tuple)
 # Clear file excel=====================================================================    
     def clear_data():
         tv1.delete(*tv1.get_children())
