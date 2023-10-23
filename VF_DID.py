@@ -182,13 +182,13 @@ def BMS_READ_DID():
 #=============================Read DIDCCUF================================
 def CCUF_READ_DID():
     ECU_Text('CCUF',None,1,None)
-    ECU_Req_INFOR(CCUF_DiagRq_HW,CCUF_DiagRq,HW,0x609,'CCU_F','HardWare',0,'CCUFF191')
-    ECU_Req_INFOR(CCUF_DiagRq_HW_Rv,CCUF_DiagRq,HW_rv,0x609,'CCU_F','Hardware_Rev',0,'CCUFF191')
-    ECU_Req_INFOR(CCUF_DiagRq_SW,CCUF_DiagRq,SW,0x609,'CCU_F','Software',0,'CCUFF188')
-    ECU_Req_INFOR(CCUF_DiagRq_SW_Rv,CCUF_DiagRq,HW_rv,0x609,'CCU_F','Software_Rev',0,'CCUFF188')  
-    ECU_Req_INFOR(CCUF_DiagRq_CAL,CCUF_DiagRq,SW,0x609,'CCU_F','Software_CAL',0,'CCUFF102')
-    ECU_Req_INFOR(CCUF_DiagRq_CAL_Rev,CCUF_DiagRq,HW_rv,0x609,'CCU_F','Software_CAL_Rev',0,'CCUFF102')
-    ECU_Req_INFOR(CCUF_DiagRq_Bootloader,CCUF_DiagRq,bl,0x609,'CCU_F','Bootloader',0,'CCUFF101')
+    ECU_Req_INFOR(CCUF_DiagRq_HW,CCUF_DiagRq,HW,0x609,'CCU_F','HardWare',0,'CCU_FF191')
+    ECU_Req_INFOR(CCUF_DiagRq_HW_Rv,CCUF_DiagRq,HW_rv,0x609,'CCU_F','Hardware_Rev',0,'CCU_FF191')
+    ECU_Req_INFOR(CCUF_DiagRq_SW,CCUF_DiagRq,SW,0x609,'CCU_F','Software',0,'CCU_FF188')
+    ECU_Req_INFOR(CCUF_DiagRq_SW_Rv,CCUF_DiagRq,HW_rv,0x609,'CCU_F','Software_Rev',0,'CCU_FF188')  
+    ECU_Req_INFOR(CCUF_DiagRq_CAL,CCUF_DiagRq,SW,0x609,'CCU_F','Software_CAL',0,'CCU_FF102')
+    ECU_Req_INFOR(CCUF_DiagRq_CAL_Rev,CCUF_DiagRq,HW_rv,0x609,'CCU_F','Software_CAL_Rev',0,'CCU_FF102')
+    ECU_Req_INFOR(CCUF_DiagRq_Bootloader,CCUF_DiagRq,bl,0x609,'CCU_F','Bootloader',0,'CCU_FF101')
     bus.shutdown
 #=============================Read DIDCPD================================
 def CPD_READ_DID():
@@ -357,8 +357,8 @@ def RCU_READ_DID():
     ECU_Text('RCU',None,1,None)
     ECU_Req_INFOR(RCU_DiagRq_HW,RCU_DiagRq,HW,0x627,'RCU','HardWare',0,'RCUF191')
     ECU_Req_INFOR(RCU_DiagRq_HW_Rv,RCU_DiagRq,HW_rv,0x627,'RCU','Hardware_Rev',0,'RCUF191')
-    ECU_Req_INFOR(RCU_DiagRq_SW,RCU_DiagRq,SW,0x627,'RCU','Software',0,'RCUF191')
-    ECU_Req_INFOR(RCU_DiagRq_SW_Rv,RCU_DiagRq,HW_rv,0x627,'RCU','Software_Rev',0,'RCUF191')
+    ECU_Req_INFOR(RCU_DiagRq_SW,RCU_DiagRq,SW,0x627,'RCU','Software',0,'RCUF188')
+    ECU_Req_INFOR(RCU_DiagRq_SW_Rv,RCU_DiagRq,HW_rv,0x627,'RCU','Software_Rev',0,'RCUF188')
     ECU_Req_INFOR(RCU_DiagRq_CAL,RCU_DiagRq,SW,0x627,'RCU','Software_CAL',0,'RCUF102')
     ECU_Req_INFOR(RCU_DiagRq_CAL_Rev,RCU_DiagRq,HW_rv,0x627,'RCU','Software_CAL_Rev',0,'RCUF102')
     ECU_Req_INFOR(RCU_DiagRq_Bootloader,RCU_DiagRq,bl,0x627,'RCU','Bootloader',0,'RCUF101')
@@ -736,7 +736,7 @@ def VF6Window():
             BMS_READ_DID()
         if GS_Status.get() == 1:
             GS_READ_DID()
-        if IDB_Status == 1:
+        if IDB_Status.get() == 1:
             IDB_READ_DID()
         if RCU_Status.get() == 1:
             RCU_READ_DID()
@@ -923,6 +923,8 @@ def VF6Window():
 
 # Import Bom from JIRA ECO
     def load_data_Jira_Eco():
+        global BOM
+        BOM = 'EC0'
         global ECU_LIST 
         ECU_LIST = [0 for i in range(200)] 
         Templete = load_workbook('Templete_VF6.xlsx')
@@ -941,7 +943,7 @@ def VF6Window():
             if Templete_sheet.cell(row=i,column=11).value == 'X':
                 ID +=1
                 ECU_LIST[ID] = str(Templete_sheet.cell(row=i,column=1).value) + str(Templete_sheet.cell(row=i,column=3).value)
-                tree.insert('', 'end',iid =ECU_LIST[ID],values=(Templete_sheet.cell(row=i,column=1).value, Templete_sheet.cell(row=i,column=2).value,Templete_sheet.cell(row=i,column=3).value,"None",Templete_sheet.cell(row=i,column=5).value,"None","None","None","None",Templete_sheet.cell(row=i,column=10).value))
+                tree.insert('', 'end',iid =ECU_LIST[ID],values=(Templete_sheet.cell(row=i,column=1).value, Templete_sheet.cell(row=i,column=2).value,Templete_sheet.cell(row=i,column=3).value,"None",Templete_sheet.cell(row=i,column=5).value,"None","None","None","None",Templete_sheet.cell(row=i,column=10).value),tags=ECU_LIST[ID])
                 tree.pack()
         
         tree.update()
@@ -982,7 +984,7 @@ def VF6Window():
                             
                         if (tree.item(ECU_LIST[j])["values"][2] in BOM_sheet.cell(row= 1,column=9).value) == True:
                             ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
-                                        BOM_sheet.cell(row= i,column=9).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=9).value[12:len(BOM_sheet.cell(row= i,column=9).value)],
+                                        BOM_sheet.cell(row= i,column=9).value,tree.item(ECU_LIST[j])["values"][4],'None',
                                         tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
                             
                         if (tree.item(ECU_LIST[j])["values"][2] in BOM_sheet.cell(row= 1,column=10).value) == True:
@@ -1024,13 +1026,18 @@ def VF6Window():
             tree.item(iid, values=(tree.item(str(iid))["values"][0], tree.item(str(iid))["values"][1],tree.item(str(iid))["values"][2],tree.item(str(iid))["values"][3],tree.item(str(iid))["values"][4],tree.item(str(iid))["values"][5],Data,tree.item(str(iid))["values"][7],tree.item(str(iid))["values"][8],tree.item(str(iid))["values"][9]))
         if Type_Read == 4:
             tree.item(iid, values=(tree.item(str(iid))["values"][0], tree.item(str(iid))["values"][1],tree.item(str(iid))["values"][2],tree.item(str(iid))["values"][3],tree.item(str(iid))["values"][4],tree.item(str(iid))["values"][5],Data,tree.item(str(iid))["values"][7],tree.item(str(iid))["values"][8],tree.item(str(iid))["values"][9]))
-        elif Type_Read == 3:
+        if Type_Read == 3:
             tree.item(iid, values=(tree.item(str(iid))["values"][0], tree.item(str(iid))["values"][1],tree.item(str(iid))["values"][2],tree.item(str(iid))["values"][3],tree.item(str(iid))["values"][4],tree.item(str(iid))["values"][5],tree.item(str(iid))["values"][6],Data,tree.item(str(iid))["values"][8],tree.item(str(iid))["values"][9]))
+        if (str(tree.item(str(iid))["values"][6]) in str(tree.item(str(iid))["values"][3])) == False or (str(tree.item(str(iid))["values"][5]) in str(tree.item(str(iid))["values"][7])) == False:
+            tree.tag_configure(iid, background='yellow',foreground="black")
+
         tree.update()
 # Import Bom from JIRA Plus
     def load_data_Jira_Plus():
         global ECU_LIST 
         ECU_LIST = [0 for i in range(200)] 
+        global BOM
+        BOM = 'PLUS'
         Templete = load_workbook('Templete_VF6.xlsx')
         Templete_sheet = Templete.get_sheet_by_name('ECU_DID')
 
@@ -1042,11 +1049,13 @@ def VF6Window():
             tree.pack(expand=True, fill='y')
 
         # Insert the data in Treeview widget
+        # Insert the data in Treeview widget
         ID = 0
         for i in range(1,Templete_sheet.max_row+1):
             if Templete_sheet.cell(row=i,column=12).value == 'X':
                 ID +=1
-                tree.insert('', 'end',iid =str(ID),values=(Templete_sheet.cell(row=i,column=1).value, Templete_sheet.cell(row=i,column=2).value,Templete_sheet.cell(row=i,column=3).value,"None",Templete_sheet.cell(row=i,column=5).value,"None","None","None","None",Templete_sheet.cell(row=i,column=10).value))
+                ECU_LIST[ID] = str(Templete_sheet.cell(row=i,column=1).value) + str(Templete_sheet.cell(row=i,column=3).value)
+                tree.insert('', 'end',iid =ECU_LIST[ID],values=(Templete_sheet.cell(row=i,column=1).value, Templete_sheet.cell(row=i,column=2).value,Templete_sheet.cell(row=i,column=3).value,"None",Templete_sheet.cell(row=i,column=5).value,"None","None","None","None",Templete_sheet.cell(row=i,column=10).value))
                 tree.pack()
         
         tree.update()
@@ -1119,6 +1128,7 @@ def VF6Window():
                             ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
                                         BOM_sheet.cell(row= i,column=15).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=15).value[12:len(BOM_sheet.cell(row= i,column=15).value)],
                                         tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+
 #Load templete file bom
     menubar1 = Menu(VF6) 
     file = Menu(menubar1, tearoff = 0) 
