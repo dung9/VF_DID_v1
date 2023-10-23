@@ -421,17 +421,17 @@ def SRR_RR_READ_DID():
 #=============================Read DIDVCU================================
 def VCU_READ_DID():
     ECU_Text('VCU',None,1,None)
-    ECU_Req_INFOR(VCU_DiagRq_HW,VCU_DiagRq,HW,0x62C,'VCU','HardWare',0,'F191',None)
-    ECU_Req_INFOR(VCU_DiagRq_HW_Rv,VCU_DiagRq,HW_rv,0x62C,'VCU','Hardware_Rev',0,None,'F141')
-    ECU_Req_INFOR(VCU_DiagRq_SW,VCU_DiagRq,SW,0x62C,'VCU','Software',0,'F188',None)
-    ECU_Req_INFOR(VCU_DiagRq_SW_Rv,VCU_DiagRq,HW_rv,0x62C,'VCU','Software_Rev',0,None,'F148')
-    ECU_Req_INFOR(VCU_DiagRq_SW_APP,VCU_DiagRq,SW,0x62C,'VCU','Software_APP',0,'F104',None)
-    ECU_Req_INFOR(VCU_DiagRq_SW_APP_Rv,VCU_DiagRq,HW_rv,0x62C,'VCU','Software_APP_Rev',0,None,'F144')
-    ECU_Req_INFOR(VCU_DiagRq_SW_BASIC,VCU_DiagRq,SW,0x62C,'VCU','Software_BASIC',0,'F105',None)
-    ECU_Req_INFOR(VCU_DiagRq_SW_BASIC_Rv,VCU_DiagRq,HW_rv,0x62C,'VCU','Software_BASIC_Rev',0,None,'F145')
-    ECU_Req_INFOR(VCU_DiagRq_CAL,VCU_DiagRq,HW_rv,0x62C,'VCU','Software_CAL',0,'F102',None)
-    ECU_Req_INFOR(VCU_DiagRq_CAL_Rv,VCU_DiagRq,HW_rv,0x62C,'VCU','Software_CAL_Rv',0,None,'F142')
-    ECU_Req_INFOR(VCU_DiagRq_Bootloader,VCU_DiagRq,bl,0x62C,'VCU','Bootloader',0,'F101',None)
+    ECU_Req_INFOR(VCU_DiagRq_HW,VCU_DiagRq,HW,0x62C,'VCU','HardWare',0,'1')
+    ECU_Req_INFOR(VCU_DiagRq_HW_Rv,VCU_DiagRq,HW_rv,0x62C,'VCU','Hardware_Rev',0,'1')
+    ECU_Req_INFOR(VCU_DiagRq_SW,VCU_DiagRq,SW,0x62C,'VCU','Software',0,'2')
+    ECU_Req_INFOR(VCU_DiagRq_SW_Rv,VCU_DiagRq,HW_rv,0x62C,'VCU','Software_Rev',0,'2')
+    ECU_Req_INFOR(VCU_DiagRq_SW_APP,VCU_DiagRq,SW,0x62C,'VCU','Software_APP',0,'3')
+    ECU_Req_INFOR(VCU_DiagRq_SW_APP_Rv,VCU_DiagRq,HW_rv,0x62C,'VCU','Software_APP_Rev',0,'3')
+    ECU_Req_INFOR(VCU_DiagRq_SW_BASIC,VCU_DiagRq,SW,0x62C,'VCU','Software_BASIC',0,'4')
+    ECU_Req_INFOR(VCU_DiagRq_SW_BASIC_Rv,VCU_DiagRq,HW_rv,0x62C,'VCU','Software_BASIC_Rev',0,'4')
+    ECU_Req_INFOR(VCU_DiagRq_CAL,VCU_DiagRq,HW_rv,0x62C,'VCU','Software_CAL',0,'5')
+    ECU_Req_INFOR(VCU_DiagRq_CAL_Rv,VCU_DiagRq,HW_rv,0x62C,'VCU','Software_CAL_Rv',0,'5')
+    ECU_Req_INFOR(VCU_DiagRq_Bootloader,VCU_DiagRq,bl,0x62C,'VCU','Bootloader',0,'6')
     bus.shutdown
 #=============================Read DIDXGW================================
 def XGW_READ_DID():
@@ -446,21 +446,21 @@ def XGW_READ_DID():
     bus.shutdown
 #=============================Read DIDYSS================================
 #========================Read HW XGW=======================
-def ECU_Req_INFOR(message1,message2,readstate,ECU_ID,ECU,TypeRead,Header_Text,PN_DID,Rev_PN):
+def ECU_Req_INFOR(message1,message2,readstate,ECU_ID,ECU,TypeRead,Header_Text,iid):
     try:
         bus.send(message1)
-        ECU_Resp(message2,readstate,ECU_ID,ECU,TypeRead,Header_Text,PN_DID,Rev_PN)
+        ECU_Resp(message2,readstate,ECU_ID,ECU,TypeRead,Header_Text,iid)
     except can.CanError:
         print("Msg cannot send")
 #===========================================================
-def ECU_Req(message,readstate,ECU_ID,ECU,TypeRead,Header_Text,PN_DID,Rev_PN):
+def ECU_Req(message,readstate,ECU_ID,ECU,TypeRead,Header_Text,iid):
     try:
         bus.send(message)
-        ECU_Resp_Data(readstate,ECU_ID,ECU,TypeRead,Header_Text,PN_DID,Rev_PN)
+        ECU_Resp_Data(readstate,ECU_ID,ECU,TypeRead,Header_Text,iid)
     except can.CanError:
         print("Msg cannot send")
 #===========================================================
-def ECU_Resp_Data(readstate,ECU_ID,ECU,TypeRead,Header_Text,PN_DID,Rev_PN):
+def ECU_Resp_Data(readstate,ECU_ID,ECU,TypeRead,Header_Text,iid):
     DID_Infor = 'NRC'
     mess = bus.recv(timeout = 2)
     try:
@@ -470,62 +470,48 @@ def ECU_Resp_Data(readstate,ECU_ID,ECU,TypeRead,Header_Text,PN_DID,Rev_PN):
                     print("EEP",hex(mess.data[1])[2:],hex(mess.data[2])[2:],hex(mess.data[3])[2:],hex(mess.data[4])[2:])
                     DID_Infor = "EEP" + str(hex(mess.data[1])[2:2]) + str(hex(mess.data[2])[2:2]) + str(hex(mess.data[3])[2:2]) + str(hex(mess.data[4])[2:2])
                     ECU_Text(ECU,TypeRead,Header_Text,DID_Infor)
-                    Write_Data(ECU,DID_Infor,PN_DID,Rev_PN)
+                    RealData(iid,DID_Infor,readstate)
                 if readstate == 2:
                     print("SOW",hex(mess.data[1])[2:],hex(mess.data[2])[2:],hex(mess.data[3])[2:],hex(mess.data[4])[2:])
                     DID_Infor = "SOW" + str(hex(mess.data[1])[2:]) + str(hex(mess.data[2])[2:]) + str(hex(mess.data[3])[2:]) + str(hex(mess.data[4])[2:])
                     ECU_Text(ECU,TypeRead,Header_Text,DID_Infor)
-                    Write_Data(ECU,DID_Infor,PN_DID,Rev_PN)
+                    RealData(iid,DID_Infor,readstate)
         else :
             DID_Infor = "NRC"
             ECU_Text(ECU,TypeRead,Header_Text,DID_Infor)
-            Write_Data(ECU,DID_Infor,PN_DID,Rev_PN)
+            RealData(iid,DID_Infor,readstate)
     except AttributeError:
         DID_Infor = "NRC"
         ECU_Text(ECU,TypeRead,Header_Text,DID_Infor)
-        Write_Data(ECU,DID_Infor,PN_DID,Rev_PN)
+        RealData(iid,DID_Infor,readstate)
     time.sleep(0.5)
 #===========================================================
-def ECU_Resp(message,readstate,ECU_ID,ECU,TypeRead,Header_Text,PN_DID,Rev_PN):
+def ECU_Resp(message,readstate,ECU_ID,ECU,TypeRead,Header_Text,iid):
     DID_Infor = 'NRC'
     mess = bus.recv(timeout = 2)
     try:
         if mess.arbitration_id == ECU_ID:  
                     if mess.data[0] == 16 or mess.data[0] == 3:
-                        ECU_Req(message,readstate,ECU_ID,ECU,TypeRead,Header_Text,PN_DID,Rev_PN)                    
+                        ECU_Req(message,readstate,ECU_ID,ECU,TypeRead,Header_Text,iid)                    
                     if  mess.data[0] == 4:
                         print("REV",hex(mess.data[4])[2:])
                         DID_Infor = str(hex(mess.data[4])[2:])
                         ECU_Text(ECU,TypeRead,Header_Text,DID_Infor)
-                        Write_Data(ECU,DID_Infor,PN_DID,Rev_PN)
+                        RealData(iid,DID_Infor,readstate)
                     if  mess.data[0] == 5:
                         print("Bld",hex(mess.data[4])[2:],hex(mess.data[5])[2:])
                         DID_Infor = str(hex(mess.data[4])[2:]) + str(hex(mess.data[5])[2:])
                         ECU_Text(ECU,TypeRead,Header_Text,DID_Infor)
-                        Write_Data(ECU,DID_Infor,PN_DID,Rev_PN)
+                        RealData(iid,DID_Infor,readstate)
         else:
             DID_Infor = "NRC"
             ECU_Text(ECU,TypeRead,Header_Text,DID_Infor)
-            Write_Data(ECU,DID_Infor,PN_DID,Rev_PN)
+            RealData(iid,DID_Infor,readstate)
     except AttributeError:
         DID_Infor = "NRC"
         ECU_Text(ECU,TypeRead,Header_Text,DID_Infor)
-        Write_Data(ECU,DID_Infor,PN_DID,Rev_PN)
+        RealData(iid,DID_Infor,readstate)
     time.sleep(0.5)
-#====================================Save data in excel====================================    
-def Write_Data(ECU,DID_Data,PN_DID,Rev_PN):
-    ReadDID = load_workbook('Read DID.xlsx')
-    ReadDID_sheet = ReadDID.get_sheet_by_name('ECU_DID')
-    for i in range(1,ReadDID_sheet.max_row + 1):
-        if ReadDID_sheet.cell(row=i + 1,column=1).value == ECU:
-            if ReadDID_sheet.cell(row=i + 1,column=3).value == PN_DID:
-                if ReadDID_sheet.cell(row=i + 1,column=4).value != None:
-                    ReadDID_sheet.cell(row=i + 1,column=7).value = DID_Data
-                    break
-            elif ReadDID_sheet.cell(row=i + 1,column=5).value == Rev_PN:
-                    ReadDID_sheet.cell(row=i + 1,column=8).value = DID_Data
-                    break
-    ReadDID.save('Read DID.xlsx')
 #====================================VF3 Window============================================		
 def VF3Window():     
     VF3 = Toplevel(root)
@@ -540,13 +526,14 @@ def VF5Window():
     T.grid(pady=50,padx=50)
     create_workbook("hello.xlsx")
 #====================================VF6 Window============================================		
-def VF6Window():     
+def VF6Window():
     VF6 = Toplevel(root)
     VF6.title("New Window")
     VF6.geometry("1200x600") 
     VF6.resizable(0, 0)
     Label(VF6, text ="VF6 DID").pack()
     global ECU_Text
+    global RealData
 
     ECU_Frame = tk.LabelFrame(VF6,bg = '#c3c3c3',text= 'ECU',borderwidth=1,relief='solid')
     ECU_Frame.pack(side=tk.LEFT)
@@ -558,9 +545,10 @@ def VF6Window():
     Excel_frame.pack_propagate(False)
     Excel_frame.configure(width=1400,height=400)
 
-    cols1 = ['a','b','c','a','b','c']
-    tv1 = ttk.Treeview(Excel_frame, column= cols1, show="headings")
-    tv1.pack(expand=True, fill='y')
+    style = ttk.Style()
+    style.theme_use('clam')
+    tree = ttk.Treeview(Excel_frame, column=("c1", "c2","c3","c4","c5","c6","c7","c8","c9","C10"), show='headings', height=8)
+    tree.pack(expand=True, fill='y')
 
     Terminal_frame = tk.LabelFrame(VF6,text= 'Terminal',bg = '#c3c3c3',borderwidth=1,relief='solid')
     Terminal_frame.pack(side=tk.BOTTOM,padx=1,pady=1)
@@ -797,88 +785,61 @@ def VF6Window():
     def RUN_Read():
         Terminal_clear()
         if VCU_Status.get() == 1:
-            VCU_READ_DID()
-            Read_Excel()            
+            VCU_READ_DID()           
         if DCDC_Status.get() == 1:
             POD_DCDC_READ_DID()
-            Read_Excel() 
         if POD_Status.get() == 1:
             POD_GW_READ_DID()
-            Read_Excel() 
         if OBC_Status.get() == 1:
             POD_OBC_READ_DID()
-            Read_Excel() 
         if EDS_Status.get() == 1:
             EDS_F_READ_DID()
         if BMS_Status.get() == 1:
             BMS_READ_DID()
-            Read_Excel() 
         if GS_Status.get() == 1:
             GS_READ_DID()
-            Read_Excel() 
         if IDB_Status == 1:
             IDB_READ_DID()
-            Read_Excel() 
         if RCU_Status.get() == 1:
             RCU_READ_DID()
-            Read_Excel() 
         if EPS_Status.get() == 1:
             EPS_READ_DID()
-            Read_Excel() 
         if ACM_Status.get() == 1:
             ACM_READ_DID()
-            Read_Excel() 
         if BCM_Status.get() == 1:
             BCM_READ_DID()
-            Read_Excel() 
         if BCM_BPM_Status.get() == 1:
             BCM_BPM_READ_DID()
-            Read_Excel() 
         if CCU1_Status.get() == 1:
             CCUF_READ_DID()
-            Read_Excel() 
         if XGW_Status.get() == 1:
             XGW_READ_DID()
-            Read_Excel() 
         if APM_Status.get() == 1:
             APM_READ_DID()
-            Read_Excel() 
         if SHVU_F_Status.get() == 1:
             SHVU_F_READ_DID()
-            Read_Excel() 
         if SHVU_R_Status.get() == 1:
             SHVU_R_READ_DID()
-            Read_Excel() 
         if OCS_Status.get() == 1:
             OCS_P_READ_DID()
-            Read_Excel() 
         if MHU_Status.get() == 1:
             MHU_READ_DID()
-            Read_Excel() 
         if HUD_Status.get() == 1:
             HUD_READ_DID()
-            Read_Excel() 
         if AVAS_Status.get() == 1:          
             AVAS_READ_DID()
-            Read_Excel() 
         if FCAM_Status.get() == 1:          
             PAS_READ_DID()
-            Read_Excel() 
         if MCR_FL_RADAR_Status.get() == 1:          
             SRR_FL_READ_DID()
-            Read_Excel() 
         if MCR_FR_RADAR_Status.get() == 1:          
             SRR_FR_READ_DID()
-            Read_Excel() 
         if MCR_RL_RADAR_Status.get() == 1:          
             SRR_RL_READ_DID()
-            Read_Excel() 
         if MCR_RR_RADAR_Status.get() == 1:          
             SRR_RR_READ_DID()
-            Read_Excel() 
         if MFR1_RADAR_Status.get() == 1:          
             MRGEN_READ_DID()
-            Read_Excel() 
 # Display text for read ECU actual
     def ECU_Text(ECU,TypeRead,Header,infor):
         if Header == 1:
@@ -892,6 +853,25 @@ def VF6Window():
     # Write data in excel file=============================================================
 # Import data from BOM VSR ECO
     def load_data_VSR_Eco():
+
+        Templete = load_workbook('Templete_VF6.xlsx')
+        Templete_sheet = Templete.get_sheet_by_name('ECU_DID')
+        # Add a Treeview widget
+        count = 0
+        for i in range(1,Templete_sheet.max_column-1):
+            count += 1
+            tree.column("# "+ str(count), anchor=CENTER)
+            tree.heading("# "+ str(count), text=Templete_sheet.cell(row=1,column=i).value)
+            tree.pack(expand=True, fill='y')
+
+        # Insert the data in Treeview widget
+        for i in range(1,Templete_sheet.max_row+1):
+            if Templete_sheet.cell(row=i,column=10).value == 'X':
+                tree.insert('', 'end',iid =Templete_sheet.cell(row=i,column=1).value+ Templete_sheet.cell(row=i,column=3).value,values=(Templete_sheet.cell(row=i,column=1).value, Templete_sheet.cell(row=i,column=2).value,Templete_sheet.cell(row=i,column=3).value,"None",Templete_sheet.cell(row=i,column=5).value,"None","None","None","None"))
+                tree.pack()
+        tree.update()
+        time.sleep(3)
+
         filetypes = (
             ('text files', '*.xlsx'),
             ('All files', '*.*')
@@ -905,50 +885,34 @@ def VF6Window():
             message=filename
         )
         try:
-            tk.messagebox.showerror("Information", "The file you have chosen is valid")
+            tk.messagebox.showinfo("Information", "The file you have chosen is valid")
         except ValueError:
             tk.messagebox.showerror("Information", "The file you have chosen is invalid")
             return None
         except FileNotFoundError:
             tk.messagebox.showerror("Information", f"No such file as {filename}")
             return None
-        Wb_test = Workbook()
-        Wb_test.save("Read DID.xlsx")
-
-        sheet = Wb_test.active
-        sheet.title = "ECU_DID"
-        Wb_test.save("Read DID.xlsx")
-
-        Templete = load_workbook('Templete_VF6.xlsx')
-        ReadDID = load_workbook('Read DID.xlsx')
-        BOM = load_workbook(filename,data_only = True)
-        Templete_sheet = Templete.get_sheet_by_name('ECU_DID')
-        ReadDID_sheet = ReadDID.get_sheet_by_name('ECU_DID')
-        BOM_sheet = BOM.get_sheet_by_name(BOM.sheetnames[1])
-        Location = IntVar()
-        for i in range(1,10):
-            if BOM_sheet.cell(row=i, column=13).value == 'X':
-               Location.set(i - 1) 
-               break
-        for i in range(1, Templete_sheet.max_row+1):
-            for j in range(1, Templete_sheet.max_column+1):
-                ReadDID_sheet.cell(row=i, column=j).value = Templete_sheet.cell(row=i, column=j)
-
-        for i in range(1,ReadDID_sheet.max_row+1):
-            if BOM_sheet.cell(row=i + Location.get(), column=13).value == 'X':
-                if BOM_sheet.cell(row=i + Location.get(), column=2).value == 'BootLoader':
-                    ReadDID_sheet.cell(row=i + 1,column=4).value = BOM_sheet.cell(row=i + Location.get(), column=3).value
-                else:
-                    ReadDID_sheet.cell(row=i + 1,column=4).value = BOM_sheet.cell(row=i + Location.get(), column=7).value
-
-        for i in range(1,ReadDID_sheet.max_row+1):
-            if BOM_sheet.cell(row=i + Location.get(), column=13).value == 'X':
-                ReadDID_sheet.cell(row=i + 1,column=6).value = BOM_sheet.cell(row=i + Location.get(), column=9).value
-
-        ReadDID.save('Read DID.xlsx')
-        Read_Excel()
+      
 # Import data from BOM VSR PLUS
     def load_data_VSR_Plus():
+
+        Templete = load_workbook('Templete_VF6.xlsx')
+        Templete_sheet = Templete.get_sheet_by_name('ECU_DID')
+        count = 0
+        for i in range(1,Templete_sheet.max_column-1):
+            count += 1
+            tree.column("# "+ str(count), anchor=CENTER)
+            tree.heading("# "+ str(count), text=Templete_sheet.cell(row=1,column=i).value)
+            tree.pack(expand=True, fill='y')
+
+        # Insert the data in Treeview widget
+        for i in range(1,Templete_sheet.max_row+1):
+            if Templete_sheet.cell(row=i,column=11).value == 'X':
+                tree.insert('', 'end',iid =Templete_sheet.cell(row=i,column=1).value+ Templete_sheet.cell(row=i,column=3).value,values=(Templete_sheet.cell(row=i,column=1).value, Templete_sheet.cell(row=i,column=2).value,Templete_sheet.cell(row=i,column=3).value,"None",Templete_sheet.cell(row=i,column=5).value,"None","None","None","None"))
+                tree.pack()
+        tree.update()
+        time.sleep(3)
+
         filetypes = (
             ('text files', '*.xlsx'),
             ('All files', '*.*')
@@ -969,44 +933,31 @@ def VF6Window():
         except FileNotFoundError:
             tk.messagebox.showerror("Information", f"No such file as {filename}")
             return None
-        Wb_test = Workbook()
-        Wb_test.save("Read DID.xlsx")
 
-        sheet = Wb_test.active
-        sheet.title = "ECU_DID"
-        Wb_test.save("Read DID.xlsx")
-
-        Templete = load_workbook('Templete_VF6.xlsx')
-        ReadDID = load_workbook('Read DID.xlsx')
-        BOM = load_workbook(filename,data_only = True)
-        Templete_sheet = Templete.get_sheet_by_name('ECU_DID')
-        ReadDID_sheet = ReadDID.get_sheet_by_name('ECU_DID')
-        BOM_sheet = BOM.get_sheet_by_name(BOM.sheetnames[1])
-
-        Location = IntVar()
-        for i in range(1, Templete_sheet.max_row+1):
-            for j in range(1, Templete_sheet.max_column+1):
-                ReadDID_sheet.cell(row=i, column=j).value = Templete_sheet.cell(row=i, column=j).value
-        
-        for i in range(1,10):
-            if BOM_sheet.cell(row=i, column=13).value == 'X':
-               Location.set(i - 1) 
-               break
-        for i in range(1,ReadDID_sheet.max_row+1):
-            if BOM_sheet.cell(row=i + 2, column=14).value == 'X':
-                if BOM_sheet.cell(row=i + 2, column=2).value == 'BootLoader':
-                    ReadDID_sheet.cell(row=i + 1,column=4).value = BOM_sheet.cell(row=i + 2, column=3).value
-                else:
-                    ReadDID_sheet.cell(row=i + 1,column=4).value = BOM_sheet.cell(row=i + 2, column=7).value
-
-        for i in range(1,ReadDID_sheet.max_row+1):
-            if BOM_sheet.cell(row=i + 2, column=14).value == 'X':
-                ReadDID_sheet.cell(row=i + 1,column=6).value = BOM_sheet.cell(row=i + 2, column=9).value
-
-        ReadDID.save('Read DID.xlsx')
-        Read_Excel()
 # Import Bom from JIRA ECO
     def load_data_Jira_Eco():
+
+        Templete = load_workbook('Templete_VF6.xlsx')
+        Templete_sheet = Templete.get_sheet_by_name('ECU_DID')
+
+        count = 0
+        for i in range(1,11):
+            count += 1
+            tree.column("# "+ str(count), anchor=CENTER)
+            tree.heading("# "+ str(count), text=Templete_sheet.cell(row=1,column=i).value)
+            tree.pack(expand=True, fill='y')
+
+        # Insert the data in Treeview widget
+        ID = 0
+        for i in range(1,Templete_sheet.max_row+1):
+            if Templete_sheet.cell(row=i,column=11).value == 'X':
+                ID +=1
+                tree.insert('', 'end',iid =str(ID),values=(Templete_sheet.cell(row=i,column=1).value, Templete_sheet.cell(row=i,column=2).value,Templete_sheet.cell(row=i,column=3).value,"None",Templete_sheet.cell(row=i,column=5).value,"None","None","None","None",Templete_sheet.cell(row=i,column=10).value))
+                tree.pack()
+        
+        tree.update()
+        time.sleep(3)
+
         filetypes = (
             ('text files', '*.xlsx'),
             ('All files', '*.*')
@@ -1027,53 +978,90 @@ def VF6Window():
         except FileNotFoundError:
             tk.messagebox.showerror("Information", f"No such file as {filename}")
             return None
-
-        Wb_test = Workbook()
-        Wb_test.save("Read DID.xlsx")
-
-        sheet = Wb_test.active
-        sheet.title = "ECU_DID"
-        Wb_test.save("Read DID.xlsx")
-
-        Templete = load_workbook('Templete_VF6.xlsx')
-        Templete_sheet = Templete.get_sheet_by_name('ECU_DID')
-
-        ReadDID = load_workbook('Read DID.xlsx')
-        ReadDID_sheet = ReadDID.get_sheet_by_name('ECU_DID')
-
-        JIJA_BOM = load_workbook(filename,data_only= True)
-        JIJA_BOM_BOM_sheet = JIJA_BOM.get_sheet_by_name('Rich Filter Results')
-
-        for i in range(1, Templete_sheet.max_row+1):
-            for j in range(1, Templete_sheet.max_column+1):
-                ReadDID_sheet.cell(row=i, column=j).value = Templete_sheet.cell(row=i, column=j).value
         
-        for i in range(1,JIJA_BOM_BOM_sheet.max_row + 1):
-            if ( 'ECO' in JIJA_BOM_BOM_sheet.cell(row = i,column = 6).value) == True:
-                for j in range(1,ReadDID_sheet.max_row + 1):
-                    if ReadDID_sheet.cell(row = j,column = 10).value == 'X':
-                        if JIJA_BOM_BOM_sheet.cell(row = i,column = 5).value == ReadDID_sheet.cell(row = j,column = 13).value:
-                            if (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 8).value) == True:
-                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 8).value
-                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 9).value) == True:
-                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 9).value
-                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 10).value) == True:
-                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 10).value
-                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 11).value) == True:
-                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 11).value
-                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 12).value) == True:
-                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 12).value
-                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 13).value) == True:
-                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 13).value
-                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 14).value) == True:
-                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 14).value
-                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 15).value) == True:
-                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 15).value                            
+        BOM = load_workbook(filename,data_only= True)
+        BOM_sheet = BOM.get_sheet_by_name('Rich Filter Results')  
 
-        ReadDID.save('Read DID.xlsx')
-        Read_Excel()
+        for i in range(1,BOM_sheet.max_row + 1):
+            if ('ECO' in BOM_sheet.cell(row= i,column=6).value) == True:
+                for j in range(1,ID):
+                    if (BOM_sheet.cell(row= i,column=5).value in tree.item(str(j))["values"]) == True:
+                        if (tree.item(str(j))["values"][2] in BOM_sheet.cell(row= 1,column=8).value) == True:
+                            ImportData(tree.item(str(j))["values"][0],tree.item(str(j))["values"][1],tree.item(str(j))["values"][2],
+                                        BOM_sheet.cell(row= i,column=8).value[0:11],tree.item(str(j))["values"][4],BOM_sheet.cell(row= i,column=8).value[12:len(BOM_sheet.cell(row= i,column=8).value)],
+                                        tree.item(str(j))["values"][6],tree.item(str(j))["values"][7],tree.item(str(j))["values"][8],tree.item(str(j))["values"][9],str(j))
+                            
+                        if (tree.item(str(j))["values"][2] in BOM_sheet.cell(row= 1,column=9).value) == True:
+                            ImportData(tree.item(str(j))["values"][0],tree.item(str(j))["values"][1],tree.item(str(j))["values"][2],
+                                        BOM_sheet.cell(row= i,column=9).value[0:11],tree.item(str(j))["values"][4],BOM_sheet.cell(row= i,column=9).value[12:len(BOM_sheet.cell(row= i,column=9).value)],
+                                        tree.item(str(j))["values"][6],tree.item(str(j))["values"][7],tree.item(str(j))["values"][8],tree.item(str(j))["values"][9],str(j))
+                            
+                        if (tree.item(str(j))["values"][2] in BOM_sheet.cell(row= 1,column=10).value) == True:
+                            ImportData(tree.item(str(j))["values"][0],tree.item(str(j))["values"][1],tree.item(str(j))["values"][2],
+                                        BOM_sheet.cell(row= i,column=10).value[0:11],tree.item(str(j))["values"][4],BOM_sheet.cell(row= i,column=10).value[12:len(BOM_sheet.cell(row= i,column=10).value)],
+                                        tree.item(str(j))["values"][6],tree.item(str(j))["values"][7],tree.item(str(j))["values"][8],tree.item(str(j))["values"][9],str(j))
+                            
+                        if (tree.item(str(j))["values"][2] in BOM_sheet.cell(row= 1,column=11).value) == True:
+                            ImportData(tree.item(str(j))["values"][0],tree.item(str(j))["values"][1],tree.item(str(j))["values"][2],
+                                        BOM_sheet.cell(row= i,column=11).value[0:11],tree.item(str(j))["values"][4],BOM_sheet.cell(row= i,column=11).value[12:len(BOM_sheet.cell(row= i,column=11).value)],
+                                        tree.item(str(j))["values"][6],tree.item(str(j))["values"][7],tree.item(str(j))["values"][8],tree.item(str(j))["values"][9],str(j))
+                            
+                        if (tree.item(str(j))["values"][2] in BOM_sheet.cell(row= 1,column=12).value) == True:
+                            ImportData(tree.item(str(j))["values"][0],tree.item(str(j))["values"][1],tree.item(str(j))["values"][2],
+                                        BOM_sheet.cell(row= i,column=12).value[0:11],tree.item(str(j))["values"][4],BOM_sheet.cell(row= i,column=12).value[12:len(BOM_sheet.cell(row= i,column=12).value)],
+                                        tree.item(str(j))["values"][6],tree.item(str(j))["values"][7],tree.item(str(j))["values"][8],tree.item(str(j))["values"][9],str(j))
+                            
+                        if (tree.item(str(j))["values"][2] in BOM_sheet.cell(row= 1,column=13).value) == True:
+                            ImportData(tree.item(str(j))["values"][0],tree.item(str(j))["values"][1],tree.item(str(j))["values"][2],
+                                        BOM_sheet.cell(row= i,column=13).value[0:11],tree.item(str(j))["values"][4],BOM_sheet.cell(row= i,column=13).value[12:len(BOM_sheet.cell(row= i,column=13).value)],
+                                        tree.item(str(j))["values"][6],tree.item(str(j))["values"][7],tree.item(str(j))["values"][8],tree.item(str(j))["values"][9],str(j))
+                            
+                        if (tree.item(str(j))["values"][2] in BOM_sheet.cell(row= 1,column=14).value) == True:
+                            ImportData(tree.item(str(j))["values"][0],tree.item(str(j))["values"][1],tree.item(str(j))["values"][2],
+                                        BOM_sheet.cell(row= i,column=14).value[0:11],tree.item(str(j))["values"][4],BOM_sheet.cell(row= i,column=14).value[12:len(BOM_sheet.cell(row= i,column=14).value)],
+                                        tree.item(str(j))["values"][6],tree.item(str(j))["values"][7],tree.item(str(j))["values"][8],tree.item(str(j))["values"][9],str(j))
+                            
+                        if (tree.item(str(j))["values"][2] in BOM_sheet.cell(row= 1,column=15).value) == True:
+                            ImportData(tree.item(str(j))["values"][0],tree.item(str(j))["values"][1],tree.item(str(j))["values"][2],
+                                        BOM_sheet.cell(row= i,column=15).value[0:11],tree.item(str(j))["values"][4],BOM_sheet.cell(row= i,column=15).value[12:len(BOM_sheet.cell(row= i,column=15).value)],
+                                        tree.item(str(j))["values"][6],tree.item(str(j))["values"][7],tree.item(str(j))["values"][8],tree.item(str(j))["values"][9],str(j))
+    
+    def ImportData(ECU,PN_type,PN_DID,VF_DID,Rev_DID,VF_Rev,Real_PN_DID,Real_Rev_DID,Note,JIRA_ECU,iid):
+        tree.item(iid, values=(ECU, PN_type,PN_DID,VF_DID,Rev_DID,VF_Rev,Real_PN_DID,Real_Rev_DID,Note,JIRA_ECU))
+    def RealData(iid,Data,Type_Read):
+        if Type_Read == 1:
+            tree.item(iid, values=(tree.item(str(iid))["values"][0], tree.item(str(iid))["values"][1],tree.item(str(iid))["values"][2],tree.item(str(iid))["values"][3],tree.item(str(iid))["values"][4],tree.item(str(iid))["values"][5],Data,tree.item(str(iid))["values"][7],tree.item(str(iid))["values"][8],tree.item(str(iid))["values"][9]))
+        if Type_Read == 2:
+            tree.item(iid, values=(tree.item(str(iid))["values"][0], tree.item(str(iid))["values"][1],tree.item(str(iid))["values"][2],tree.item(str(iid))["values"][3],tree.item(str(iid))["values"][4],tree.item(str(iid))["values"][5],Data,tree.item(str(iid))["values"][7],tree.item(str(iid))["values"][8],tree.item(str(iid))["values"][9]))
+        if Type_Read == 4:
+            tree.item(iid, values=(tree.item(str(iid))["values"][0], tree.item(str(iid))["values"][1],tree.item(str(iid))["values"][2],tree.item(str(iid))["values"][3],tree.item(str(iid))["values"][4],tree.item(str(iid))["values"][5],Data,tree.item(str(iid))["values"][7],tree.item(str(iid))["values"][8],tree.item(str(iid))["values"][9]))
+        elif Type_Read == 3:
+            tree.item(iid, values=(tree.item(str(iid))["values"][0], tree.item(str(iid))["values"][1],tree.item(str(iid))["values"][2],tree.item(str(iid))["values"][3],tree.item(str(iid))["values"][4],tree.item(str(iid))["values"][5],tree.item(str(iid))["values"][6],Data,tree.item(str(iid))["values"][8],tree.item(str(iid))["values"][9]))
+        tree.update()
 # Import Bom from JIRA Plus
     def load_data_Jira_Plus():
+
+        Templete = load_workbook('Templete_VF6.xlsx')
+        Templete_sheet = Templete.get_sheet_by_name('ECU_DID')
+
+        count = 0
+        for i in range(1,11):
+            count += 1
+            tree.column("# "+ str(count), anchor=CENTER)
+            tree.heading("# "+ str(count), text=Templete_sheet.cell(row=1,column=i).value)
+            tree.pack(expand=True, fill='y')
+
+        # Insert the data in Treeview widget
+        ID = 0
+        for i in range(1,Templete_sheet.max_row+1):
+            if Templete_sheet.cell(row=i,column=12).value == 'X':
+                ID +=1
+                tree.insert('', 'end',iid =str(ID),values=(Templete_sheet.cell(row=i,column=1).value, Templete_sheet.cell(row=i,column=2).value,Templete_sheet.cell(row=i,column=3).value,"None",Templete_sheet.cell(row=i,column=5).value,"None","None","None","None",Templete_sheet.cell(row=i,column=10).value))
+                tree.pack()
+        
+        tree.update()
+        time.sleep(3)
+
         filetypes = (
             ('text files', '*.xlsx'),
             ('All files', '*.*')
@@ -1088,70 +1076,59 @@ def VF6Window():
         )
         try:
             tk.messagebox.showerror("Information", "The file you have chosen is valid")
-
         except ValueError:
             tk.messagebox.showerror("Information", "The file you have chosen is invalid")
             return None
         except FileNotFoundError:
             tk.messagebox.showerror("Information", f"No such file as {filename}")
             return None
-
-        Wb_test = Workbook()
-
-        sheet = Wb_test.active
-        sheet.title = "ECU_DID"
-        Wb_test.save("Read DID.xlsx")
-
-        Templete = load_workbook('Templete_VF6.xlsx')
-        Templete_sheet = Templete.get_sheet_by_name('ECU_DID')
-
-        ReadDID = load_workbook('Read DID.xlsx')
-        ReadDID_sheet = ReadDID.get_sheet_by_name('ECU_DID')
-
-        JIJA_BOM = load_workbook(filename,data_only= True)
-        JIJA_BOM_BOM_sheet = JIJA_BOM.get_sheet_by_name('Rich Filter Results')
-
-        for i in range(1, Templete_sheet.max_row+1):
-            for j in range(1, Templete_sheet.max_column+1):
-                ReadDID_sheet.cell(row=i, column=j).value = Templete_sheet.cell(row=i, column=j).value
         
-        for i in range(1,JIJA_BOM_BOM_sheet.max_row + 1):
-            if ( 'PLUS' in JIJA_BOM_BOM_sheet.cell(row = i,column = 6).value) == True:
-                for j in range(1,ReadDID_sheet.max_row + 1):
-                    if ReadDID_sheet.cell(row = j,column = 11).value == 'X':
-                        if JIJA_BOM_BOM_sheet.cell(row = i,column = 5).value == ReadDID_sheet.cell(row = j,column = 13).value:
-                            if (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 8).value) == True:
-                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 8).value
-                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 9).value) == True:
-                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 9).value
-                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 10).value) == True:
-                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 10).value
-                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 11).value) == True:
-                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 11).value
-                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 12).value) == True:
-                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 12).value
-                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 13).value) == True:
-                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 13).value
-                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 14).value) == True:
-                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 14).value
-                            elif (ReadDID_sheet.cell(row = j,column = 3).value in JIJA_BOM_BOM_sheet.cell(row = 1,column = 15).value) == True:
-                                ReadDID_sheet.cell(row = j,column = 12).value = JIJA_BOM_BOM_sheet.cell(row = i,column = 15).value                            
+        BOM = load_workbook(filename,data_only= True)
+        BOM_sheet = BOM.get_sheet_by_name('Rich Filter Results')  
 
-        ReadDID.save('Read DID.xlsx')
-        Read_Excel()
-# Load file excel= ====================================================================
-    def Read_Excel():
-        clear_data()
-        ReadDID = load_workbook('Read DID.xlsx',data_only=True)
-        ReadDID_sheet = ReadDID.get_sheet_by_name('ECU_DID')
-        list_values = list(ReadDID_sheet.values)
-        
-        for value_tuple in list_values[1:]:
-            tv1.insert('',tkinter.END, values=value_tuple)
-# Clear file excel=====================================================================    
-    def clear_data():
-        tv1.delete(*tv1.get_children())
-        return None
+        for i in range(1,BOM_sheet.max_row + 1):
+            if ('PLUS' in BOM_sheet.cell(row= i,column=6).value) == True:
+                for j in range(1,ID):
+                    if (BOM_sheet.cell(row= i,column=5).value in tree.item(str(j))["values"]) == True:
+                        if (tree.item(str(j))["values"][2] in BOM_sheet.cell(row= 1,column=8).value) == True:
+                            ImportData(tree.item(str(j))["values"][0],tree.item(str(j))["values"][1],tree.item(str(j))["values"][2],
+                                        BOM_sheet.cell(row= i,column=8).value[0:11],tree.item(str(j))["values"][4],BOM_sheet.cell(row= i,column=8).value[12:len(BOM_sheet.cell(row= i,column=8).value)],
+                                        tree.item(str(j))["values"][6],tree.item(str(j))["values"][7],tree.item(str(j))["values"][8],tree.item(str(j))["values"][9],str(j))
+                            
+                        if (tree.item(str(j))["values"][2] in BOM_sheet.cell(row= 1,column=9).value) == True:
+                            ImportData(tree.item(str(j))["values"][0],tree.item(str(j))["values"][1],tree.item(str(j))["values"][2],
+                                        BOM_sheet.cell(row= i,column=9).value[0:11],tree.item(str(j))["values"][4],BOM_sheet.cell(row= i,column=9).value[12:len(BOM_sheet.cell(row= i,column=9).value)],
+                                        tree.item(str(j))["values"][6],tree.item(str(j))["values"][7],tree.item(str(j))["values"][8],tree.item(str(j))["values"][9],str(j))
+                            
+                        if (tree.item(str(j))["values"][2] in BOM_sheet.cell(row= 1,column=10).value) == True:
+                            ImportData(tree.item(str(j))["values"][0],tree.item(str(j))["values"][1],tree.item(str(j))["values"][2],
+                                        BOM_sheet.cell(row= i,column=10).value[0:11],tree.item(str(j))["values"][4],BOM_sheet.cell(row= i,column=10).value[12:len(BOM_sheet.cell(row= i,column=10).value)],
+                                        tree.item(str(j))["values"][6],tree.item(str(j))["values"][7],tree.item(str(j))["values"][8],tree.item(str(j))["values"][9],str(j))
+                            
+                        if (tree.item(str(j))["values"][2] in BOM_sheet.cell(row= 1,column=11).value) == True:
+                            ImportData(tree.item(str(j))["values"][0],tree.item(str(j))["values"][1],tree.item(str(j))["values"][2],
+                                        BOM_sheet.cell(row= i,column=11).value[0:11],tree.item(str(j))["values"][4],BOM_sheet.cell(row= i,column=11).value[12:len(BOM_sheet.cell(row= i,column=11).value)],
+                                        tree.item(str(j))["values"][6],tree.item(str(j))["values"][7],tree.item(str(j))["values"][8],tree.item(str(j))["values"][9],str(j))
+                            
+                        if (tree.item(str(j))["values"][2] in BOM_sheet.cell(row= 1,column=12).value) == True:
+                            ImportData(tree.item(str(j))["values"][0],tree.item(str(j))["values"][1],tree.item(str(j))["values"][2],
+                                        BOM_sheet.cell(row= i,column=12).value[0:11],tree.item(str(j))["values"][4],BOM_sheet.cell(row= i,column=12).value[12:len(BOM_sheet.cell(row= i,column=12).value)],
+                                        tree.item(str(j))["values"][6],tree.item(str(j))["values"][7],tree.item(str(j))["values"][8],tree.item(str(j))["values"][9],str(j))
+                            
+                        if (tree.item(str(j))["values"][2] in BOM_sheet.cell(row= 1,column=13).value) == True:
+                            ImportData(tree.item(str(j))["values"][0],tree.item(str(j))["values"][1],tree.item(str(j))["values"][2],
+                                        BOM_sheet.cell(row= i,column=13).value[0:11],tree.item(str(j))["values"][4],BOM_sheet.cell(row= i,column=13).value[12:len(BOM_sheet.cell(row= i,column=13).value)],
+                                        tree.item(str(j))["values"][6],tree.item(str(j))["values"][7],tree.item(str(j))["values"][8],tree.item(str(j))["values"][9],str(j))
+                            
+                        if (tree.item(str(j))["values"][2] in BOM_sheet.cell(row= 1,column=14).value) == True:
+                            ImportData(tree.item(str(j))["values"][0],tree.item(str(j))["values"][1],tree.item(str(j))["values"][2],
+                                        BOM_sheet.cell(row= i,column=14).value[0:11],tree.item(str(j))["values"][4],BOM_sheet.cell(row= i,column=14).value[12:len(BOM_sheet.cell(row= i,column=14).value)],
+                                        tree.item(str(j))["values"][6],tree.item(str(j))["values"][7],tree.item(str(j))["values"][8],tree.item(str(j))["values"][9],str(j))
+                            
+                        if (tree.item(str(j))["values"][2] in BOM_sheet.cell(row= 1,column=15).value) == True:
+                            ImportData(tree.item(str(j))["values"][0],tree.item(str(j))["values"][1],tree.item(str(j))["values"][2],
+                                        BOM_sheet.cell(row= i,column=15).value[0:11],tree.item(str(j))["values"][4],BOM_sheet.cell(row= i,column=15).value[12:len(BOM_sheet.cell(row= i,column=15).value)],
+                                        tree.item(str(j))["values"][6],tree.item(str(j))["values"][7],tree.item(str(j))["values"][8],tree.item(str(j))["values"][9],str(j))
 
 #Load templete file bom
     menubar1 = Menu(VF6) 
