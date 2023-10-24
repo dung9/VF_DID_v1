@@ -386,8 +386,8 @@ def SRR_FL_READ_DID():
     ECU_Text('SRR_FL',None,1,None)
     ECU_Req_INFOR(SRR_FL_DiagRq_HW,SRR_FL_DiagRq,HW,0x635,'SRR_FL','HardWare',0,'SRR_FLF191')
     ECU_Req_INFOR(SRR_FL_DiagRq_HW_Rv,SRR_FL_DiagRq,HW_rv,0x635,'SRR_FL','Hardware_Rev',0,'SRR_FLF191')
-    ECU_Req_INFOR(SRR_FL_DiagRq_SW,SRR_FL_DiagRq,SW,0x635,'SRR_FL','Software',0,'SRR_FLF199')
-    ECU_Req_INFOR(SRR_FL_DiagRq_SW_Rv,SRR_FL_DiagRq,HW_rv,0x635,'SRR_FL','Software_Rev',0,'SRR_FLF199')
+    ECU_Req_INFOR(SRR_FL_DiagRq_SW,SRR_FL_DiagRq,SW,0x635,'SRR_FL','Software',0,'SRR_FLF188')
+    ECU_Req_INFOR(SRR_FL_DiagRq_SW_Rv,SRR_FL_DiagRq,HW_rv,0x635,'SRR_FL','Software_Rev',0,'SRR_FLF188')
     ECU_Req_INFOR(SRR_FL_DiagRq_Bootloader,SRR_FL_DiagRq,bl,0x635,'SRR_FL','Bootloader',0,'SRR_FLF101')
     bus.shutdown
 #=============================Read DIDSRR_FR================================
@@ -404,8 +404,8 @@ def SRR_RL_READ_DID():
     ECU_Text('SRR_RL',None,1,None)
     ECU_Req_INFOR(SRR_RL_DiagRq_HW,SRR_RL_DiagRq,HW,0x637,'SRR_RL','HardWare',0,'SRR_RLF191')
     ECU_Req_INFOR(SRR_RL_DiagRq_HW_Rv,SRR_RL_DiagRq,HW_rv,0x637,'SRR_RL','Hardware_Rev',0,'SRR_RLF191')
-    ECU_Req_INFOR(SRR_RL_DiagRq_SW,SRR_RL_DiagRq,SW,0x637,'SRR_RL','Software',0,'SRR_RLF181')
-    ECU_Req_INFOR(SRR_RL_DiagRq_SW_Rv,SRR_RL_DiagRq,HW_rv,0x637,'SRR_RL','Software_Rev',0,'SRR_RLF181')
+    ECU_Req_INFOR(SRR_RL_DiagRq_SW,SRR_RL_DiagRq,SW,0x637,'SRR_RL','Software',0,'SRR_RLF188')
+    ECU_Req_INFOR(SRR_RL_DiagRq_SW_Rv,SRR_RL_DiagRq,HW_rv,0x637,'SRR_RL','Software_Rev',0,'SRR_RLF188')
     ECU_Req_INFOR(SRR_RL_DiagRq_Bootloader,SRR_RL_DiagRq,bl,0x637,'SRR_RL','Bootloader',0,'SRR_RLF101')
     bus.shutdown
 #=============================Read DIDSRR_RR================================
@@ -567,6 +567,37 @@ def VF6Window():
     sb.config(command=text_box.yview)
 
     Terminal_frame.pack(expand=True)  
+    ALL_Status.set(0)
+    VCU_Status.set(0)
+    DCDC_Status.set(0)
+    POD_Status.set(0)
+    OBC_Status.set(0)
+    EDS_Status.set(0)
+    BMS_Status.set(0)
+    GS_Status.set(0)
+    IDB_Status.set(0)
+    RCU_Status.set(0)
+    EPS_Status.set(0)
+    ACM_Status.set(0)
+    BCM_Status.set(0)
+    BCM_BPM_Status.set(0)
+    CCU1_Status.set(0)
+    XGW_Status.set(0)
+    APM_Status.set(0)
+    SHVU_F_Status.set(0)
+    SHVU_R_Status.set(0)
+    OCS_Status.set(0)
+    MHU_Status.set(0)
+    HUD_Status.set(0)
+    AVAS_Status.set(0)
+    AP_ECU_Status.set(0)
+    FCAM_Status.set(0)
+    MCR_FL_RADAR_Status.set(0)
+    MCR_FR_RADAR_Status.set(0)
+    MCR_RR_RADAR_Status.set(0)
+    MCR_RL_RADAR_Status.set(0)
+    MFR1_RADAR_Status.set(0)  
+
     def Click_Select():
         if ALL_Status.get() == 1:
             VCU_Status.set(1)
@@ -585,11 +616,11 @@ def VF6Window():
             CCU1_Status.set(1)
             XGW_Status.set(1)
             APM_Status.set(1)
-            SHVU_F_Status.set(1)
-            SHVU_R_Status.set(1)
+            SHVU_F_Status.set(BOM_Status)
+            SHVU_R_Status.set(BOM_Status)
             OCS_Status.set(1)
             MHU_Status.set(1)
-            HUD_Status.set(1)
+            HUD_Status.set(BOM_Status)
             AVAS_Status.set(1)
             AP_ECU_Status.set(1)
             FCAM_Status.set(1)
@@ -713,7 +744,7 @@ def VF6Window():
     MCR_RR = tk.Checkbutton(scrollbar, text='MCR_RR', bg='white', anchor='w',variable= MCR_RR_RADAR_Status,onvalue=1, offvalue=0)
     scrollbar.window_create('end', window=MCR_RR)
     scrollbar.insert('end', '\n')
-    MCR_RL = tk.Checkbutton(scrollbar, text='MCR_LL', bg='white', anchor='w',variable= MCR_RL_RADAR_Status,onvalue=1, offvalue=0)
+    MCR_RL = tk.Checkbutton(scrollbar, text='MCR_RL', bg='white', anchor='w',variable= MCR_RL_RADAR_Status,onvalue=1, offvalue=0)
     scrollbar.window_create('end', window=MCR_RL)
     scrollbar.insert('end', '\n')
     MFR = tk.Checkbutton(scrollbar, text='MFR', bg='white', anchor='w',variable= MFR1_RADAR_Status,onvalue=1, offvalue=0)
@@ -766,8 +797,10 @@ def VF6Window():
             HUD_READ_DID()
         if AVAS_Status.get() == 1:          
             AVAS_READ_DID()
-        if FCAM_Status.get() == 1:          
+        if AP_ECU_Status.get() == 1:          
             PAS_READ_DID()
+        if FCAM_Status.get() == 1:          
+            FCAM_READ_DID()
         if MCR_FL_RADAR_Status.get() == 1:          
             SRR_FL_READ_DID()
         if MCR_FR_RADAR_Status.get() == 1:          
@@ -923,8 +956,8 @@ def VF6Window():
 
 # Import Bom from JIRA ECO
     def load_data_Jira_Eco():
-        global BOM
-        BOM = 'EC0'
+        global BOM_Status
+        BOM_Status = 0
         global ECU_LIST 
         ECU_LIST = [0 for i in range(200)] 
         Templete = load_workbook('Templete_VF6.xlsx')
@@ -1030,14 +1063,16 @@ def VF6Window():
             tree.item(iid, values=(tree.item(str(iid))["values"][0], tree.item(str(iid))["values"][1],tree.item(str(iid))["values"][2],tree.item(str(iid))["values"][3],tree.item(str(iid))["values"][4],tree.item(str(iid))["values"][5],tree.item(str(iid))["values"][6],Data,tree.item(str(iid))["values"][8],tree.item(str(iid))["values"][9]))
         if (str(tree.item(str(iid))["values"][6]) in str(tree.item(str(iid))["values"][3])) == False or (str(tree.item(str(iid))["values"][5]) in str(tree.item(str(iid))["values"][7])) == False:
             tree.tag_configure(iid, background='yellow',foreground="black")
+        elif (str(tree.item(str(iid))["values"][6]) in str(tree.item(str(iid))["values"][3])) == True and (str(tree.item(str(iid))["values"][5]) in str(tree.item(str(iid))["values"][7])) == True:
+            tree.tag_configure(iid, background='white',foreground="black")
 
         tree.update()
 # Import Bom from JIRA Plus
     def load_data_Jira_Plus():
         global ECU_LIST 
         ECU_LIST = [0 for i in range(200)] 
-        global BOM
-        BOM = 'PLUS'
+        global BOM_Status
+        BOM_Status = 1
         Templete = load_workbook('Templete_VF6.xlsx')
         Templete_sheet = Templete.get_sheet_by_name('ECU_DID')
 
@@ -1147,8 +1182,8 @@ def VF6Window():
 
     Export = Menu(menubar1, tearoff = 0) 
     menubar1.add_cascade(label ='Export', menu = Export) 
-    RUN.add_separator() 
-    RUN.add_command(label ='Export', command = RUN_Read)   
+    Export.add_separator() 
+    Export.add_command(label ='Export', command = None)   
 
     VF6.config(menu = menubar1) 
 #====================================VF7 Window============================================		
