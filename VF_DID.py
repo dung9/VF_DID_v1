@@ -527,7 +527,7 @@ def ConfigWindow():
     def Connect_can5():
         global bus
         try:
-            bus = can.interface.Bus(bustype='vector', app_name='VINFAST', channel= 3, bitrate=500000)
+            bus = can.interface.Bus(bustype='vector', app_name='VINFAST', channel= 4, bitrate=500000)
             Connect5.config(image=Connect)
             print('Connect with can box is done')
         except can.CanError:
@@ -1165,13 +1165,13 @@ def VF6Window():
         ECU_LIST = [0 for i in range(200)] 
         Templete = load_workbook('Templete_VF6.xlsx')
         Templete_sheet = Templete.get_sheet_by_name('ECU_DID')
-
+        clear()
         count = 0
         for i in range(1,11):
             count += 1
             tree.column("# "+ str(count), anchor=CENTER)
             tree.heading("# "+ str(count), text=Templete_sheet.cell(row=1,column=i).value)
-            tree.pack(expand=True, fill='y')
+            tree.pack(expand=True, fill='both')
 
         # Insert the data in Treeview widget
         ID = 0
@@ -1270,6 +1270,9 @@ def VF6Window():
             tree.tag_configure(iid, background='white',foreground="black")
 
         tree.update()
+
+    def clear():
+        tree.delete(*tree.get_children())
 # Import Bom from JIRA Plus
     def load_data_Jira_Plus():
         global ECU_LIST 
@@ -1371,17 +1374,23 @@ def VF6Window():
     menubar1 = Menu(VF6) 
     file = Menu(menubar1, tearoff = 0) 
     menubar1.add_cascade(label ='Import', menu = file) 
-    file.add_separator()     
-    file.add_command(label ='BOM VSR ECO', command = load_data_VSR_Eco)
-    file.add_command(label ='BOM VSR PLUS', command = load_data_VSR_Plus)    
-    file.add_command(label ='BOM JIRA ECO', command = load_data_Jira_Eco)
-    file.add_command(label ='BOM JIRA PLUS', command = load_data_Jira_Plus)
+    file.add_separator()  
+
+    VSR_menu = Menu(Model, tearoff=0)
+    VSR_menu.add_command(label='ECO',command=load_data_VSR_Eco)
+    VSR_menu.add_command(label='PLUS',command = load_data_VSR_Plus)
+    file.add_cascade(label ='BOM VSR',menu=VSR_menu)
+
+    JIRA_menu = Menu(Model, tearoff=0)
+    JIRA_menu.add_command(label='ECO',command=load_data_Jira_Eco)
+    JIRA_menu.add_command(label='PLUS',command = load_data_Jira_Plus)
+    file.add_cascade(label ='BOM JIRA',menu=JIRA_menu)
 
 # Adding Help Menu 
     RUN = Menu(menubar1, tearoff = 0) 
     menubar1.add_cascade(label ='RUN', menu = RUN) 
     RUN.add_separator() 
-    RUN.add_command(label ='RUN', command = RUN_Read)    
+    RUN.add_command(label ='RUN', command = RUN_Read)
 
     Export = Menu(menubar1, tearoff = 0) 
     menubar1.add_cascade(label ='Export', menu = Export) 
@@ -1421,15 +1430,21 @@ file.add_command(label ='Hardware Congfig', command = ConfigWindow)
 file.add_command(label ='Exit', command = root.destroy) 
   
 # Adding Edit Menu and commands 
-edit = Menu(menubar, tearoff = 0) 
-menubar.add_cascade(label ='Model', menu = edit) 
-edit.add_separator() 
-edit.add_command(label ='VF3', command = VF3Window) 
-edit.add_command(label ='VF5', command = VF5Window)
-edit.add_command(label ='VF6', command = VF6Window) 
-edit.add_command(label ='VF7', command = VF7Window) 
-edit.add_command(label ='VF8', command = VF8Window) 
-edit.add_command(label ='VF9', command = VF9Window) 
+Model = Menu(menubar, tearoff = 0) 
+menubar.add_cascade(label ='Model', menu = Model) 
+Model.add_separator() 
+Model.add_command(label ='VF3', command = VF3Window) 
+Model.add_command(label ='VF5', command = VF5Window)
+
+# add a submenu
+sub_menu = Menu(Model, tearoff=0)
+sub_menu.add_command(label='Read DID',command=VF6Window)
+sub_menu.add_command(label='Read DTC')
+Model.add_cascade(label="VF6",menu=sub_menu)
+
+Model.add_command(label ='VF7', command = VF7Window) 
+Model.add_command(label ='VF8', command = VF8Window) 
+Model.add_command(label ='VF9', command = VF9Window) 
   
 # Adding Help Menu 
 help_ = Menu(menubar, tearoff = 0) 
