@@ -6,7 +6,6 @@ from tkinter.ttk import *
 import subprocess
 import cantools
 from tkinter import Tk, filedialog
-import numpy as np
 from openpyxl import load_workbook,Workbook  
 from tkinter import ttk
 from pathlib import Path
@@ -21,6 +20,7 @@ import openpyxl
 import pandas as pd
 from openpyxl.styles import Alignment
 from ReadDID import*
+from PIL import Image, ImageTk
 
 # creating tkinter window 
 root = Tk() 
@@ -32,13 +32,7 @@ HW = 1
 SW = 2
 HW_rv = 3
 bl = 4
-def Channel1():
-    try:
-        global bus 
-        bus = can.interface.Bus(bustype='vector', app_name='VINFAST', channel= 0, bitrate=500000)
-        print('Connect with can box is done')
-    except can.CanError:
-        print('Check can box is connect or not')
+
 # creating variable
 ALL_Status = IntVar()
 VCU_Status = IntVar()
@@ -92,6 +86,21 @@ def create_workbook(path):
     workbook = Workbook()
     workbook.save(path)
 #================================Select excel file==============================================
+def select_filexlsx():
+    filetypes = (
+        ('text files', '*.xlsx'),
+        ('All files', '*.*')
+    )
+    filename = fd.askopenfilename(
+        title='Open a file',
+        initialdir='/',
+        filetypes=filetypes)
+    showinfo(
+        title='Selected File',
+        message=filename
+    )
+    return filename
+#================================Select DBC file==============================================
 def select_filedbc():
     filetypes = (
         ('text files', '*.dbc'),
@@ -497,11 +506,215 @@ def ECU_Resp(message,readstate,ECU_ID,ECU,TypeRead,Header_Text,iid):
         ECU_Text(ECU,TypeRead,Header_Text,DID_Infor)
         RealData(iid,DID_Infor,readstate)
     time.sleep(0.5)
-def CongfigWindow():
+#====================================Config Window=========================================
+def ConfigWindow():     
     Config = Toplevel(root)
-    Config.title("Hardware Config DID")
-    Config.geometry("1200x500")     
-#====================================VF3 Window============================================		
+    Config.title("Config Harware")
+    Config.geometry("700x300")
+    Config.resizable(0, 0)
+    image =  Image.open("Disconnect.png")
+    image1 = Image.open("Connect.png")
+    image2 = Image.open("dots.png")
+    
+    # Resize the image using resize() method
+    resize_image = image.resize((20,20))
+    resize_image1 = image1.resize((20,20))
+    resize_image2 = image2.resize((20,20))
+
+    Disconnect = ImageTk.PhotoImage(resize_image)
+    Connect = ImageTk.PhotoImage(resize_image1) 
+    Dot3 = ImageTk.PhotoImage(resize_image2)
+    def Connect_can5():
+        global bus
+        try:
+            bus = can.interface.Bus(bustype='vector', app_name='VINFAST', channel= 4, bitrate=500000)
+            Connect5.config(image=Connect)
+            print('Connect with can box is done')
+        except can.CanError:
+            Connect5.config(image=Disconnect)
+            print('Check can box is connect or not')
+    def Infor():
+        filetypes = (
+            ('text files', '*.dbc'),
+            ('All files', '*.*')
+        )
+        filename = fd.askopenfilename(
+            title='Open a file',
+            initialdir='/',
+            filetypes=filetypes)
+        showinfo(
+            title='Selected File',
+            message=filename
+        )
+        db = cantools.database.load_file(filename)
+        Infor_DBC.config(text=filename)
+    def Body():
+        filetypes = (
+            ('text files', '*.dbc'),
+            ('All files', '*.*')
+        )
+        filename = fd.askopenfilename(
+            title='Open a file',
+            initialdir='/',
+            filetypes=filetypes)
+        showinfo(
+            title='Selected File',
+            message=filename
+        )
+        db = cantools.database.load_file(filename)
+        Body_DBC.config(text=filename)
+    def PT():
+        filetypes = (
+            ('text files', '*.dbc'),
+            ('All files', '*.*')
+        )
+        filename = fd.askopenfilename(
+            title='Open a file',
+            initialdir='/',
+            filetypes=filetypes)
+        showinfo(
+            title='Selected File',
+            message=filename
+        )
+        db = cantools.database.load_file(filename)
+        PT_DBC.config(text=filename)
+    def CH():
+        filetypes = (
+            ('text files', '*.dbc'),
+            ('All files', '*.*')
+        )
+        filename = fd.askopenfilename(
+            title='Open a file',
+            initialdir='/',
+            filetypes=filetypes)
+        showinfo(
+            title='Selected File',
+            message=filename
+        )
+        db = cantools.database.load_file(filename)
+        CH_DBC.config(text=filename)
+    def D():
+        filetypes = (
+            ('text files', '*.dbc'),
+            ('All files', '*.*')
+        )
+        filename = fd.askopenfilename(
+            title='Open a file',
+            initialdir='/',
+            filetypes=filetypes)
+        showinfo(
+            title='Selected File',
+            message=filename
+        )
+        db = cantools.database.load_file(filename)
+        D_DBC.config(text=filename)
+    def HV():
+        filetypes = (
+            ('text files', '*.dbc'),
+            ('All files', '*.*')
+        )
+        filename = fd.askopenfilename(
+            title='Open a file',
+            initialdir='/',
+            filetypes=filetypes)
+        showinfo(
+            title='Selected File',
+            message=filename
+        )
+        db = cantools.database.load_file(filename)
+        HV_DBC.config(text=filename)
+
+
+    Infor_Label= Label(Config, text= "Infor Database", font= ('Helvetica 15 underline'))
+    Infor_Label.place(relx = 0.01, rely = 0.1)
+    Infor_DBC= Label(Config,text='                                                     ', font= ('Helvetica 15 underline'),width= 30,foreground='black')
+    Infor_DBC.place(relx = 0.3, rely = 0.1)
+    Button1 = Button(Config,image=Dot3,command = Infor)
+    Button1.image = Dot3
+    Button1.place(relx = 0.8, rely = 0.1)
+    Infor_Can= Label(Config,text='CAN1', font= ('Helvetica 15 underline'))
+    Infor_Can.place(relx = 0.85, rely = 0.1)
+    Connect1 = Label(Config,image=Disconnect)
+    Connect1.image = Disconnect
+    Connect1.place(relx = 0.95, rely = 0.1)
+
+    Body_Label= Label(Config, text= "Body Database", font= ('Helvetica 15 underline'))
+    Body_Label.place(relx = 0.01, rely = 0.2)
+    Body_DBC= Label(Config,text='                                                       ', font= ('Helvetica 15 underline'),width= 30,foreground='black')
+    Body_DBC.place(relx = 0.3, rely = 0.2)
+    Button2 = Button(Config,image=Dot3,command = Body)
+    Button2.image = Dot3
+    Button2.place(relx = 0.8, rely = 0.2)
+    Body_Can= Label(Config,text='CAN2', font= ('Helvetica 15 underline'))
+    Body_Can.place(relx = 0.85, rely = 0.2)
+    Connect2 = Label(Config,image=Disconnect)
+    Connect2.image = Disconnect
+    Connect2.place(relx = 0.95, rely = 0.2)
+
+    PT_Label= Label(Config, text= "Powertrain Database", font= ('Helvetica 15 underline'))
+    PT_Label.place(relx = 0.01, rely = 0.3)
+    PT_DBC= Label(Config,text='                                                        ', font= ('Helvetica 15 underline'),width= 30,foreground='black')
+    PT_DBC.place(relx = 0.30, rely = 0.3)
+    Button3 = Button(Config,image=Dot3,command = PT)
+    Button3.image = Dot3
+    Button3.place(relx = 0.8, rely = 0.3)
+    PT_Can= Label(Config,text='CAN3', font= ('Helvetica 15 underline'))
+    PT_Can.place(relx = 0.85, rely = 0.3)
+    Connect3 = Label(Config,image=Disconnect)
+    Connect3.image = Disconnect
+    Connect3.place(relx = 0.95, rely = 0.3)
+
+    CH_Label= Label(Config, text= "Chassis Database", font= ('Helvetica 15 underline'))
+    CH_Label.place(relx = 0.01, rely = 0.4)
+    CH_DBC= Label(Config,text='                                                        ', font= ('Helvetica 15 underline'),width= 30,foreground='black')
+    CH_DBC.place(relx = 0.3, rely = 0.4)
+    Button4 = Button(Config,image=Dot3,command = CH)
+    Button4.image = Dot3
+    Button4.place(relx = 0.8, rely = 0.4)
+    CH_Can= Label(Config,text='CAN4', font= ('Helvetica 15 underline'))
+    CH_Can.place(relx = 0.85, rely = 0.4)
+    Connect4 = Label(Config,image=Disconnect)
+    Connect4.image = Disconnect
+    Connect4.place(relx = 0.95, rely = 0.4)
+
+    D_Label= Label(Config, text= "Diagnostic Database", font= ('Helvetica 15 underline'))
+    D_Label.place(relx = 0.01, rely = 0.5)
+    D_DBC= Label(Config,text='                                                         ', font= ('Helvetica 15 underline'),width= 30,foreground='black')
+    D_DBC.place(relx = 0.30, rely = 0.5)
+    Button5 = Button(Config,image=Dot3,command = D)
+    Button5.image = Dot3
+    Button5.place(relx = 0.8, rely = 0.5)
+    D_Can= Label(Config,text='CAN5', font= ('Helvetica 15 underline'))
+    D_Can.place(relx = 0.85, rely = 0.5)
+    Connect5 = Label(Config,image=Disconnect)
+    Connect5.image = Disconnect
+    Connect5.place(relx = 0.95, rely = 0.5)
+
+    HV_Label= Label(Config, text= "HV Can Database", font= ('Helvetica 15 underline'))
+    HV_Label.place(relx = 0.01, rely = 0.6)
+    HV_DBC= Label(Config,text='                                                         ', font= ('Helvetica 15 underline'),width= 30,foreground='black')
+    HV_DBC.place(relx = 0.30, rely = 0.6)
+    Button6 = Button(Config,image=Dot3,command = HV)
+    Button6.image = Dot3
+    Button6.place(relx = 0.8, rely = 0.6)
+    HV_Can= Label(Config,text='CAN6', font= ('Helvetica 15 underline'))
+    HV_Can.place(relx = 0.85, rely = 0.6)
+    Connect6 = Label(Config,image=Disconnect)
+    Connect6.image = Disconnect
+    Connect6.place(relx = 0.95, rely = 0.6)
+
+    def connect():
+        Connect1.config(image=Connect)
+        Connect2.config(image=Connect)
+        Connect3.config(image=Connect)
+        Connect4.config(image=Connect)
+        Connect_can5()
+        Connect6.config(image=Connect)
+
+
+    Channel_Connect = Button(Config,text= 'Connect',command=connect)
+    Channel_Connect.place(relx=0.45,rely=0.8)
+#====================================VF3 Window============================================
 def VF3Window():     
     VF3 = Toplevel(root)
     VF3.title("VF3 DID")
@@ -952,13 +1165,13 @@ def VF6Window():
         ECU_LIST = [0 for i in range(200)] 
         Templete = load_workbook('Templete_VF6.xlsx')
         Templete_sheet = Templete.get_sheet_by_name('ECU_DID')
-
+        clear()
         count = 0
         for i in range(1,11):
             count += 1
             tree.column("# "+ str(count), anchor=CENTER)
             tree.heading("# "+ str(count), text=Templete_sheet.cell(row=1,column=i).value)
-            tree.pack(expand=True, fill='y')
+            tree.pack(expand=True, fill='both')
 
         # Insert the data in Treeview widget
         ID = 0
@@ -1057,6 +1270,9 @@ def VF6Window():
             tree.tag_configure(iid, background='white',foreground="black")
 
         tree.update()
+
+    def clear():
+        tree.delete(*tree.get_children())
 # Import Bom from JIRA Plus
     def load_data_Jira_Plus():
         global ECU_LIST 
@@ -1153,27 +1369,35 @@ def VF6Window():
                             ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
                                         BOM_sheet.cell(row= i,column=15).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=15).value[12:len(BOM_sheet.cell(row= i,column=15).value)],
                                         tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
-
+    def Export_data():
+        path = Path('py.py').resolve()
+        print(path)
 #Load templete file bom
     menubar1 = Menu(VF6) 
     file = Menu(menubar1, tearoff = 0) 
     menubar1.add_cascade(label ='Import', menu = file) 
-    file.add_separator()     
-    file.add_command(label ='BOM VSR ECO', command = load_data_VSR_Eco)
-    file.add_command(label ='BOM VSR PLUS', command = load_data_VSR_Plus)    
-    file.add_command(label ='BOM JIRA ECO', command = load_data_Jira_Eco)
-    file.add_command(label ='BOM JIRA PLUS', command = load_data_Jira_Plus)
+    file.add_separator()  
+
+    VSR_menu = Menu(Model, tearoff=0)
+    VSR_menu.add_command(label='ECO',command=load_data_VSR_Eco)
+    VSR_menu.add_command(label='PLUS',command = load_data_VSR_Plus)
+    file.add_cascade(label ='BOM VSR',menu=VSR_menu)
+
+    JIRA_menu = Menu(Model, tearoff=0)
+    JIRA_menu.add_command(label='ECO',command=load_data_Jira_Eco)
+    JIRA_menu.add_command(label='PLUS',command = load_data_Jira_Plus)
+    file.add_cascade(label ='BOM JIRA',menu=JIRA_menu)
 
 # Adding Help Menu 
     RUN = Menu(menubar1, tearoff = 0) 
     menubar1.add_cascade(label ='RUN', menu = RUN) 
     RUN.add_separator() 
-    RUN.add_command(label ='RUN', command = RUN_Read)    
+    RUN.add_command(label ='RUN', command = RUN_Read)
 
     Export = Menu(menubar1, tearoff = 0) 
     menubar1.add_cascade(label ='Export', menu = Export) 
     Export.add_separator() 
-    Export.add_command(label ='Export', command = None)   
+    Export.add_command(label ='Export', command = Export_data)   
 
     VF6.config(menu = menubar1) 
 #====================================VF7 Window============================================		
@@ -1201,23 +1425,28 @@ def VF9Window():
 # Creating Menubar 
 menubar = Menu(root) 
 # Adding File Menu and commands 
-Config = Menu(menubar, tearoff = 0) 
-menubar.add_cascade(label ='Config', menu = Config) 
-Config.add_separator()
-Config.add_command(label ='Hardware Congfig', command = CongfigWindow) 
-Config.add_command(label ='Import DBC', command = OpenDBC) 
-Config.add_command(label ='Exit', command = root.destroy) 
+file = Menu(menubar, tearoff = 0) 
+menubar.add_cascade(label ='File', menu = file) 
+file.add_separator()
+file.add_command(label ='Hardware Congfig', command = ConfigWindow) 
+file.add_command(label ='Exit', command = root.destroy) 
   
 # Adding Edit Menu and commands 
-edit = Menu(menubar, tearoff = 0) 
-menubar.add_cascade(label ='Model', menu = edit) 
-edit.add_separator() 
-edit.add_command(label ='VF3', command = VF3Window) 
-edit.add_command(label ='VF5', command = VF5Window)
-edit.add_command(label ='VF6', command = VF6Window) 
-edit.add_command(label ='VF7', command = VF7Window) 
-edit.add_command(label ='VF8', command = VF8Window) 
-edit.add_command(label ='VF9', command = VF9Window) 
+Model = Menu(menubar, tearoff = 0) 
+menubar.add_cascade(label ='Model', menu = Model) 
+Model.add_separator() 
+Model.add_command(label ='VF3', command = VF3Window) 
+Model.add_command(label ='VF5', command = VF5Window)
+
+# add a submenu
+sub_menu = Menu(Model, tearoff=0)
+sub_menu.add_command(label='Read DID',command=VF6Window)
+sub_menu.add_command(label='Read DTC')
+Model.add_cascade(label="VF6",menu=sub_menu)
+
+Model.add_command(label ='VF7', command = VF7Window) 
+Model.add_command(label ='VF8', command = VF8Window) 
+Model.add_command(label ='VF9', command = VF9Window) 
   
 # Adding Help Menu 
 help_ = Menu(menubar, tearoff = 0) 
