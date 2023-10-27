@@ -466,12 +466,12 @@ def ECU_Resp_Data(readstate,ECU_ID,ECU,TypeRead,Header_Text,iid):
             if mess.data[0] == 33:
                 if readstate == 1:
                     print("EEP",hex(mess.data[1])[2:],hex(mess.data[2])[2:],hex(mess.data[3])[2:],hex(mess.data[4])[2:])
-                    DID_Infor = "EEP" + str(hex(mess.data[1])[2:2]) + str(hex(mess.data[2])[2:2]) + str(hex(mess.data[3])[2:2]) + str(hex(mess.data[4])[2:2])
+                    DID_Infor = "EEP" + str(hex(mess.data[1])[2:]).zfill(2) + str(hex(mess.data[2])[2:]).zfill(2) + str(hex(mess.data[3])[2:]).zfill(2) + str(hex(mess.data[4])[2:]).zfill(2)
                     ECU_Text(ECU,TypeRead,Header_Text,DID_Infor)
                     RealData(iid,DID_Infor,readstate)
                 if readstate == 2:
                     print("SOW",hex(mess.data[1])[2:],hex(mess.data[2])[2:],hex(mess.data[3])[2:],hex(mess.data[4])[2:])
-                    DID_Infor = "SOW" + str(hex(mess.data[1])[2:]) + str(hex(mess.data[2])[2:]) + str(hex(mess.data[3])[2:]) + str(hex(mess.data[4])[2:])
+                    DID_Infor = "SOW" + str(hex(mess.data[1])[2:]).zfill(2) + str(hex(mess.data[2])[2:]).zfill(2) + str(hex(mess.data[3])[2:]).zfill(2) + str(hex(mess.data[4])[2:]).zfill(2)
                     ECU_Text(ECU,TypeRead,Header_Text,DID_Infor)
                     RealData(iid,DID_Infor,readstate)
         else :
@@ -493,12 +493,12 @@ def ECU_Resp(message,readstate,ECU_ID,ECU,TypeRead,Header_Text,iid):
                         ECU_Req(message,readstate,ECU_ID,ECU,TypeRead,Header_Text,iid)                    
                     if  mess.data[0] == 4:
                         print("REV",hex(mess.data[4])[2:])
-                        DID_Infor = str(hex(mess.data[4])[2:])
+                        DID_Infor = str(hex(mess.data[4])[2:]).zfill(2)
                         ECU_Text(ECU,TypeRead,Header_Text,DID_Infor)
                         RealData(iid,DID_Infor,readstate)
                     if  mess.data[0] == 5:
                         print("Bld",hex(mess.data[4])[2:],hex(mess.data[5])[2:])
-                        DID_Infor = str(hex(mess.data[4])[2:]) + str(hex(mess.data[5])[2:])
+                        DID_Infor = str(hex(mess.data[4])[2:]).zfill(2) + str(hex(mess.data[5])[2:]).zfill(2)
                         ECU_Text(ECU,TypeRead,Header_Text,DID_Infor)
                         RealData(iid,DID_Infor,readstate)
         else:
@@ -531,7 +531,7 @@ def ConfigWindow():
     def Connect_can5():
         global bus
         try:
-            bus = can.interface.Bus(bustype='vector', app_name='VINFAST', channel= 4, bitrate=500000)
+            bus = can.interface.Bus(bustype='vector', app_name='VINFAST', channel= 1, bitrate=500000)
             Connect5.config(image=Connect)
             print('Connect with can box is done')
         except can.CanError:
@@ -1161,14 +1161,15 @@ def VF6Window_ECO():
         filetypes=[("csv file","*.csv")],       
         defaultextension=".csv")
         with open(file, 'w', newline='') as csvfile:
-                fieldnames = ['ECU Name', 'PN Type','VF PN','Rev Did','Rev','Real PN','Real Rev','Note',]
+                fieldnames = ['ECU Name', 'PN Type','PN DID','VF PN','Rev Did','Rev','Real PN','Real Rev','Note',]
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writeheader()
                 for i in range(1,ID):
                     writer.writerow({'ECU Name': tree.item(ECU_LIST[i])["values"][0], 'PN Type': tree.item(ECU_LIST[i])["values"][1],
-                                     'VF PN' : tree.item(ECU_LIST[i])["values"][2],'Rev Did' : tree.item(ECU_LIST[i])["values"][3],
-                                     'Rev' : tree.item(ECU_LIST[i])["values"][4],'Real PN' : tree.item(ECU_LIST[i])["values"][5],
-                                     'Real Rev' : tree.item(ECU_LIST[i])["values"][6],'Note' : tree.item(ECU_LIST[i])["values"][7]})
+                                     'PN Type': tree.item(ECU_LIST[i])["values"][2],'VF PN' : tree.item(ECU_LIST[i])["values"][3],
+                                     'Rev Did' : tree.item(ECU_LIST[i])["values"][4],'Rev' : tree.item(ECU_LIST[i])["values"][5],
+                                     'Real PN' : tree.item(ECU_LIST[i])["values"][6],'Real Rev' : tree.item(ECU_LIST[i])["values"][7],
+                                     'Note' : tree.item(ECU_LIST[i])["values"][8]})
 #Load templete file bom
     menubar1 = Menu(VF6) 
     file = Menu(menubar1, tearoff = 0) 
@@ -1642,6 +1643,20 @@ def VF6Window_PLUS():
                                         BOM_sheet.cell(row= i,column=15).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=15).value[12:len(BOM_sheet.cell(row= i,column=15).value)],
                                         tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
 
+#Export data 
+    def Export_data():
+        file = filedialog.asksaveasfilename(
+        filetypes=[("csv file","*.csv")],       
+        defaultextension=".csv")
+        with open(file, 'w', newline='') as csvfile:
+                fieldnames = ['ECU Name', 'PN Type','VF PN','Rev Did','Rev','Real PN','Real Rev','Note',]
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+                for i in range(1,ID):
+                    writer.writerow({'ECU Name': tree.item(ECU_LIST[i])["values"][0], 'PN Type': tree.item(ECU_LIST[i])["values"][1],
+                                     'VF PN' : tree.item(ECU_LIST[i])["values"][2],'Rev Did' : tree.item(ECU_LIST[i])["values"][3],
+                                     'Rev' : tree.item(ECU_LIST[i])["values"][4],'Real PN' : tree.item(ECU_LIST[i])["values"][5],
+                                     'Real Rev' : tree.item(ECU_LIST[i])["values"][6],'Note' : tree.item(ECU_LIST[i])["values"][7]})
 #Load templete file bom
     menubar1 = Menu(VF6) 
     file = Menu(menubar1, tearoff = 0) 
@@ -1659,7 +1674,7 @@ def VF6Window_PLUS():
     Export = Menu(menubar1, tearoff = 0) 
     menubar1.add_cascade(label ='Export', menu = Export) 
     Export.add_separator() 
-    Export.add_command(label ='Export', command = None)   
+    Export.add_command(label ='Export', command = Export_data)   
 
     VF6.config(menu = menubar1) 
 #====================================VF7 Window ECO============================================		
@@ -2094,6 +2109,21 @@ def VF7Window_ECO():
     def clear():
         tree.delete(*tree.get_children())
 
+#Export data 
+    def Export_data():
+        file = filedialog.asksaveasfilename(
+        filetypes=[("csv file","*.csv")],       
+        defaultextension=".csv")
+        with open(file, 'w', newline='') as csvfile:
+                fieldnames = ['ECU Name', 'PN Type','VF PN','Rev Did','Rev','Real PN','Real Rev','Note',]
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+                for i in range(1,ID):
+                    writer.writerow({'ECU Name': tree.item(ECU_LIST[i])["values"][0], 'PN Type': tree.item(ECU_LIST[i])["values"][1],
+                                     'VF PN' : tree.item(ECU_LIST[i])["values"][2],'Rev Did' : tree.item(ECU_LIST[i])["values"][3],
+                                     'Rev' : tree.item(ECU_LIST[i])["values"][4],'Real PN' : tree.item(ECU_LIST[i])["values"][5],
+                                     'Real Rev' : tree.item(ECU_LIST[i])["values"][6],'Note' : tree.item(ECU_LIST[i])["values"][7]})
+
 #Load templete file bom
     menubar1 = Menu(VF7) 
     file = Menu(menubar1, tearoff = 0) 
@@ -2112,7 +2142,7 @@ def VF7Window_ECO():
     Export = Menu(menubar1, tearoff = 0) 
     menubar1.add_cascade(label ='Export', menu = Export) 
     Export.add_separator() 
-    Export.add_command(label ='Export', command = None)   
+    Export.add_command(label ='Export', command = Export_data)   
 
     VF7.config(menu = menubar1) 
 #====================================VF6 Window PLUS============================================		
@@ -2521,6 +2551,20 @@ def VF7Window_PLUS():
 
     def clear():
         tree.delete(*tree.get_children())
+#Export data 
+    def Export_data():
+        file = filedialog.asksaveasfilename(
+        filetypes=[("csv file","*.csv")],       
+        defaultextension=".csv")
+        with open(file, 'w', newline='') as csvfile:
+                fieldnames = ['ECU Name', 'PN Type','VF PN','Rev Did','Rev','Real PN','Real Rev','Note',]
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+                for i in range(1,ID):
+                    writer.writerow({'ECU Name': tree.item(ECU_LIST[i])["values"][0], 'PN Type': tree.item(ECU_LIST[i])["values"][1],
+                                     'VF PN' : tree.item(ECU_LIST[i])["values"][2],'Rev Did' : tree.item(ECU_LIST[i])["values"][3],
+                                     'Rev' : tree.item(ECU_LIST[i])["values"][4],'Real PN' : tree.item(ECU_LIST[i])["values"][5],
+                                     'Real Rev' : tree.item(ECU_LIST[i])["values"][6],'Note' : tree.item(ECU_LIST[i])["values"][7]})
 # Import Bom from JIRA Plus
     def load_data_Jira_Plus():
         filetypes = (
@@ -2608,7 +2652,7 @@ def VF7Window_PLUS():
     Export = Menu(menubar1, tearoff = 0) 
     menubar1.add_cascade(label ='Export', menu = Export) 
     Export.add_separator() 
-    Export.add_command(label ='Export', command = None)   
+    Export.add_command(label ='Export', command = Export_data)   
 
     VF7.config(menu = menubar1) 
 #====================================VF8 Window============================================		
@@ -2639,7 +2683,7 @@ file.add_command(label ='Exit', command = root.destroy)
 Model = Menu(menubar, tearoff = 0) 
 menubar.add_cascade(label ='Model', menu = Model) 
 Model.add_separator() 
-Model.add_command(label ='VF3', command = VF3Window) 
+Model.add_command(label ='VF3', command = VF3Window)
 Model.add_command(label ='VF5', command = VF5Window)
 
 # add a submenu
