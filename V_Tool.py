@@ -1,4 +1,5 @@
 # importing only  those functions  
+import csv
 from tkinter import *
 from tkinter import PhotoImage
 import tkinter 
@@ -1154,7 +1155,20 @@ def VF6Window_ECO():
 
     def clear():
         tree.delete(*tree.get_children())
-
+#Export data 
+    def Export_data():
+        file = filedialog.asksaveasfilename(
+        filetypes=[("csv file","*.csv")],       
+        defaultextension=".csv")
+        with open(file, 'w', newline='') as csvfile:
+                fieldnames = ['ECU Name', 'PN Type','VF PN','Rev Did','Rev','Real PN','Real Rev','Note',]
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+                for i in range(1,ID):
+                    writer.writerow({'ECU Name': tree.item(ECU_LIST[i])["values"][0], 'PN Type': tree.item(ECU_LIST[i])["values"][1],
+                                     'VF PN' : tree.item(ECU_LIST[i])["values"][2],'Rev Did' : tree.item(ECU_LIST[i])["values"][3],
+                                     'Rev' : tree.item(ECU_LIST[i])["values"][4],'Real PN' : tree.item(ECU_LIST[i])["values"][5],
+                                     'Real Rev' : tree.item(ECU_LIST[i])["values"][6],'Note' : tree.item(ECU_LIST[i])["values"][7]})
 #Load templete file bom
     menubar1 = Menu(VF6) 
     file = Menu(menubar1, tearoff = 0) 
@@ -1173,7 +1187,7 @@ def VF6Window_ECO():
     Export = Menu(menubar1, tearoff = 0) 
     menubar1.add_cascade(label ='Export', menu = Export) 
     Export.add_separator() 
-    Export.add_command(label ='Export', command = None)   
+    Export.add_command(label ='Export', command = Export_data)   
 
     VF6.config(menu = menubar1) 
 #====================================VF6 Window PLUS============================================		
