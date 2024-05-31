@@ -8,6 +8,14 @@ HW_rv = 3
 bl = 4
 #===========================Init Can Message================================
 #=========================ACM===============================
+ACM_DiagRq__PU = can.Message(arbitration_id= 0x688,
+                is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 3, 255, 255, 255, 255],
+                  check = False)
+ACM_DiagRq_PU_Rv = can.Message(arbitration_id=0x688,
+                  is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 67, 255, 255, 255, 255],
+                  check = False)
 ACM_DiagRq_HW = can.Message(arbitration_id= 0x688,
                 is_extended_id= 0,
                   dlc= 8,data=[3, 34, 241, 145, 255, 255, 255, 255],
@@ -40,6 +48,72 @@ ACM_DiagRq = can.Message(arbitration_id= 0x688,
                   is_extended_id= 0,
                   dlc= 8,data=[48, 0, 20, 255, 255, 255, 255, 255],
                   check = False)
+#=========================ACM===============================
+ABS_DiagRq_HW = can.Message(arbitration_id= 0x6A9,
+                is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 145, 255, 255, 255, 255],
+                  check = False)
+ABS_DiagRq_HW_Rv = can.Message(arbitration_id=0x6A9,
+                  is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 65, 255, 255, 255, 255],
+                  check = False)
+ABS_DiagRq_SW = can.Message(arbitration_id= 0x6A9,
+                  is_extended_id= 0,
+                 dlc= 8,data=[3, 34, 241, 136, 255, 255, 255, 255],
+                 check = False)
+ABS_DiagRq_SW_Rv = can.Message(arbitration_id= 0x6A9,
+                  is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 72, 255, 255, 255, 255],
+                  check = False)
+ABS_DiagRq_CAL = can.Message(arbitration_id= 0x6A9,
+                  is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 2, 255, 255, 255, 255],
+                  check = False)
+ABS_DiagRq_CAL_Rev = can.Message(arbitration_id= 0x6A9,
+                  is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 66, 255, 255, 255, 255],
+                  check = False)
+ABS_DiagRq_Bootloader = can.Message(arbitration_id= 0x6A9,
+                  is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 1, 255, 255, 255, 255],
+                  check = False)
+ABS_DiagRq = can.Message(arbitration_id= 0x6A9,
+                  is_extended_id= 0,
+                  dlc= 8,data=[48, 0, 20, 255, 255, 255, 255, 255],
+                  check = False)
+#=========================EAC===============================
+EAC_DiagRq_PU = can.Message(arbitration_id= 0x6F5,
+                is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 3, 255, 255, 255, 255],
+                  check = False)
+EAC_DiagRq_PU_Rv = can.Message(arbitration_id=0x6F5,
+                  is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 67, 255, 255, 255, 255],
+                  check = False)
+EAC_DiagRq_HW = can.Message(arbitration_id= 0x6F5,
+                is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 145, 255, 255, 255, 255],
+                  check = False)
+EAC_DiagRq_HW_Rv = can.Message(arbitration_id=0x6F5,
+                  is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 65, 255, 255, 255, 255],
+                  check = False)
+EAC_DiagRq_SW = can.Message(arbitration_id= 0x6F5,
+                  is_extended_id= 0,
+                 dlc= 8,data=[3, 34, 241, 136, 255, 255, 255, 255],
+                 check = False)
+EAC_DiagRq_SW_Rv = can.Message(arbitration_id= 0x6F5,
+                  is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 72, 255, 255, 255, 255],
+                  check = False)
+EAC_DiagRq_Bootloader = can.Message(arbitration_id= 0x6F5,
+                  is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 1, 255, 255, 255, 255],
+                  check = False)
+EAC_DiagRq = can.Message(arbitration_id= 0x6F5,
+                  is_extended_id= 0,
+                  dlc= 8,data=[48, 0, 20, 255, 255, 255, 255, 255],
+                  check = False)
 #=========================APM===============================
 APM_DiagRq_HW = can.Message(arbitration_id= 0x6C1,
                 is_extended_id= 0,
@@ -66,6 +140,14 @@ APM_DiagRq = can.Message(arbitration_id= 0x6C1,
                   dlc= 8,data=[48, 0, 20, 255, 255, 255, 255, 255],
                   check = False)
 #=========================AVAS===============================
+AVAS_DiagRq_PU = can.Message(arbitration_id= 0x6AA,
+                is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 3, 255, 255, 255, 255],
+                  check = False)
+AVAS_DiagRq_PU_Rv = can.Message(arbitration_id=0x6AA,
+                  is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 67, 255, 255, 255, 255],
+                  check = False)
 AVAS_DiagRq_HW = can.Message(arbitration_id= 0x6AA,
                 is_extended_id= 0,
                   dlc= 8,data=[3, 34, 241, 145, 255, 255, 255, 255],
@@ -116,6 +198,14 @@ BAS_DiagRq = can.Message(arbitration_id= 0x6D8,
                   dlc= 8,data=[48, 0, 20, 255, 255, 255, 255, 255],
                   check = False)
 #=========================BCM_BPM===============================
+BCM_BPM_DiagRq_PU = can.Message(arbitration_id= 0x6FB,
+                is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 3, 255, 255, 255, 255],
+                  check = False)
+BCM_BPM_DiagRq_PU_Rv = can.Message(arbitration_id=0x6FB,
+                  is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 67, 255, 255, 255, 255],
+                  check = False)
 BCM_BPM_DiagRq_HW = can.Message(arbitration_id= 0x6FB,
                 is_extended_id= 0,
                   dlc= 8,data=[3, 34, 241, 145, 255, 255, 255, 255],
@@ -166,6 +256,14 @@ BCM_DiagRq = can.Message(arbitration_id= 0x681,
                   dlc= 8,data=[48, 0, 20, 255, 255, 255, 255, 255],
                   check = False)
 #=========================BMS===============================
+MS_DiagRq_PU = can.Message(arbitration_id= 0x693,
+                is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 3, 255, 255, 255, 255],
+                  check = False)
+BMS_DiagRq_PU_Rv = can.Message(arbitration_id=0x693,
+                  is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 67, 255, 255, 255, 255],
+                  check = False)
 BMS_DiagRq_HW = can.Message(arbitration_id= 0x693,
                 is_extended_id= 0,
                   dlc= 8,data=[3, 34, 241, 145, 255, 255, 255, 255],
@@ -298,6 +396,14 @@ ASU_DiagRq = can.Message(arbitration_id= 0x691,
                   dlc= 8,data=[48, 0, 20, 255, 255, 255, 255, 255],
                   check = False)
 #=========================CCUF===============================
+CCUF_DiagRq_PU = can.Message(arbitration_id= 0x689,
+                is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 3, 255, 255, 255, 255],
+                  check = False)
+CCUF_DiagRq_PU_Rv = can.Message(arbitration_id=0x689,
+                  is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 67, 255, 255, 255, 255],
+                  check = False)
 CCUF_DiagRq_HW = can.Message(arbitration_id= 0x689,
                 is_extended_id= 0,
                   dlc= 8,data=[3, 34, 241, 145, 255, 255, 255, 255],
@@ -472,6 +578,14 @@ EDS_F_DiagRq = can.Message(arbitration_id= 0x69B,
                   dlc= 8,data=[48, 0, 20, 255, 255, 255, 255, 255],
                   check = False)
 #=========================EDS_R===============================
+EDS_R_DiagRq_PU = can.Message(arbitration_id= 0x69A,
+                is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 145, 255, 255, 255, 255],
+                  check = False)
+EDS_R_DiagRq_PU_Rv = can.Message(arbitration_id=0x69A,
+                  is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 65, 255, 255, 255, 255],
+                  check = False)
 EDS_R_DiagRq_HW = can.Message(arbitration_id= 0x69A,
                 is_extended_id= 0,
                   dlc= 8,data=[3, 34, 241, 145, 255, 255, 255, 255],
@@ -506,6 +620,14 @@ EDS_R_DiagRq = can.Message(arbitration_id= 0x69A,
                   dlc= 8,data=[48, 0, 20, 255, 255, 255, 255, 255],
                   check = False)
 #=========================EPS===============================
+EPS_DiagRq_PU = can.Message(arbitration_id= 0x6A8,
+                is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 3, 255, 255, 255, 255],
+                  check = False)
+EPS_DiagRq_PU_Rv = can.Message(arbitration_id=0x6A8,
+                  is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 67, 255, 255, 255, 255],
+                  check = False)
 EPS_DiagRq_HW = can.Message(arbitration_id= 0x6A8,
                 is_extended_id= 0,
                   dlc= 8,data=[3, 34, 241, 145, 255, 255, 255, 255],
@@ -746,6 +868,14 @@ IDB_DiagRq = can.Message(arbitration_id= 0x6A9,
                   dlc= 8,data=[48, 0, 20, 255, 255, 255, 255, 255],
                   check = False)
 #=========================MHU===============================
+MHU_DiagRq_PU = can.Message(arbitration_id= 0x684,
+                is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 3, 255, 255, 255, 255],
+                  check = False)
+MHU_DiagRq_PU_Rv = can.Message(arbitration_id=0x684,
+                  is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 67, 255, 255, 255, 255],
+                  check = False)
 MHU_DiagRq_HW = can.Message(arbitration_id= 0x684,
                 is_extended_id= 0,
                   dlc= 8,data=[3, 34, 241, 145, 255, 255, 255, 255],
@@ -1138,6 +1268,14 @@ SRR_RR_DiagRq = can.Message(arbitration_id= 0x6B6,
 #=========================VCU===============================
 VCU_DiagRq_HW = can.Message(arbitration_id= 0x6AC,
                 is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 3, 255, 255, 255, 255],
+                  check = False)
+VCU_DiagRq_HW_Rv = can.Message(arbitration_id=0x6AC,
+                  is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 67, 255, 255, 255, 255],
+                  check = False)
+VCU_DiagRq_HW = can.Message(arbitration_id= 0x6AC,
+                is_extended_id= 0,
                   dlc= 8,data=[3, 34, 241, 145, 255, 255, 255, 255],
                   check = False)
 VCU_DiagRq_HW_Rv = can.Message(arbitration_id=0x6AC,
@@ -1185,6 +1323,14 @@ VCU_DiagRq = can.Message(arbitration_id= 0x6AC,
                   dlc= 8,data=[48, 0, 20, 255, 255, 255, 255, 255],
                   check = False)
 #=========================XGW===============================
+XGW_DiagRq_PU = can.Message(arbitration_id= 0x682,
+                is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 3, 255, 255, 255, 255],
+                  check = False)
+XGW_DiagRq_PU_Rv = can.Message(arbitration_id=0x682,
+                  is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 67, 255, 255, 255, 255],
+                  check = False)
 XGW_DiagRq_HW = can.Message(arbitration_id= 0x682,
                 is_extended_id= 0,
                   dlc= 8,data=[3, 34, 241, 145, 255, 255, 255, 255],
@@ -1242,6 +1388,32 @@ YSS_DiagRq = can.Message(arbitration_id= 0x68F,
                   is_extended_id= 0,
                   dlc= 8,data=[48, 0, 20, 255, 255, 255, 255, 255],
                   check = False)
+#=========================SS===============================
+SS_DiagRq_HW = can.Message(arbitration_id= 0x690,
+                is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 145, 255, 255, 255, 255],
+                  check = False)
+SS_DiagRq_HW_Rv = can.Message(arbitration_id=0x690,
+                  is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 65, 255, 255, 255, 255],
+                  check = False)
+SS_DiagRq_SW = can.Message(arbitration_id= 0x690,
+                  is_extended_id= 0,
+                 dlc= 8,data=[3, 34, 241, 136, 255, 255, 255, 255],
+                 check = False)
+SS_DiagRq_SW_Rv = can.Message(arbitration_id= 0x690,
+                  is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 72, 255, 255, 255, 255],
+                  check = False)
+SS_DiagRq_Bootloader = can.Message(arbitration_id= 0x690,
+                  is_extended_id= 0,
+                  dlc= 8,data=[3, 34, 241, 1, 255, 255, 255, 255],
+                  check = False)
+SS_DiagRq = can.Message(arbitration_id= 0x690,
+                  is_extended_id= 0,
+                  dlc= 8,data=[48, 0, 20, 255, 255, 255, 255, 255],
+                  check = False)
 #===========================Creat window================================
 def Hardware_Config():
       subprocess.call('C://Windows//System32//vcanconf.exe')
+
