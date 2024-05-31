@@ -37,11 +37,15 @@ bl = 4
 
 # creating variable
 ALL_Status = IntVar()
+ABS_Status = IntVar()
+EAC_Status = IntVar()
+SS_Status = IntVar()
 ADAS_Status = IntVar()
 ASU_G_Status = IntVar()
 VCU_Status = IntVar()
 DCDC_Status = IntVar()
 POD_Status = IntVar()
+PDU_Status = IntVar()
 EASC_Status = IntVar()
 OBC_Status = IntVar()
 EDS_Status= IntVar()
@@ -131,7 +135,6 @@ def select_filedbc():
     )
     return filename
 #======================================Read DID===========================================
-
 #=============================Read DIDACM=================================================
 def ACM_READ_DID():
     ECU_Text('ACM',None,1,None)
@@ -142,6 +145,35 @@ def ACM_READ_DID():
     ECU_Req_INFOR(ACM_DiagRq_CAL,ACM_DiagRq,SW,0x608,'ACM','Software_CAL',0,'ACMF102')
     ECU_Req_INFOR(ACM_DiagRq_CAL_Rev,ACM_DiagRq,HW_rv,0x608,'ACM','Software_CAL_Rev',0,'ACMF102')
     ECU_Req_INFOR(ACM_DiagRq_Bootloader,ACM_DiagRq,bl,0x608,'ACM','Bootloader',0,'ACMF101')
+    bus5.shutdown
+#=============================Read DIDEAC=================================================
+def EAC_READ_DID():
+    ECU_Text('EAC',None,1,None)
+    ECU_Req_INFOR(EAC_DiagRq_HW,EAC_DiagRq,HW,0x6F5,'EAC','HardWare',0,'EACF191')
+    ECU_Req_INFOR(EAC_DiagRq_HW_Rv,EAC_DiagRq,HW_rv,0x6F5,'EAC','Hardware_Rev',0,'EACF191')
+    ECU_Req_INFOR(EAC_DiagRq_SW,EAC_DiagRq,SW,0x6F5,'EAC','Software',0,'EACF188')
+    ECU_Req_INFOR(EAC_DiagRq_SW_Rv,EAC_DiagRq,HW_rv,0x6F5,'EAC','Software_Rev',0,'EACF188')
+    ECU_Req_INFOR(EAC_DiagRq_Bootloader,EAC_DiagRq,bl,0x6F5,'EAC','Bootloader',0,'EACF101')
+    bus5.shutdown
+#=============================Read DIDSS=================================================
+def SS_READ_DID():
+    ECU_Text('SS',None,1,None)
+    ECU_Req_INFOR(SS_DiagRq_HW,SS_DiagRq,HW,0x610,'SS','HardWare',0,'SSF191')
+    ECU_Req_INFOR(SS_DiagRq_HW_Rv,SS_DiagRq,HW_rv,0x610,'SS','Hardware_Rev',0,'SSF191')
+    ECU_Req_INFOR(SS_DiagRq_SW,SS_DiagRq,SW,0x610,'SS','Software',0,'SSF188')
+    ECU_Req_INFOR(SS_DiagRq_SW_Rv,SS_DiagRq,HW_rv,0x610,'SS','Software_Rev',0,'SSF188')
+    ECU_Req_INFOR(SS_DiagRq_Bootloader,SS_DiagRq,bl,0x610,'SS','Bootloader',0,'SSF101')
+    bus5.shutdown
+#=============================Read DIDEAC=================================================
+def ABS_READ_DID():
+    ECU_Text('ABS',None,1,None)
+    ECU_Req_INFOR(ABS_DiagRq_HW,ABS_DiagRq,HW,0x629,'ABS','HardWare',0,'ABSF191')
+    ECU_Req_INFOR(ABS_DiagRq_HW_Rv,ABS_DiagRq,HW_rv,0x629,'ABS','Hardware_Rev',0,'ABSF191')
+    ECU_Req_INFOR(ABS_DiagRq_SW,ABS_DiagRq,SW,0x629,'ABS','Software',0,'ABSF188')
+    ECU_Req_INFOR(ABS_DiagRq_SW_Rv,ABS_DiagRq,HW_rv,0x629,'ABS','Software_Rev',0,'ABSF188')
+    ECU_Req_INFOR(ABS_DiagRq_CAL,ABS_DiagRq,SW,0x629,'ABS','Software_CAL',0,'ABSF102')
+    ECU_Req_INFOR(ABS_DiagRq_CAL_Rev,ABS_DiagRq,HW_rv,0x629,'ABS','Software_CAL_Rev',0,'ABSF102')
+    ECU_Req_INFOR(ABS_DiagRq_Bootloader,ABS_DiagRq,bl,0x629,'ABS','Bootloader',0,'ABSF101')
     bus5.shutdown
 #=============================Read DIDAPM================================
 def APM_READ_DID():
@@ -230,6 +262,28 @@ def EDS_R_READ_DID():
     ECU_Req_INFOR(EDS_R_DiagRq_CAL_Rev,EDS_R_DiagRq,HW_rv,0x61A,'EDS_R','Software_CAL_Rev',0,'EDS_RF102')    
     ECU_Req_INFOR(EDS_R_DiagRq_Bootloader,EDS_R_DiagRq,bl,0x61A,'EDS_R','Bootloader',0,'EDS_RF101')
     bus5.shutdown
+#=============================Read DIDLDM_L================================
+def LDM_L_READ_DID():
+    ECU_Text('LDM_L',None,1,None)
+    ECU_Req_INFOR(LDM_L_DiagRq_HW,LDM_L_DiagRq,HW,0x649,'LDM_L','HardWare',0,'LDM_LF191')
+    ECU_Req_INFOR(LDM_L_DiagRq_HW_Rv,LDM_L_DiagRq,HW_rv,0x649,'LDM_L','Hardware_Rev',0,'LDM_LF191')
+    ECU_Req_INFOR(LDM_L_DiagRq_SW,LDM_L_DiagRq,SW,0x649,'LDM_L','Software',0,'LDM_LF188')
+    ECU_Req_INFOR(LDM_L_DiagRq_SW_Rv,LDM_L_DiagRq,HW_rv,0x649,'LDM_L','Software_Rev',0,'LDM_LF188')
+    ECU_Req_INFOR(LDM_L_DiagRq_CAL,LDM_L_DiagRq,SW,0x649,'LDM_L','Software_CAL',0,'LDM_LF102')
+    ECU_Req_INFOR(LDM_L_DiagRq_CAL_Rev,LDM_L_DiagRq,HW_rv,0x649,'LDM_L','Software_CAL_Rev',0,'LDM_LF102')    
+    ECU_Req_INFOR(LDM_L_DiagRq_Bootloader,LDM_L_DiagRq,bl,0x649,'LDM_L','Bootloader',0,'LDM_LF101')
+    bus5.shutdown
+#=============================Read DIDLDM_R================================
+def LDM_R_READ_DID():
+    ECU_Text('LDM_R',None,1,None)
+    ECU_Req_INFOR(LDM_R_DiagRq_HW,LDM_R_DiagRq,HW,0x64A,'LDM_R','HardWare',0,'LDM_RF191')
+    ECU_Req_INFOR(LDM_R_DiagRq_HW_Rv,LDM_R_DiagRq,HW_rv,0x64A,'LDM_R','Hardware_Rev',0,'LDM_RF191')
+    ECU_Req_INFOR(LDM_R_DiagRq_SW,LDM_R_DiagRq,SW,0x64A,'LDM_R','Software',0,'LDM_RF188')
+    ECU_Req_INFOR(LDM_R_DiagRq_SW_Rv,LDM_R_DiagRq,HW_rv,0x64A,'LDM_R','Software_Rev',0,'LDM_RF188')
+    ECU_Req_INFOR(LDM_R_DiagRq_CAL,LDM_R_DiagRq,SW,0x64A,'LDM_R','Software_CAL',0,'LDM_RF102')
+    ECU_Req_INFOR(LDM_R_DiagRq_CAL_Rev,LDM_R_DiagRq,HW_rv,0x64A,'LDM_R','Software_CAL_Rev',0,'LDM_RF102')    
+    ECU_Req_INFOR(LDM_R_DiagRq_Bootloader,LDM_R_DiagRq,bl,0x64A,'LDM_R','Bootloader',0,'LDM_RF101')
+    bus5.shutdown
 #=============================Read DIDEPS================================
 def EPS_READ_DID():
     ECU_Text('EPS',None,1,None)
@@ -238,6 +292,15 @@ def EPS_READ_DID():
     ECU_Req_INFOR(EPS_DiagRq_SW,EPS_DiagRq,SW,0x628,'EPS1','Software',0,'EPS1F188') 
     ECU_Req_INFOR(EPS_DiagRq_SW_Rv,EPS_DiagRq,HW_rv,0x628,'EPS1','Software_Rev',0,'EPS1F188')
     ECU_Req_INFOR(EPS_DiagRq_Bootloader,EPS_DiagRq,bl,0x628,'EPS1','Bootloader',0,'EPS1F101')
+    bus5.shutdown
+#=============================Read DIDEPS================================
+def EPS_2_READ_DID():
+    ECU_Text('EPS_2',None,1,None)
+    ECU_Req_INFOR(EPS_2_DiagRq_HW,EPS_2_DiagRq,HW,0x62B,'EPS2','HardWare',0,'EPS2F191')
+    ECU_Req_INFOR(EPS_2_DiagRq_HW_Rv,EPS_2_DiagRq,HW_rv,0x62B,'EPS2','Hardware_Rev',0,'EPS2F191')
+    ECU_Req_INFOR(EPS_2_DiagRq_SW,EPS_2_DiagRq,SW,0x62B,'EPS2','Software',0,'EPS2F188') 
+    ECU_Req_INFOR(EPS_2_DiagRq_SW_Rv,EPS_2_DiagRq,HW_rv,0x62B,'EPS2','Software_Rev',0,'EPS2F188')
+    ECU_Req_INFOR(EPS_2_DiagRq_Bootloader,EPS_2_DiagRq,bl,0x62B,'EPS2','Bootloader',0,'EPS2F101')
     bus5.shutdown
 #=============================Read DIDETG================================
 def ETG_READ_DID():
@@ -782,7 +845,352 @@ def ConfigWindow():
 #====================================VF3 Window============================================
 def VF3Window():     
     VF3 = Toplevel(root)
-    VF3.title("VF3 DID")
+    VF3.title("New Window")
+    VF3.geometry("1200x600") 
+    VF3.resizable(0, 0)
+    Label(VF3, text ="VF3 DID").pack()
+    global ECU_Text
+    global RealData
+
+    ECU_Frame = tk.LabelFrame(VF3,bg = '#c3c3c3',text= 'ECU',borderwidth=1,relief='solid')
+    ECU_Frame.pack(side=tk.LEFT)
+    ECU_Frame.pack_propagate(False)
+    ECU_Frame.configure(width=100,height=900)
+
+    Excel_frame = tk.LabelFrame(VF3,bg = '#c3c3c3',text= 'ECU Infor',borderwidth=1,relief='solid')
+    Excel_frame.pack(side=tk.TOP,padx=1,pady=1)
+    Excel_frame.pack_propagate(False)
+    Excel_frame.configure(width=1400,height=400)
+
+    style = ttk.Style()
+    style.theme_use('clam')
+    tree = ttk.Treeview(Excel_frame, column=("c1", "c2","c3","c4","c5","c6","c7","c8","c9","C10"), show='headings', height=8)
+    tree.pack(expand=True, fill='y')
+
+    Terminal_frame = tk.LabelFrame(VF3,text= 'Terminal',bg = '#c3c3c3',borderwidth=1,relief='solid')
+    Terminal_frame.pack(side=tk.BOTTOM,padx=1,pady=1)
+    Terminal_frame.pack_propagate(False)
+    Terminal_frame.configure(width=1400,height=740)
+
+    scrollbar = ScrolledText(ECU_Frame)
+    scrollbar.pack( side = RIGHT, fill=Y )
+
+    text_box = Text(Terminal_frame,height=12,width=150)
+    text_box.pack(expand=True)
+
+    sb = Scrollbar(Terminal_frame)
+    sb.pack(side=RIGHT, fill=BOTH)
+
+    text_box.config(yscrollcommand=sb.set)
+    sb.config(command=text_box.yview)
+
+    Terminal_frame.pack(expand=True)  
+    ALL_Status.set(0)
+    ABS_Status.set(0)
+    ACM_Status.set(0)
+    BCM_Status.set(0)
+    BMS_Status.set(0)
+    EAC_Status.set(0)
+    EDS_Status.set(0)
+    EPS_Status.set(0)
+    MHU_Status.set(0)
+    PDU_Status.set(0)
+    SS_Status.set(0)
+    VCU_Status.set(0)
+    XGW_Status.set(0)
+    
+    def Click_Select():
+        if ALL_Status.get() == 1:
+            ABS_Status.set(1)
+            ACM_Status.set(1)
+            BCM_Status.set(1)
+            BMS_Status.set(1)
+            EAC_Status.set(1)
+            EDS_Status.set(1)
+            EPS_Status.set(1)
+            MHU_Status.set(1)
+            PDU_Status.set(1)
+            SS_Status.set(1)
+            VCU_Status.set(1)
+            XGW_Status.set(1)
+        else:
+            ABS_Status.set(0)
+            ACM_Status.set(0)
+            BCM_Status.set(0)
+            BMS_Status.set(0)
+            EAC_Status.set(0)
+            EDS_Status.set(0)
+            EPS_Status.set(0)
+            MHU_Status.set(0)
+            PDU_Status.set(0)
+            SS_Status.set(0)
+            VCU_Status.set(0)
+            XGW_Status.set(0)
+
+    ALL = tk.Checkbutton(scrollbar, text='ALL', bg='white', anchor='w',variable= ALL_Status,onvalue=1, offvalue=0,command= Click_Select)
+    scrollbar.window_create('end', window=ALL)
+    scrollbar.insert('end', '\n')
+    ABS = tk.Checkbutton(scrollbar, text='ABS', bg='white', anchor='w',variable= ABS_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=ABS)
+    scrollbar.insert('end', '\n')
+    ACM = tk.Checkbutton(scrollbar, text='ACM', bg='white', anchor='w',variable= ACM_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=ACM)
+    scrollbar.insert('end', '\n')
+    BCM = tk.Checkbutton(scrollbar, text='BCM', bg='white', anchor='w',variable= BCM_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=BCM)
+    scrollbar.insert('end', '\n')
+    BMS = tk.Checkbutton(scrollbar, text='BMS', bg='white', anchor='w',variable= BMS_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=BMS)
+    scrollbar.insert('end', '\n')
+    EAC = tk.Checkbutton(scrollbar, text='EAC', bg='white', anchor='w',variable= EAC_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=EAC)
+    scrollbar.insert('end', '\n')
+    EDS = tk.Checkbutton(scrollbar, text='EDS', bg='white', anchor='w',variable= EDS_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=EDS)
+    scrollbar.insert('end', '\n')
+    EPS = tk.Checkbutton(scrollbar, text='EPS', bg='white', anchor='w',variable= EPS_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=EPS)
+    scrollbar.insert('end', '\n')
+    MHU = tk.Checkbutton(scrollbar, text='MHU', bg='white', anchor='w',variable= MHU_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=MHU)
+    scrollbar.insert('end', '\n')
+    PDU = tk.Checkbutton(scrollbar, text='PDU', bg='white', anchor='w',variable= PDU_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=PDU)
+    scrollbar.insert('end', '\n')
+    SS = tk.Checkbutton(scrollbar, text='SS', bg='white', anchor='w',variable= SS_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=SS)
+    scrollbar.insert('end', '\n')
+    VCU = tk.Checkbutton(scrollbar, text='VCU', bg='white', anchor='w',variable= VCU_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=VCU)
+    scrollbar.insert('end', '\n')
+    XGW = tk.Checkbutton(scrollbar, text='XGW', bg='white', anchor='w',variable= XGW_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=XGW)
+    scrollbar.insert('end', '\n')
+    def RUN_Read():
+        Terminal_clear()
+        if ACM_Status.get() == 1:
+            ACM_READ_DID()
+        if BCM_Status.get() == 1:
+            BCM_READ_DID()
+        if MHU_Status.get() == 1:
+            MHU_READ_DID()
+        if VCU_Status.get() == 1:
+            VCU_READ_DID()    
+        if XGW_Status.get() == 1:
+            XGW_READ_DID()       
+        if EDS_Status.get() == 1:
+            EDS_F_READ_DID()
+        if EAC_Status.get() == 1:
+            EAC_READ_DID()
+        if EPS_Status.get() == 1:
+            EPS_READ_DID()
+        if ABS_Status.get() == 1:
+            ABS_READ_DID()
+        if BMS_Status.get() == 1:
+            BMS_READ_DID()
+        if SS_Status.get() == 1:
+            SS_READ_DID()
+# Display text for read ECU actual
+    def ECU_Text(ECU,TypeRead,Header,infor):
+        if Header == 1:
+            text_box.insert('insert', ECU + '\n')
+            text_box.update()
+        else:
+            text_box.insert('insert', '    ' + TypeRead + ': '+ infor + '\n')
+            text_box.update()
+    def Terminal_clear():
+            text_box.delete(1.0,'end')
+    # Write data in excel file=============================================================
+    global ECU_LIST 
+    ECU_LIST = [0 for i in range(200)] 
+    Templete = load_workbook('Templete_VF3.xlsx')
+    Templete_sheet = Templete['ECU_DID']
+    count = 0
+    for i in range(1,11):
+        count += 1
+        tree.column("# "+ str(count), anchor=CENTER)
+        tree.heading("# "+ str(count), text=Templete_sheet.cell(row=1,column=i).value)
+        tree.pack(expand=True, fill='y')
+
+        # Insert the data in Treeview widget
+    ID = 0
+    for i in range(1,Templete_sheet.max_row+1):
+        if Templete_sheet.cell(row=i,column=11).value == 'X':
+            ID +=1
+            ECU_LIST[ID] = str(Templete_sheet.cell(row=i,column=1).value) + str(Templete_sheet.cell(row=i,column=3).value)
+            tree.insert('', 'end',iid =ECU_LIST[ID],values=(Templete_sheet.cell(row=i,column=1).value, Templete_sheet.cell(row=i,column=2).value,Templete_sheet.cell(row=i,column=3).value,"None",Templete_sheet.cell(row=i,column=5).value,"None","None","None","None",Templete_sheet.cell(row=i,column=10).value))
+            tree.pack()
+# Import data from BOM VSR ECO
+    def load_data_VSR():
+        filetypes = (
+            ('text files', '*.xlsx'),
+            ('All files', '*.*')
+        )
+        filename = fd.askopenfilename(
+            title='Open a file',
+            initialdir='/',
+            filetypes=filetypes)
+        showinfo(
+            title='Selected File',
+            message=filename
+        )
+        try:
+            tk.messagebox.showerror("Information", "The file you have chosen is valid")
+        except ValueError:
+            tk.messagebox.showerror("Information", "The file you have chosen is invalid")
+            return None
+        except FileNotFoundError:
+            tk.messagebox.showerror("Information", f"No such file as {filename}")
+            return None
+        
+        BOM = load_workbook(filename,data_only= True)
+        BOM_sheet = BOM.worksheets[1]
+
+        for i in range(1,BOM_sheet.max_row + 1):
+            if (BOM_sheet.cell(row= i,column=13).value) == 'X':
+                for j in range(1,ID):
+                    if (BOM_sheet.cell(row= i,column=4).value in tree.item(ECU_LIST[j])["values"]) == True:
+                        if tree.item(ECU_LIST[j])["values"][2] == BOM_sheet.cell(row= i,column=6).value:
+                            if  BOM_sheet.cell(row= i,column=6).value =='F101':
+                                ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                            BOM_sheet.cell(row= i,column=3).value,tree.item(ECU_LIST[j])["values"][4],tree.item(ECU_LIST[j])["values"][5],
+                                            tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                                break
+                            else:
+                                ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                            BOM_sheet.cell(row= i,column=3).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=3).value[12:len(BOM_sheet.cell(row= i,column=3).value)],
+                                            tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                                break
+# Import Bom from JIRA ECO
+    def load_data_Jira():
+        filetypes = (
+            ('text files', '*.xlsx'),
+            ('All files', '*.*')
+        )
+        filename = fd.askopenfilename(
+            title='Open a file',
+            initialdir='/',
+            filetypes=filetypes)
+        showinfo(
+            title='Selected File',
+            message=filename
+        )
+        try:
+            tk.messagebox.showerror("Information", "The file you have chosen is valid")
+        except ValueError:
+            tk.messagebox.showerror("Information", "The file you have chosen is invalid")
+            return None
+        except FileNotFoundError:
+            tk.messagebox.showerror("Information", f"No such file as {filename}")
+            return None
+        
+        BOM = load_workbook(filename,data_only= True)
+        BOM_sheet = BOM.get_sheet_by_name('Rich Filter Results')  
+
+        for i in range(1,BOM_sheet.max_row + 1):
+            if ('ECO' in BOM_sheet.cell(row= i,column=6).value) == True:
+                for j in range(1,ID):
+                    if (BOM_sheet.cell(row= i,column=5).value in tree.item(ECU_LIST[j])["values"]) == True:
+                        if (tree.item(ECU_LIST[j])["values"][2] in BOM_sheet.cell(row= 1,column=8).value) == True:
+                            ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                        BOM_sheet.cell(row= i,column=8).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=8).value[12:len(BOM_sheet.cell(row= i,column=8).value)],
+                                        tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                            
+                        if (tree.item(ECU_LIST[j])["values"][2] in BOM_sheet.cell(row= 1,column=9).value) == True:
+                            ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                        BOM_sheet.cell(row= i,column=9).value,tree.item(ECU_LIST[j])["values"][4],'None',
+                                        tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                            
+                        if (tree.item(ECU_LIST[j])["values"][2] in BOM_sheet.cell(row= 1,column=10).value) == True:
+                            ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                        BOM_sheet.cell(row= i,column=10).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=10).value[12:len(BOM_sheet.cell(row= i,column=10).value)],
+                                        tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                            
+                        if (tree.item(ECU_LIST[j])["values"][2] in BOM_sheet.cell(row= 1,column=11).value) == True:
+                            ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                        BOM_sheet.cell(row= i,column=11).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=11).value[12:len(BOM_sheet.cell(row= i,column=11).value)],
+                                        tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                            
+                        if (tree.item(ECU_LIST[j])["values"][2] in BOM_sheet.cell(row= 1,column=12).value) == True:
+                            ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                        BOM_sheet.cell(row= i,column=12).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=12).value[12:len(BOM_sheet.cell(row= i,column=12).value)],
+                                        tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                            
+                        if (tree.item(ECU_LIST[j])["values"][2] in BOM_sheet.cell(row= 1,column=13).value) == True:
+                            ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                        BOM_sheet.cell(row= i,column=13).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=13).value[12:len(BOM_sheet.cell(row= i,column=13).value)],
+                                        tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                            
+                        if (tree.item(ECU_LIST[j])["values"][2] in BOM_sheet.cell(row= 1,column=14).value) == True:
+                            ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                        BOM_sheet.cell(row= i,column=14).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=14).value[12:len(BOM_sheet.cell(row= i,column=14).value)],
+                                        tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                            
+                        if (tree.item(ECU_LIST[j])["values"][2] in BOM_sheet.cell(row= 1,column=15).value) == True:
+                            ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                        BOM_sheet.cell(row= i,column=15).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=15).value[12:len(BOM_sheet.cell(row= i,column=15).value)],
+                                        tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+    
+    def ImportData(ECU,PN_type,PN_DID,VF_DID,Rev_DID,VF_Rev,Real_PN_DID,Real_Rev_DID,Note,JIRA_ECU,iid):
+        tree.item(iid, values=(ECU, PN_type,PN_DID,VF_DID,Rev_DID,VF_Rev,Real_PN_DID,Real_Rev_DID,Note,JIRA_ECU))
+    def RealData(iid,Data,Type_Read):
+        if Type_Read == 1:
+            tree.item(iid, values=(tree.item(str(iid))["values"][0], tree.item(str(iid))["values"][1],tree.item(str(iid))["values"][2],tree.item(str(iid))["values"][3],tree.item(str(iid))["values"][4],tree.item(str(iid))["values"][5],Data,tree.item(str(iid))["values"][7],tree.item(str(iid))["values"][8],tree.item(str(iid))["values"][9]))
+        if Type_Read == 2:
+            tree.item(iid, values=(tree.item(str(iid))["values"][0], tree.item(str(iid))["values"][1],tree.item(str(iid))["values"][2],tree.item(str(iid))["values"][3],tree.item(str(iid))["values"][4],tree.item(str(iid))["values"][5],Data,tree.item(str(iid))["values"][7],tree.item(str(iid))["values"][8],tree.item(str(iid))["values"][9]))
+        if Type_Read == 4:
+            tree.item(iid, values=(tree.item(str(iid))["values"][0], tree.item(str(iid))["values"][1],tree.item(str(iid))["values"][2],tree.item(str(iid))["values"][3],tree.item(str(iid))["values"][4],tree.item(str(iid))["values"][5],Data,tree.item(str(iid))["values"][7],tree.item(str(iid))["values"][8],tree.item(str(iid))["values"][9]))
+        if Type_Read == 3:
+            tree.item(iid, values=(tree.item(str(iid))["values"][0], tree.item(str(iid))["values"][1],tree.item(str(iid))["values"][2],tree.item(str(iid))["values"][3],tree.item(str(iid))["values"][4],tree.item(str(iid))["values"][5],tree.item(str(iid))["values"][6],Data,tree.item(str(iid))["values"][8],tree.item(str(iid))["values"][9]))
+        if (str(tree.item(str(iid))["values"][6]) in str(tree.item(str(iid))["values"][3])) == False or (str(tree.item(str(iid))["values"][5]) in str(tree.item(str(iid))["values"][7])) == False:
+            tree.tag_configure(iid, background='yellow',foreground="black")
+        elif (str(tree.item(str(iid))["values"][6]) in str(tree.item(str(iid))["values"][3])) == True and (str(tree.item(str(iid))["values"][5]) in str(tree.item(str(iid))["values"][7])) == True:
+            tree.tag_configure(iid, background='white',foreground="black")
+
+        tree.update()
+
+    def clear():
+        tree.delete(*tree.get_children())
+#Export data 
+    def Export_data():
+        file = filedialog.asksaveasfilename(
+        filetypes=[("csv file","*.csv")],       
+        defaultextension=".csv")
+        with open(file, 'w', newline='') as csvfile:
+                fieldnames = ['ECU Name', 'PN Type','PN DID','VF PN','Rev Did','Rev','Real PN','Real Rev','Note',]
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+                for i in range(1,ID):
+                    writer.writerow({'ECU Name': tree.item(ECU_LIST[i])["values"][0], 'PN Type': tree.item(ECU_LIST[i])["values"][1],
+                                     'PN DID': tree.item(ECU_LIST[i])["values"][2],'VF PN' : tree.item(ECU_LIST[i])["values"][3],
+                                     'Rev Did' : tree.item(ECU_LIST[i])["values"][4],'Rev' : tree.item(ECU_LIST[i])["values"][5],
+                                     'Real PN' : tree.item(ECU_LIST[i])["values"][6],'Real Rev' : tree.item(ECU_LIST[i])["values"][7],
+                                     'Note' : tree.item(ECU_LIST[i])["values"][8]})
+#Load templete file bom
+    menubar1 = Menu(VF3) 
+    file = Menu(menubar1, tearoff = 0) 
+    menubar1.add_cascade(label ='Import', menu = file) 
+    file.add_separator()
+
+    file.add_command(label ='BOM VSR',command=load_data_VSR)
+    file.add_cascade(label ='BOM JIRA',command=load_data_Jira)
+
+# Adding Help Menu 
+    RUN = Menu(menubar1, tearoff = 0) 
+    menubar1.add_cascade(label ='RUN', menu = RUN) 
+    RUN.add_separator() 
+    RUN.add_command(label ='RUN', command = RUN_Read)
+
+    Export = Menu(menubar1, tearoff = 0) 
+    menubar1.add_cascade(label ='Export', menu = Export) 
+    Export.add_separator() 
+    Export.add_command(label ='Export', command = Export_data)   
+
+    VF3.config(menu = menubar1) 
+#====================================VF3 Window============================================
+def VFe34Window():     
+    VF3 = Toplevel(root)
+    VF3.title("VFe34 DID")
     VF3.geometry("1200x500") 
 #====================================VF5 Window============================================		
 def VF5Window():
@@ -1069,7 +1477,7 @@ def VF6Window_ECO():
     global ECU_LIST 
     ECU_LIST = [0 for i in range(200)] 
     Templete = load_workbook('Templete_VF6.xlsx')
-    Templete_sheet = Templete.get_sheet_by_name('ECU_DID')
+    Templete_sheet = Templete['ECU_DID']
     count = 0
     for i in range(1,11):
         count += 1
@@ -1553,7 +1961,7 @@ def VF6Window_PLUS():
     global ECU_LIST 
     ECU_LIST = [0 for i in range(200)] 
     Templete = load_workbook('Templete_VF6.xlsx')
-    Templete_sheet = Templete.get_sheet_by_name('ECU_DID')
+    Templete_sheet = Templete['ECU_DID']
 
     count = 0
     for i in range(1,11):
@@ -2206,7 +2614,7 @@ def VF7Window_ECO():
     Export.add_command(label ='Export', command = Export_data)   
 
     VF7.config(menu = menubar1) 
-#====================================VF6 Window PLUS============================================		
+#====================================VF7 Window PLUS============================================		
 def VF7Window_PLUS():
     VF7 = Toplevel(root)
     VF7.title("New Window")
@@ -2715,7 +3123,1009 @@ def VF7Window_PLUS():
     Export.add_command(label ='Export', command = Export_data)   
 
     VF7.config(menu = menubar1) 
-#====================================VF6 Window ECO============================================		
+#====================================VF8 Window ECO============================================		
+def VF8Window_ECO():
+    VF8 = Toplevel(root)
+    VF8.title("New Window")
+    VF8.geometry("1200x600") 
+    VF8.resizable(0, 0)
+    global ECU_Text
+    global RealData
+
+    ECU_Frame = tk.LabelFrame(VF8,bg = '#c3c3c3',text= 'ECU',borderwidth=1,relief='solid')
+    ECU_Frame.pack(side=tk.LEFT)
+    ECU_Frame.pack_propagate(False)
+    ECU_Frame.configure(width=100,height=900)
+
+    Excel_frame = tk.LabelFrame(VF8,bg = '#c3c3c3',text= 'ECU Infor',borderwidth=1,relief='solid')
+    Excel_frame.pack(side=tk.TOP,padx=1,pady=1)
+    Excel_frame.pack_propagate(False)
+    Excel_frame.configure(width=1400,height=400)
+
+    style = ttk.Style()
+    style.theme_use('clam')
+    tree = ttk.Treeview(Excel_frame, column=("c1", "c2","c3","c4","c5","c6","c7","c8","c9","C10"), show='headings', height=8)
+    tree.pack(expand=True, fill='y')
+
+    Terminal_frame = tk.LabelFrame(VF8,text= 'Terminal',bg = '#c3c3c3',borderwidth=1,relief='solid')
+    Terminal_frame.pack(side=tk.BOTTOM,padx=1,pady=1)
+    Terminal_frame.pack_propagate(False)
+    Terminal_frame.configure(width=1400,height=740)
+
+    scrollbar = ScrolledText(ECU_Frame)
+    scrollbar.pack( side = RIGHT, fill=Y )
+
+    text_box = Text(Terminal_frame,height=12,width=150)
+    text_box.pack(expand=True)
+
+    sb = Scrollbar(Terminal_frame)
+    sb.pack(side=RIGHT, fill=BOTH)
+
+    text_box.config(yscrollcommand=sb.set)
+    sb.config(command=text_box.yview)
+
+    Terminal_frame.pack(expand=True)  
+    ALL_Status.set(0)
+    VCU_Status.set(0)
+    AMP_Status.set(0)
+    CPD_Staus.set(0)
+    ADAS_Status.set(0)
+    DCDC_Status.set(0)
+    EDS_Status.set(0)
+    EDS_R_Status.set(0)
+    BMS_Status.set(0)
+    GS_Status.set(0)
+    IDB_Status.set(0)
+    RCU_Status.set(0)
+    EPS_Status.set(0)
+    EPS_2_Status.set(0)
+    ACM_Status.set(0)
+    BCM_Status.set(0)
+    BCM_BPM_Status.set(0)
+    SHVU_F_Status.set(0)
+    PSM_Status.set(0)
+    CCU1_Status.set(0)
+    XGW_Status.set(0)
+    APM_Status.set(0)
+    OCS_Status.set(0)
+    MHU_Status.set(0)
+    AVAS_Status.set(0)
+    SCAM_Status.set(0)
+    MCR_FL_RADAR_Status.set(0)
+    MCR_FR_RADAR_Status.set(0)
+    MCR_RR_RADAR_Status.set(0)
+    MCR_RL_RADAR_Status.set(0)
+    MFR1_RADAR_Status.set(0)  
+
+    def Click_Select():
+        if ALL_Status.get() == 1:
+            ALL_Status.set(1)
+            VCU_Status.set(1)
+            AMP_Status.set(1)
+            EASC_Status.set(1)
+            CPD_Staus.set(1)
+            ADAS_Status.set(1)
+            DCDC_Status.set(1)
+            EDS_Status.set(1)
+            EDS_R_Status.set(1)
+            BMS_Status.set(1)
+            GS_Status.set(1)
+            IDB_Status.set(1)
+            RCU_Status.set(1)
+            EPS_Status.set(1)
+            EPS_2_Status.set(1)
+            ACM_Status.set(1)
+            BCM_Status.set(1)
+            BCM_BPM_Status.set(1)
+            CCU1_Status.set(1)
+            XGW_Status.set(1)
+            APM_Status.set(1)
+            SHVU_F_Status.set(1)
+            OCS_Status.set(1)
+            MHU_Status.set(1)
+            AVAS_Status.set(1)
+            SCAM_Status.set(1)
+            MCR_FL_RADAR_Status.set(1)
+            MCR_FR_RADAR_Status.set(1)
+            MCR_RR_RADAR_Status.set(1)
+            MCR_RL_RADAR_Status.set(1)
+            MFR1_RADAR_Status.set(1)  
+            PSM_Status.set(1)
+        else:
+            ALL_Status.set(0)
+            VCU_Status.set(0)
+            AMP_Status.set(0)
+            CPD_Staus.set(0)
+            ADAS_Status.set(0)
+            DCDC_Status.set(0)
+            EDS_Status.set(0)
+            EDS_R_Status.set(0)
+            BMS_Status.set(0)
+            GS_Status.set(0)
+            IDB_Status.set(0)
+            RCU_Status.set(0)
+            EPS_Status.set(0)
+            ACM_Status.set(0)
+            BCM_Status.set(0)
+            SHVU_F_Status.set(0)
+            BCM_BPM_Status.set(0)
+            CCU1_Status.set(0)
+            XGW_Status.set(0)
+            APM_Status.set(0)
+            OCS_Status.set(0)
+            MHU_Status.set(0)
+            AVAS_Status.set(0)
+            SCAM_Status.set(0)
+            MCR_FL_RADAR_Status.set(0)
+            MCR_FR_RADAR_Status.set(0)
+            MCR_RR_RADAR_Status.set(0)
+            MCR_RL_RADAR_Status.set(0)
+            MFR1_RADAR_Status.set(0) 
+            PSM_Status.set(0) 
+            EPS_2_Status.set(0)
+
+    ALL = tk.Checkbutton(scrollbar, text='ALL', bg='white', anchor='w',variable= ALL_Status,onvalue=1, offvalue=0,command= Click_Select)
+    scrollbar.window_create('end', window=ALL)
+    scrollbar.insert('end', '\n')
+    ACM = tk.Checkbutton(scrollbar, text='ACM', bg='white', anchor='w',variable= ACM_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=ACM)
+    scrollbar.insert('end', '\n')
+    AMP = tk.Checkbutton(scrollbar, text='AMP', bg='white', anchor='w',variable= AMP_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=AMP)
+    scrollbar.insert('end', '\n')
+    APM = tk.Checkbutton(scrollbar, text='APM', bg='white', anchor='w',variable= APM_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=APM)
+    scrollbar.insert('end', '\n')
+    BCM = tk.Checkbutton(scrollbar, text='BCM', bg='white', anchor='w',variable= BCM_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=BCM)
+    scrollbar.insert('end', '\n')
+    BPM = tk.Checkbutton(scrollbar, text='BPM', bg='white', anchor='w',variable= BCM_BPM_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=BPM)
+    scrollbar.insert('end', '\n')
+    CCU_F = tk.Checkbutton(scrollbar, text='CCU_F', bg='white', anchor='w',variable= CCU1_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=CCU_F)
+    scrollbar.insert('end', '\n')
+    HUD = tk.Checkbutton(scrollbar, text='HUD', bg='white', anchor='w',variable= HUD_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=HUD)
+    scrollbar.insert('end', '\n')
+    MHU = tk.Checkbutton(scrollbar, text='MHU', bg='white', anchor='w',variable= MHU_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=MHU)
+    scrollbar.insert('end', '\n')
+    VCU = tk.Checkbutton(scrollbar, text='VCU', bg='white', anchor='w',variable= VCU_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=VCU)
+    scrollbar.insert('end', '\n')
+    XGW = tk.Checkbutton(scrollbar, text='XGW', bg='white', anchor='w',variable= XGW_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=XGW)
+    scrollbar.insert('end', '\n')
+    OCS = tk.Checkbutton(scrollbar, text='OCS', bg='white', anchor='w',variable= OCS_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=OCS)
+    scrollbar.insert('end', '\n')
+    PSM = tk.Checkbutton(scrollbar, text='PSM', bg='white', anchor='w',variable= PSM_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=PSM)
+    scrollbar.insert('end', '\n')
+    SHVU_F = tk.Checkbutton(scrollbar, text='SHVU_F', bg='white', anchor='w',variable= SHVU_F_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=SHVU_F)
+    scrollbar.insert('end', '\n')
+    EDS = tk.Checkbutton(scrollbar, text='EDS', bg='white', anchor='w',variable= EDS_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=EDS)
+    scrollbar.insert('end', '\n')
+    EDS_R = tk.Checkbutton(scrollbar, text='EDS_R', bg='white', anchor='w',variable= EDS_R_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=EDS_R)
+    scrollbar.insert('end', '\n')
+    GS = tk.Checkbutton(scrollbar, text='GS', bg='white', anchor='w',variable= GS_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=GS)
+    scrollbar.insert('end', '\n')
+    EPS = tk.Checkbutton(scrollbar, text='EPS', bg='white', anchor='w',variable= EPS_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=EPS)
+    scrollbar.insert('end', '\n')
+    EPS_2 = tk.Checkbutton(scrollbar, text='EPS_2', bg='white', anchor='w',variable= EPS_2_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=EPS_2)
+    scrollbar.insert('end', '\n')
+    IDB = tk.Checkbutton(scrollbar, text='IDB', bg='white', anchor='w',variable= IDB_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=IDB)
+    scrollbar.insert('end', '\n')
+    RCU = tk.Checkbutton(scrollbar, text='RCU', bg='white', anchor='w',variable= RCU_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=RCU)
+    scrollbar.insert('end', '\n')
+    BMS = tk.Checkbutton(scrollbar, text='BMS', bg='white', anchor='w',variable= BMS_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=BMS)
+    scrollbar.insert('end', '\n')
+    DCDC = tk.Checkbutton(scrollbar, text='DCDC', bg='white', anchor='w',variable= DCDC_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=DCDC)
+    scrollbar.insert('end', '\n')
+    ADAS = tk.Checkbutton(scrollbar, text='ADAS', bg='white', anchor='w',variable= ADAS_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=ADAS)
+    scrollbar.insert('end', '\n')
+    CPD = tk.Checkbutton(scrollbar, text='CPD', bg='white', anchor='w',variable= CPD_Staus,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=CPD)
+    scrollbar.insert('end', '\n')
+    MRGEN= tk.Checkbutton(scrollbar, text='MRGEN', bg='white', anchor='w',variable= MFR1_RADAR_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=MRGEN)
+    scrollbar.insert('end', '\n')   
+    SCAM = tk.Checkbutton(scrollbar, text='SCAM', bg='white', anchor='w',variable= SCAM_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=SCAM)
+    scrollbar.insert('end', '\n')
+    SRR_FL = tk.Checkbutton(scrollbar, text='SRR_FL', bg='white', anchor='w',variable= MCR_FL_RADAR_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=SRR_FL)
+    scrollbar.insert('end', '\n')
+    SRR_FR = tk.Checkbutton(scrollbar, text='SRR_FR', bg='white', anchor='w',variable= MCR_FR_RADAR_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=SRR_FR)
+    scrollbar.insert('end', '\n')
+    SRR_RR = tk.Checkbutton(scrollbar, text='SRR_RR', bg='white', anchor='w',variable= MCR_RR_RADAR_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=SRR_RR)
+    scrollbar.insert('end', '\n')
+    SRR_RL = tk.Checkbutton(scrollbar, text='SRR_RL', bg='white', anchor='w',variable= MCR_RL_RADAR_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=SRR_RL)
+    scrollbar.insert('end', '\n') 
+    AVAS = tk.Checkbutton(scrollbar, text='AVAS', bg='white', anchor='w',variable= AVAS_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=AVAS)
+    scrollbar.insert('end', '\n')
+
+    def RUN_Read():
+        Terminal_clear()
+        if VCU_Status.get() == 1:
+            VCU_READ_DID()           
+        if DCDC_Status.get() == 1:
+            POD_DCDC_READ_DID()
+        if EDS_Status.get() == 1:
+            EDS_F_READ_DID()
+        if EDS_R_Status.get() == 1:
+            EDS_R_READ_DID()
+        if BMS_Status.get() == 1:
+            BMS_READ_DID()
+        if GS_Status.get() == 1:
+            GS_READ_DID()
+        if IDB_Status.get() == 1:
+            IDB_READ_DID()
+        if RCU_Status.get() == 1:
+            RCU_READ_DID()
+        if EPS_Status.get() == 1:
+            EPS_READ_DID()
+        if ACM_Status.get() == 1:
+            ACM_READ_DID()
+        if BCM_Status.get() == 1:
+            BCM_READ_DID()
+        if BCM_BPM_Status.get() == 1:
+            BCM_BPM_READ_DID()
+        if CPD_Staus.get() == 1:
+            BCM_BPM_READ_DID()
+        if CCU1_Status.get() == 1:
+            CCUF_READ_DID()
+        if XGW_Status.get() == 1:
+            XGW_READ_DID()
+        if APM_Status.get() == 1:
+            APM_READ_DID()
+        if SHVU_F_Status.get() == 1:
+            SHVU_F_READ_DID()
+        if OCS_Status.get() == 1:
+            OCS_P_READ_DID()
+        if MHU_Status.get() == 1:
+            MHU_READ_DID()
+        if HUD_Status.get() == 1:
+            HUD_READ_DID()
+        if AVAS_Status.get() == 1:          
+            AVAS_READ_DID()
+        if MCR_FL_RADAR_Status.get() == 1:          
+            SRR_FL_READ_DID()
+        if MCR_FR_RADAR_Status.get() == 1:          
+            SRR_FR_READ_DID()
+        if MCR_RL_RADAR_Status.get() == 1:          
+            SRR_RL_READ_DID()
+        if MCR_RR_RADAR_Status.get() == 1:          
+            SRR_RR_READ_DID()
+        if MFR1_RADAR_Status.get() == 1:          
+            MRGEN_READ_DID()
+# Display text for read ECU actual
+    def ECU_Text(ECU,TypeRead,Header,infor):
+        if Header == 1:
+            text_box.insert('insert', ECU + '\n')
+            text_box.update()
+        else:
+            text_box.insert('insert', '    ' + TypeRead + ': '+ infor + '\n')
+            text_box.update()
+    def Terminal_clear():
+            text_box.delete(1.0,'end')
+    
+    global ECU_LIST 
+    ECU_LIST = [0 for i in range(200)] 
+    Templete = load_workbook('Templete_VF8.xlsx')
+    Templete_sheet = Templete.get_sheet_by_name('ECU_DID')
+
+    count = 0
+    for i in range(1,11):
+        count += 1
+        tree.column("# "+ str(count), anchor=CENTER)
+        tree.heading("# "+ str(count), text=Templete_sheet.cell(row=1,column=i).value)
+        tree.pack(expand=True, fill='y')
+
+    # Insert the data in Treeview widget
+    ID = 0
+    for i in range(1,Templete_sheet.max_row+1):
+        if Templete_sheet.cell(row=i,column=12).value == 'X':
+            ID +=1
+            ECU_LIST[ID] = str(Templete_sheet.cell(row=i,column=1).value) + str(Templete_sheet.cell(row=i,column=3).value)
+            tree.insert('', 'end',iid =ECU_LIST[ID],values=(Templete_sheet.cell(row=i,column=1).value, Templete_sheet.cell(row=i,column=2).value,Templete_sheet.cell(row=i,column=3).value,"None",Templete_sheet.cell(row=i,column=5).value,"None","None","None","None",Templete_sheet.cell(row=i,column=10).value))
+            tree.pack()
+    # Write data in excel file=============================================================      
+# Import data from BOM VSR PLUS
+    def load_data_VSR_Plus():
+
+        filetypes = (
+            ('text files', '*.xlsx'),
+            ('All files', '*.*')
+        )
+        filename = fd.askopenfilename(
+            title='Open a file',
+            initialdir='/',
+            filetypes=filetypes)
+        showinfo(
+            title='Selected File',
+            message=filename
+        )
+        try:
+            tk.messagebox.showerror("Information", "The file you have chosen is valid")
+        except ValueError:
+            tk.messagebox.showerror("Information", "The file you have chosen is invalid")
+            return None
+        except FileNotFoundError:
+            tk.messagebox.showerror("Information", f"No such file as {filename}")
+            return None
+        
+        BOM = load_workbook(filename,data_only= True)
+        BOM_sheet = BOM.worksheets[1]
+
+        for i in range(1,BOM_sheet.max_row + 1):
+            if (BOM_sheet.cell(row= i,column=14).value) == 'X':
+                for j in range(1,ID):
+                    if (BOM_sheet.cell(row= i,column=4).value in tree.item(ECU_LIST[j])["values"]) == True:
+                        if tree.item(ECU_LIST[j])["values"][2] == BOM_sheet.cell(row= i,column=6).value:
+                            if  BOM_sheet.cell(row= i,column=6).value =='F101':
+                                ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                            BOM_sheet.cell(row= i,column=3).value,tree.item(ECU_LIST[j])["values"][4],tree.item(ECU_LIST[j])["values"][5],
+                                            tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                                break
+                            else:
+                                ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                            BOM_sheet.cell(row= i,column=3).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=3).value[12:len(BOM_sheet.cell(row= i,column=3).value)],
+                                            tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                                break
+
+    def ImportData(ECU,PN_type,PN_DID,VF_DID,Rev_DID,VF_Rev,Real_PN_DID,Real_Rev_DID,Note,JIRA_ECU,iid):
+        tree.item(iid, values=(ECU, PN_type,PN_DID,VF_DID,Rev_DID,VF_Rev,Real_PN_DID,Real_Rev_DID,Note,JIRA_ECU))
+    def RealData(iid,Data,Type_Read):
+        if Type_Read == 1:
+            tree.item(iid, values=(tree.item(str(iid))["values"][0], tree.item(str(iid))["values"][1],tree.item(str(iid))["values"][2],tree.item(str(iid))["values"][3],tree.item(str(iid))["values"][4],tree.item(str(iid))["values"][5],Data,tree.item(str(iid))["values"][7],tree.item(str(iid))["values"][8],tree.item(str(iid))["values"][9]))
+        if Type_Read == 2:
+            tree.item(iid, values=(tree.item(str(iid))["values"][0], tree.item(str(iid))["values"][1],tree.item(str(iid))["values"][2],tree.item(str(iid))["values"][3],tree.item(str(iid))["values"][4],tree.item(str(iid))["values"][5],Data,tree.item(str(iid))["values"][7],tree.item(str(iid))["values"][8],tree.item(str(iid))["values"][9]))
+        if Type_Read == 4:
+            tree.item(iid, values=(tree.item(str(iid))["values"][0], tree.item(str(iid))["values"][1],tree.item(str(iid))["values"][2],tree.item(str(iid))["values"][3],tree.item(str(iid))["values"][4],tree.item(str(iid))["values"][5],Data,tree.item(str(iid))["values"][7],tree.item(str(iid))["values"][8],tree.item(str(iid))["values"][9]))
+        if Type_Read == 3:
+            tree.item(iid, values=(tree.item(str(iid))["values"][0], tree.item(str(iid))["values"][1],tree.item(str(iid))["values"][2],tree.item(str(iid))["values"][3],tree.item(str(iid))["values"][4],tree.item(str(iid))["values"][5],tree.item(str(iid))["values"][6],Data,tree.item(str(iid))["values"][8],tree.item(str(iid))["values"][9]))
+        if (str(tree.item(str(iid))["values"][6]) in str(tree.item(str(iid))["values"][3])) == False or (str(tree.item(str(iid))["values"][5]) in str(tree.item(str(iid))["values"][7])) == False:
+            tree.tag_configure(iid, background='yellow',foreground="black")
+        elif (str(tree.item(str(iid))["values"][6]) in str(tree.item(str(iid))["values"][3])) == True and (str(tree.item(str(iid))["values"][5]) in str(tree.item(str(iid))["values"][7])) == True:
+            tree.tag_configure(iid, background='white',foreground="black")
+
+        tree.update()
+
+    def clear():
+        tree.delete(*tree.get_children())
+#Export data 
+    def Export_data():
+        file = filedialog.asksaveasfilename(
+        filetypes=[("csv file","*.csv")],       
+        defaultextension=".csv")
+        with open(file, 'w', newline='') as csvfile:
+                fieldnames = ['ECU Name', 'PN Type','VF PN','Rev Did','Rev','Real PN','Real Rev','Note',]
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+                for i in range(1,ID):
+                    writer.writerow({'ECU Name': tree.item(ECU_LIST[i])["values"][0], 'PN Type': tree.item(ECU_LIST[i])["values"][1],
+                                     'VF PN' : tree.item(ECU_LIST[i])["values"][2],'Rev Did' : tree.item(ECU_LIST[i])["values"][3],
+                                     'Rev' : tree.item(ECU_LIST[i])["values"][4],'Real PN' : tree.item(ECU_LIST[i])["values"][5],
+                                     'Real Rev' : tree.item(ECU_LIST[i])["values"][6],'Note' : tree.item(ECU_LIST[i])["values"][7]})
+# Import Bom from JIRA Plus
+    def load_data_Jira_Plus():
+        filetypes = (
+            ('text files', '*.xlsx'),
+            ('All files', '*.*')
+        )
+        filename = fd.askopenfilename(
+            title='Open a file',
+            initialdir='/',
+            filetypes=filetypes)
+        showinfo(
+            title='Selected File',
+            message=filename
+        )
+        try:
+            tk.messagebox.showerror("Information", "The file you have chosen is valid")
+        except ValueError:
+            tk.messagebox.showerror("Information", "The file you have chosen is invalid")
+            return None
+        except FileNotFoundError:
+            tk.messagebox.showerror("Information", f"No such file as {filename}")
+            return None
+        
+        BOM = load_workbook(filename,data_only= True)
+        BOM_sheet = BOM.get_sheet_by_name('Rich Filter Results')  
+
+        for i in range(1,BOM_sheet.max_row + 1):
+            if ('PLUS' in BOM_sheet.cell(row= i,column=6).value) == True:
+                for j in range(1,ID):
+                    if (BOM_sheet.cell(row= i,column=5).value in tree.item(ECU_LIST[j])["values"]) == True:
+                        if (tree.item(ECU_LIST[j])["values"][2] in BOM_sheet.cell(row= 1,column=8).value) == True:
+                            ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                        BOM_sheet.cell(row= i,column=8).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=8).value[12:len(BOM_sheet.cell(row= i,column=8).value)],
+                                        tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                            
+                        if (tree.item(ECU_LIST[j])["values"][2] in BOM_sheet.cell(row= 1,column=9).value) == True:
+                            ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                        BOM_sheet.cell(row= i,column=9).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=9).value[12:len(BOM_sheet.cell(row= i,column=9).value)],
+                                        tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                            
+                        if (tree.item(ECU_LIST[j])["values"][2] in BOM_sheet.cell(row= 1,column=10).value) == True:
+                            ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                        BOM_sheet.cell(row= i,column=10).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=10).value[12:len(BOM_sheet.cell(row= i,column=10).value)],
+                                        tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                            
+                        if (tree.item(ECU_LIST[j])["values"][2] in BOM_sheet.cell(row= 1,column=11).value) == True:
+                            ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                        BOM_sheet.cell(row= i,column=11).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=11).value[12:len(BOM_sheet.cell(row= i,column=11).value)],
+                                        tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                            
+                        if (tree.item(ECU_LIST[j])["values"][2] in BOM_sheet.cell(row= 1,column=12).value) == True:
+                            ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                        BOM_sheet.cell(row= i,column=12).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=12).value[12:len(BOM_sheet.cell(row= i,column=12).value)],
+                                        tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                            
+                        if (tree.item(ECU_LIST[j])["values"][2] in BOM_sheet.cell(row= 1,column=13).value) == True:
+                            ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                        BOM_sheet.cell(row= i,column=13).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=13).value[12:len(BOM_sheet.cell(row= i,column=13).value)],
+                                        tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                            
+                        if (tree.item(ECU_LIST[j])["values"][2] in BOM_sheet.cell(row= 1,column=14).value) == True:
+                            ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                        BOM_sheet.cell(row= i,column=14).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=14).value[12:len(BOM_sheet.cell(row= i,column=14).value)],
+                                        tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                            
+                        if (tree.item(ECU_LIST[j])["values"][2] in BOM_sheet.cell(row= 1,column=15).value) == True:
+                            ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                        BOM_sheet.cell(row= i,column=15).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=15).value[12:len(BOM_sheet.cell(row= i,column=15).value)],
+                                        tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+
+#Load templete file bom
+    menubar1 = Menu(VF8) 
+    file = Menu(menubar1, tearoff = 0) 
+    menubar1.add_cascade(label ='Import', menu = file) 
+    file.add_separator()
+    file.add_cascade(label ='BOM VSR',command = load_data_VSR_Plus)
+    file.add_cascade(label ='BOM JIRA',command = load_data_Jira_Plus)
+
+# Adding Help Menu 
+    RUN = Menu(menubar1, tearoff = 0) 
+    menubar1.add_cascade(label ='RUN', menu = RUN) 
+    RUN.add_separator() 
+    RUN.add_command(label ='RUN', command = RUN_Read)
+
+    Export = Menu(menubar1, tearoff = 0) 
+    menubar1.add_cascade(label ='Export', menu = Export) 
+    Export.add_separator() 
+    Export.add_command(label ='Export', command = Export_data)   
+
+    VF8.config(menu = menubar1) 
+def VF8Window_PLUS():
+    VF8 = Toplevel(root)
+    VF8.title("New Window")
+    VF8.geometry("1200x600") 
+    VF8.resizable(0, 0)
+    global ECU_Text
+    global RealData
+
+    ECU_Frame = tk.LabelFrame(VF8,bg = '#c3c3c3',text= 'ECU',borderwidth=1,relief='solid')
+    ECU_Frame.pack(side=tk.LEFT)
+    ECU_Frame.pack_propagate(False)
+    ECU_Frame.configure(width=100,height=900)
+
+    Excel_frame = tk.LabelFrame(VF8,bg = '#c3c3c3',text= 'ECU Infor',borderwidth=1,relief='solid')
+    Excel_frame.pack(side=tk.TOP,padx=1,pady=1)
+    Excel_frame.pack_propagate(False)
+    Excel_frame.configure(width=1400,height=400)
+
+    style = ttk.Style()
+    style.theme_use('clam')
+    tree = ttk.Treeview(Excel_frame, column=("c1", "c2","c3","c4","c5","c6","c7","c8","c9","C10"), show='headings', height=8)
+    tree.pack(expand=True, fill='y')
+
+    Terminal_frame = tk.LabelFrame(VF8,text= 'Terminal',bg = '#c3c3c3',borderwidth=1,relief='solid')
+    Terminal_frame.pack(side=tk.BOTTOM,padx=1,pady=1)
+    Terminal_frame.pack_propagate(False)
+    Terminal_frame.configure(width=1400,height=740)
+
+    scrollbar = ScrolledText(ECU_Frame)
+    scrollbar.pack( side = RIGHT, fill=Y )
+
+    text_box = Text(Terminal_frame,height=12,width=150)
+    text_box.pack(expand=True)
+
+    sb = Scrollbar(Terminal_frame)
+    sb.pack(side=RIGHT, fill=BOTH)
+
+    text_box.config(yscrollcommand=sb.set)
+    sb.config(command=text_box.yview)
+
+    Terminal_frame.pack(expand=True)  
+    ALL_Status.set(0)
+    VCU_Status.set(0)
+    AMP_Status.set(0)
+    EASC_Status.set(0)
+    CPD_Staus.set(0)
+    ADAS_Status.set(0)
+    DCDC_Status.set(0)
+    EDS_Status.set(0)
+    BMS_Status.set(0)
+    GS_Status.set(0)
+    IDB_Status.set(0)
+    RCU_Status.set(0)
+    EPS_Status.set(0)
+    EPS_2_Status.set(0)
+    ACM_Status.set(0)
+    BCM_Status.set(0)
+    BCM_BPM_Status.set(0)
+    PSM_Status.set(0)
+    CCU1_Status.set(0)
+    CCU2_Status.set(0)
+    XGW_Status.set(0)
+    APM_Status.set(0)
+    OCS_Status.set(0)
+    MHU_Status.set(0)
+    AVAS_Status.set(0)
+    SCAM_Status.set(0)
+    MCR_FL_RADAR_Status.set(0)
+    MCR_FR_RADAR_Status.set(0)
+    MCR_RR_RADAR_Status.set(0)
+    MCR_RL_RADAR_Status.set(0)
+    MFR1_RADAR_Status.set(0)  
+
+    def Click_Select():
+        if ALL_Status.get() == 1:
+            ALL_Status.set(1)
+            VCU_Status.set(1)
+            AMP_Status.set(1)
+            EASC_Status.set(1)
+            CPD_Staus.set(1)
+            ADAS_Status.set(1)
+            DCDC_Status.set(1)
+            EDS_Status.set(1)
+            BMS_Status.set(1)
+            GS_Status.set(1)
+            IDB_Status.set(1)
+            RCU_Status.set(1)
+            EPS_Status.set(1)
+            EPS_2_Status.set(1)
+            ACM_Status.set(1)
+            BCM_Status.set(1)
+            BCM_BPM_Status.set(1)
+            CCU1_Status.set(1)
+            XGW_Status.set(1)
+            APM_Status.set(1)
+            OCS_Status.set(1)
+            MHU_Status.set(1)
+            AVAS_Status.set(1)
+            SCAM_Status.set(1)
+            MCR_FL_RADAR_Status.set(1)
+            MCR_FR_RADAR_Status.set(1)
+            MCR_RR_RADAR_Status.set(1)
+            MCR_RL_RADAR_Status.set(1)
+            MFR1_RADAR_Status.set(1)  
+            PSM_Status.set(1)
+        else:
+            ALL_Status.set(0)
+            VCU_Status.set(0)
+            AMP_Status.set(0)
+            CPD_Staus.set(0)
+            ADAS_Status.set(0)
+            DCDC_Status.set(0)
+            EASC_Status.set(0)
+            EDS_Status.set(0)
+            BMS_Status.set(0)
+            GS_Status.set(0)
+            IDB_Status.set(0)
+            RCU_Status.set(0)
+            EPS_Status.set(0)
+            ACM_Status.set(0)
+            BCM_Status.set(0)
+            BCM_BPM_Status.set(0)
+            CCU1_Status.set(0)
+            XGW_Status.set(0)
+            APM_Status.set(0)
+            OCS_Status.set(0)
+            MHU_Status.set(0)
+            AVAS_Status.set(0)
+            SCAM_Status.set(0)
+            MCR_FL_RADAR_Status.set(0)
+            MCR_FR_RADAR_Status.set(0)
+            MCR_RR_RADAR_Status.set(0)
+            MCR_RL_RADAR_Status.set(0)
+            MFR1_RADAR_Status.set(0) 
+            PSM_Status.set(0) 
+            EPS_2_Status.set(0)
+
+    ALL = tk.Checkbutton(scrollbar, text='ALL', bg='white', anchor='w',variable= ALL_Status,onvalue=1, offvalue=0,command= Click_Select)
+    scrollbar.window_create('end', window=ALL)
+    scrollbar.insert('end', '\n')
+    ACM = tk.Checkbutton(scrollbar, text='ACM', bg='white', anchor='w',variable= ACM_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=ACM)
+    scrollbar.insert('end', '\n')
+    AMP = tk.Checkbutton(scrollbar, text='AMP', bg='white', anchor='w',variable= AMP_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=AMP)
+    scrollbar.insert('end', '\n')
+    APM = tk.Checkbutton(scrollbar, text='APM', bg='white', anchor='w',variable= APM_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=APM)
+    scrollbar.insert('end', '\n')
+    BCM = tk.Checkbutton(scrollbar, text='BCM', bg='white', anchor='w',variable= BCM_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=BCM)
+    scrollbar.insert('end', '\n')
+    BPM = tk.Checkbutton(scrollbar, text='BPM', bg='white', anchor='w',variable= BCM_BPM_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=BPM)
+    scrollbar.insert('end', '\n')
+    CCU_F = tk.Checkbutton(scrollbar, text='CCU_F', bg='white', anchor='w',variable= CCU1_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=CCU_F)
+    scrollbar.insert('end', '\n')
+    CCU_R = tk.Checkbutton(scrollbar, text='CCU_R', bg='white', anchor='w',variable= CCU2_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=CCU_R)
+    scrollbar.insert('end', '\n')
+    HUD = tk.Checkbutton(scrollbar, text='HUD', bg='white', anchor='w',variable= HUD_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=HUD)
+    scrollbar.insert('end', '\n')
+    MHU = tk.Checkbutton(scrollbar, text='MHU', bg='white', anchor='w',variable= MHU_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=MHU)
+    scrollbar.insert('end', '\n')
+    VCU = tk.Checkbutton(scrollbar, text='VCU', bg='white', anchor='w',variable= VCU_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=VCU)
+    scrollbar.insert('end', '\n')
+    XGW = tk.Checkbutton(scrollbar, text='XGW', bg='white', anchor='w',variable= XGW_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=XGW)
+    scrollbar.insert('end', '\n')
+    ETG = tk.Checkbutton(scrollbar, text='ETG', bg='white', anchor='w',variable= ETG_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=ETG)
+    scrollbar.insert('end', '\n')
+    OCS = tk.Checkbutton(scrollbar, text='OCS', bg='white', anchor='w',variable= OCS_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=OCS)
+    scrollbar.insert('end', '\n')
+    PSM = tk.Checkbutton(scrollbar, text='PSM', bg='white', anchor='w',variable= PSM_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=PSM)
+    scrollbar.insert('end', '\n')
+    SHVU_F = tk.Checkbutton(scrollbar, text='SHVU_F', bg='white', anchor='w',variable= SHVU_F_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=SHVU_F)
+    scrollbar.insert('end', '\n')
+    SHVU_R = tk.Checkbutton(scrollbar, text='SHVU_R', bg='white', anchor='w',variable= SHVU_R_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=SHVU_R)
+    scrollbar.insert('end', '\n')
+    EDS = tk.Checkbutton(scrollbar, text='EDS', bg='white', anchor='w',variable= EDS_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=EDS)
+    scrollbar.insert('end', '\n')
+    EDS_R = tk.Checkbutton(scrollbar, text='EDS_R', bg='white', anchor='w',variable= EDS_R_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=EDS_R)
+    scrollbar.insert('end', '\n')
+    GS = tk.Checkbutton(scrollbar, text='GS', bg='white', anchor='w',variable= GS_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=GS)
+    scrollbar.insert('end', '\n')
+    EASC = tk.Checkbutton(scrollbar, text='EASC', bg='white', anchor='w',variable= EASC_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=EASC)
+    scrollbar.insert('end', '\n')
+    EPS = tk.Checkbutton(scrollbar, text='EPS', bg='white', anchor='w',variable= EPS_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=EPS)
+    scrollbar.insert('end', '\n')
+    EPS_2 = tk.Checkbutton(scrollbar, text='EPS_2', bg='white', anchor='w',variable= EPS_2_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=EPS_2)
+    scrollbar.insert('end', '\n')
+    IDB = tk.Checkbutton(scrollbar, text='IDB', bg='white', anchor='w',variable= IDB_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=IDB)
+    scrollbar.insert('end', '\n')
+    RCU = tk.Checkbutton(scrollbar, text='RCU', bg='white', anchor='w',variable= RCU_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=RCU)
+    scrollbar.insert('end', '\n')
+    BMS = tk.Checkbutton(scrollbar, text='BMS', bg='white', anchor='w',variable= BMS_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=BMS)
+    scrollbar.insert('end', '\n')
+    DCDC = tk.Checkbutton(scrollbar, text='DCDC', bg='white', anchor='w',variable= DCDC_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=DCDC)
+    scrollbar.insert('end', '\n')
+    ADAS = tk.Checkbutton(scrollbar, text='ADAS', bg='white', anchor='w',variable= ADAS_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=ADAS)
+    scrollbar.insert('end', '\n')
+    CPD = tk.Checkbutton(scrollbar, text='CPD', bg='white', anchor='w',variable= CPD_Staus,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=CPD)
+    scrollbar.insert('end', '\n')
+    MRGEN= tk.Checkbutton(scrollbar, text='MRGEN', bg='white', anchor='w',variable= MFR1_RADAR_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=MRGEN)
+    scrollbar.insert('end', '\n')   
+    SCAM = tk.Checkbutton(scrollbar, text='SCAM', bg='white', anchor='w',variable= SCAM_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=SCAM)
+    scrollbar.insert('end', '\n')
+    SRR_FL = tk.Checkbutton(scrollbar, text='SRR_FL', bg='white', anchor='w',variable= MCR_FL_RADAR_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=SRR_FL)
+    scrollbar.insert('end', '\n')
+    SRR_FR = tk.Checkbutton(scrollbar, text='SRR_FR', bg='white', anchor='w',variable= MCR_FR_RADAR_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=SRR_FR)
+    scrollbar.insert('end', '\n')
+    SRR_RR = tk.Checkbutton(scrollbar, text='SRR_RR', bg='white', anchor='w',variable= MCR_RR_RADAR_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=SRR_RR)
+    scrollbar.insert('end', '\n')
+    SRR_RL = tk.Checkbutton(scrollbar, text='SRR_RL', bg='white', anchor='w',variable= MCR_RL_RADAR_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=SRR_RL)
+    scrollbar.insert('end', '\n') 
+    AVAS = tk.Checkbutton(scrollbar, text='AVAS', bg='white', anchor='w',variable= AVAS_Status,onvalue=1, offvalue=0)
+    scrollbar.window_create('end', window=AVAS)
+    scrollbar.insert('end', '\n')
+
+    def RUN_Read():
+        Terminal_clear()
+        if VCU_Status.get() == 1:
+            VCU_READ_DID()           
+        if DCDC_Status.get() == 1:
+            POD_DCDC_READ_DID()
+        if POD_Status.get() == 1:
+            POD_GW_READ_DID()
+        if OBC_Status.get() == 1:
+            POD_OBC_READ_DID()
+        if EDS_Status.get() == 1:
+            EDS_F_READ_DID()
+        if EDS_R_Status.get() == 1:
+            EDS_R_READ_DID()
+        if ETG_Status.get() == 1:
+            ETG_READ_DID()
+        if BMS_Status.get() == 1:
+            BMS_READ_DID()
+        if GS_Status.get() == 1:
+            GS_READ_DID()
+        if IDB_Status.get() == 1:
+            IDB_READ_DID()
+        if RCU_Status.get() == 1:
+            RCU_READ_DID()
+        if EPS_Status.get() == 1:
+            EPS_READ_DID()
+        if ACM_Status.get() == 1:
+            ACM_READ_DID()
+        if BCM_Status.get() == 1:
+            BCM_READ_DID()
+        if BCM_BPM_Status.get() == 1:
+            BCM_BPM_READ_DID()
+        if CPD_Staus.get() == 1:
+            BCM_BPM_READ_DID()
+        if CCU1_Status.get() == 1:
+            CCUF_READ_DID()
+        if XGW_Status.get() == 1:
+            XGW_READ_DID()
+        if APM_Status.get() == 1:
+            APM_READ_DID()
+        if SHVU_F_Status.get() == 1:
+            SHVU_F_READ_DID()
+        if SHVU_R_Status.get() == 1:
+            SHVU_R_READ_DID()
+        if OCS_Status.get() == 1:
+            OCS_P_READ_DID()
+        if MHU_Status.get() == 1:
+            MHU_READ_DID()
+        if HUD_Status.get() == 1:
+            HUD_READ_DID()
+        if AVAS_Status.get() == 1:          
+            AVAS_READ_DID()
+        if AP_ECU_Status.get() == 1:          
+            PAS_READ_DID()
+        if FCAM_Status.get() == 1:          
+            FCAM_READ_DID()
+        if MCR_FL_RADAR_Status.get() == 1:          
+            SRR_FL_READ_DID()
+        if MCR_FR_RADAR_Status.get() == 1:          
+            SRR_FR_READ_DID()
+        if MCR_RL_RADAR_Status.get() == 1:          
+            SRR_RL_READ_DID()
+        if MCR_RR_RADAR_Status.get() == 1:          
+            SRR_RR_READ_DID()
+        if MFR1_RADAR_Status.get() == 1:          
+            MRGEN_READ_DID()
+# Display text for read ECU actual
+    def ECU_Text(ECU,TypeRead,Header,infor):
+        if Header == 1:
+            text_box.insert('insert', ECU + '\n')
+            text_box.update()
+        else:
+            text_box.insert('insert', '    ' + TypeRead + ': '+ infor + '\n')
+            text_box.update()
+    def Terminal_clear():
+            text_box.delete(1.0,'end')
+    
+    global ECU_LIST 
+    ECU_LIST = [0 for i in range(200)] 
+    Templete = load_workbook('Templete_VF8.xlsx')
+    Templete_sheet = Templete.get_sheet_by_name('ECU_DID')
+
+    count = 0
+    for i in range(1,11):
+        count += 1
+        tree.column("# "+ str(count), anchor=CENTER)
+        tree.heading("# "+ str(count), text=Templete_sheet.cell(row=1,column=i).value)
+        tree.pack(expand=True, fill='y')
+
+    # Insert the data in Treeview widget
+    ID = 0
+    for i in range(1,Templete_sheet.max_row+1):
+        if Templete_sheet.cell(row=i,column=12).value == 'X':
+            ID +=1
+            ECU_LIST[ID] = str(Templete_sheet.cell(row=i,column=1).value) + str(Templete_sheet.cell(row=i,column=3).value)
+            tree.insert('', 'end',iid =ECU_LIST[ID],values=(Templete_sheet.cell(row=i,column=1).value, Templete_sheet.cell(row=i,column=2).value,Templete_sheet.cell(row=i,column=3).value,"None",Templete_sheet.cell(row=i,column=5).value,"None","None","None","None",Templete_sheet.cell(row=i,column=10).value))
+            tree.pack()
+    # Write data in excel file=============================================================      
+# Import data from BOM VSR PLUS
+    def load_data_VSR_Plus():
+
+        filetypes = (
+            ('text files', '*.xlsx'),
+            ('All files', '*.*')
+        )
+        filename = fd.askopenfilename(
+            title='Open a file',
+            initialdir='/',
+            filetypes=filetypes)
+        showinfo(
+            title='Selected File',
+            message=filename
+        )
+        try:
+            tk.messagebox.showerror("Information", "The file you have chosen is valid")
+        except ValueError:
+            tk.messagebox.showerror("Information", "The file you have chosen is invalid")
+            return None
+        except FileNotFoundError:
+            tk.messagebox.showerror("Information", f"No such file as {filename}")
+            return None
+        
+        BOM = load_workbook(filename,data_only= True)
+        BOM_sheet = BOM.worksheets[1]
+
+        for i in range(1,BOM_sheet.max_row + 1):
+            if (BOM_sheet.cell(row= i,column=14).value) == 'X':
+                for j in range(1,ID):
+                    if (BOM_sheet.cell(row= i,column=4).value in tree.item(ECU_LIST[j])["values"]) == True:
+                        if tree.item(ECU_LIST[j])["values"][2] == BOM_sheet.cell(row= i,column=6).value:
+                            if  BOM_sheet.cell(row= i,column=6).value =='F101':
+                                ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                            BOM_sheet.cell(row= i,column=3).value,tree.item(ECU_LIST[j])["values"][4],tree.item(ECU_LIST[j])["values"][5],
+                                            tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                                break
+                            else:
+                                ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                            BOM_sheet.cell(row= i,column=3).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=3).value[12:len(BOM_sheet.cell(row= i,column=3).value)],
+                                            tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                                break
+
+    def ImportData(ECU,PN_type,PN_DID,VF_DID,Rev_DID,VF_Rev,Real_PN_DID,Real_Rev_DID,Note,JIRA_ECU,iid):
+        tree.item(iid, values=(ECU, PN_type,PN_DID,VF_DID,Rev_DID,VF_Rev,Real_PN_DID,Real_Rev_DID,Note,JIRA_ECU))
+    def RealData(iid,Data,Type_Read):
+        if Type_Read == 1:
+            tree.item(iid, values=(tree.item(str(iid))["values"][0], tree.item(str(iid))["values"][1],tree.item(str(iid))["values"][2],tree.item(str(iid))["values"][3],tree.item(str(iid))["values"][4],tree.item(str(iid))["values"][5],Data,tree.item(str(iid))["values"][7],tree.item(str(iid))["values"][8],tree.item(str(iid))["values"][9]))
+        if Type_Read == 2:
+            tree.item(iid, values=(tree.item(str(iid))["values"][0], tree.item(str(iid))["values"][1],tree.item(str(iid))["values"][2],tree.item(str(iid))["values"][3],tree.item(str(iid))["values"][4],tree.item(str(iid))["values"][5],Data,tree.item(str(iid))["values"][7],tree.item(str(iid))["values"][8],tree.item(str(iid))["values"][9]))
+        if Type_Read == 4:
+            tree.item(iid, values=(tree.item(str(iid))["values"][0], tree.item(str(iid))["values"][1],tree.item(str(iid))["values"][2],tree.item(str(iid))["values"][3],tree.item(str(iid))["values"][4],tree.item(str(iid))["values"][5],Data,tree.item(str(iid))["values"][7],tree.item(str(iid))["values"][8],tree.item(str(iid))["values"][9]))
+        if Type_Read == 3:
+            tree.item(iid, values=(tree.item(str(iid))["values"][0], tree.item(str(iid))["values"][1],tree.item(str(iid))["values"][2],tree.item(str(iid))["values"][3],tree.item(str(iid))["values"][4],tree.item(str(iid))["values"][5],tree.item(str(iid))["values"][6],Data,tree.item(str(iid))["values"][8],tree.item(str(iid))["values"][9]))
+        if (str(tree.item(str(iid))["values"][6]) in str(tree.item(str(iid))["values"][3])) == False or (str(tree.item(str(iid))["values"][5]) in str(tree.item(str(iid))["values"][7])) == False:
+            tree.tag_configure(iid, background='yellow',foreground="black")
+        elif (str(tree.item(str(iid))["values"][6]) in str(tree.item(str(iid))["values"][3])) == True and (str(tree.item(str(iid))["values"][5]) in str(tree.item(str(iid))["values"][7])) == True:
+            tree.tag_configure(iid, background='white',foreground="black")
+
+        tree.update()
+
+    def clear():
+        tree.delete(*tree.get_children())
+#Export data 
+    def Export_data():
+        file = filedialog.asksaveasfilename(
+        filetypes=[("csv file","*.csv")],       
+        defaultextension=".csv")
+        with open(file, 'w', newline='') as csvfile:
+                fieldnames = ['ECU Name', 'PN Type','VF PN','Rev Did','Rev','Real PN','Real Rev','Note',]
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+                for i in range(1,ID):
+                    writer.writerow({'ECU Name': tree.item(ECU_LIST[i])["values"][0], 'PN Type': tree.item(ECU_LIST[i])["values"][1],
+                                     'VF PN' : tree.item(ECU_LIST[i])["values"][2],'Rev Did' : tree.item(ECU_LIST[i])["values"][3],
+                                     'Rev' : tree.item(ECU_LIST[i])["values"][4],'Real PN' : tree.item(ECU_LIST[i])["values"][5],
+                                     'Real Rev' : tree.item(ECU_LIST[i])["values"][6],'Note' : tree.item(ECU_LIST[i])["values"][7]})
+# Import Bom from JIRA Plus
+    def load_data_Jira_Plus():
+        filetypes = (
+            ('text files', '*.xlsx'),
+            ('All files', '*.*')
+        )
+        filename = fd.askopenfilename(
+            title='Open a file',
+            initialdir='/',
+            filetypes=filetypes)
+        showinfo(
+            title='Selected File',
+            message=filename
+        )
+        try:
+            tk.messagebox.showerror("Information", "The file you have chosen is valid")
+        except ValueError:
+            tk.messagebox.showerror("Information", "The file you have chosen is invalid")
+            return None
+        except FileNotFoundError:
+            tk.messagebox.showerror("Information", f"No such file as {filename}")
+            return None
+        
+        BOM = load_workbook(filename,data_only= True)
+        BOM_sheet = BOM.get_sheet_by_name('Rich Filter Results')  
+
+        for i in range(1,BOM_sheet.max_row + 1):
+            if ('PLUS' in BOM_sheet.cell(row= i,column=6).value) == True:
+                for j in range(1,ID):
+                    if (BOM_sheet.cell(row= i,column=5).value in tree.item(ECU_LIST[j])["values"]) == True:
+                        if (tree.item(ECU_LIST[j])["values"][2] in BOM_sheet.cell(row= 1,column=8).value) == True:
+                            ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                        BOM_sheet.cell(row= i,column=8).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=8).value[12:len(BOM_sheet.cell(row= i,column=8).value)],
+                                        tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                            
+                        if (tree.item(ECU_LIST[j])["values"][2] in BOM_sheet.cell(row= 1,column=9).value) == True:
+                            ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                        BOM_sheet.cell(row= i,column=9).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=9).value[12:len(BOM_sheet.cell(row= i,column=9).value)],
+                                        tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                            
+                        if (tree.item(ECU_LIST[j])["values"][2] in BOM_sheet.cell(row= 1,column=10).value) == True:
+                            ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                        BOM_sheet.cell(row= i,column=10).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=10).value[12:len(BOM_sheet.cell(row= i,column=10).value)],
+                                        tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                            
+                        if (tree.item(ECU_LIST[j])["values"][2] in BOM_sheet.cell(row= 1,column=11).value) == True:
+                            ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                        BOM_sheet.cell(row= i,column=11).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=11).value[12:len(BOM_sheet.cell(row= i,column=11).value)],
+                                        tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                            
+                        if (tree.item(ECU_LIST[j])["values"][2] in BOM_sheet.cell(row= 1,column=12).value) == True:
+                            ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                        BOM_sheet.cell(row= i,column=12).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=12).value[12:len(BOM_sheet.cell(row= i,column=12).value)],
+                                        tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                            
+                        if (tree.item(ECU_LIST[j])["values"][2] in BOM_sheet.cell(row= 1,column=13).value) == True:
+                            ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                        BOM_sheet.cell(row= i,column=13).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=13).value[12:len(BOM_sheet.cell(row= i,column=13).value)],
+                                        tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                            
+                        if (tree.item(ECU_LIST[j])["values"][2] in BOM_sheet.cell(row= 1,column=14).value) == True:
+                            ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                        BOM_sheet.cell(row= i,column=14).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=14).value[12:len(BOM_sheet.cell(row= i,column=14).value)],
+                                        tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+                            
+                        if (tree.item(ECU_LIST[j])["values"][2] in BOM_sheet.cell(row= 1,column=15).value) == True:
+                            ImportData(tree.item(ECU_LIST[j])["values"][0],tree.item(ECU_LIST[j])["values"][1],tree.item(ECU_LIST[j])["values"][2],
+                                        BOM_sheet.cell(row= i,column=15).value[0:11],tree.item(ECU_LIST[j])["values"][4],BOM_sheet.cell(row= i,column=15).value[12:len(BOM_sheet.cell(row= i,column=15).value)],
+                                        tree.item(ECU_LIST[j])["values"][6],tree.item(ECU_LIST[j])["values"][7],tree.item(ECU_LIST[j])["values"][8],tree.item(ECU_LIST[j])["values"][9],ECU_LIST[j])
+
+#Load templete file bom
+    menubar1 = Menu(VF8) 
+    file = Menu(menubar1, tearoff = 0) 
+    menubar1.add_cascade(label ='Import', menu = file) 
+    file.add_separator()
+    file.add_cascade(label ='BOM VSR',command = load_data_VSR_Plus)
+    file.add_cascade(label ='BOM JIRA',command = load_data_Jira_Plus)
+
+# Adding Help Menu 
+    RUN = Menu(menubar1, tearoff = 0) 
+    menubar1.add_cascade(label ='RUN', menu = RUN) 
+    RUN.add_separator() 
+    RUN.add_command(label ='RUN', command = RUN_Read)
+
+    Export = Menu(menubar1, tearoff = 0) 
+    menubar1.add_cascade(label ='Export', menu = Export) 
+    Export.add_separator() 
+    Export.add_command(label ='Export', command = Export_data)   
+
+    VF8.config(menu = menubar1) 
+#====================================VF9 Window ECO============================================        
 def VF9Window_ECO():
     VF9 = Toplevel(root)
     VF9.title("New Window")
@@ -2992,6 +4402,10 @@ def VF9Window_ECO():
             POD_OBC_READ_DID()
         if EDS_Status.get() == 1:
             EDS_F_READ_DID()
+        if LDM_L_Status.get() == 1:
+            LDM_L_READ_DID()
+        if LDM_R_Status.get() == 1:
+            LDM_R_READ_DID()
         if BMS_Status.get() == 1:
             BMS_READ_DID()
         if GS_Status.get() == 1:
@@ -3091,7 +4505,7 @@ def VF9Window_ECO():
         BOM_sheet = BOM.worksheets[1]
 
         for i in range(1,BOM_sheet.max_row + 1):
-            if (BOM_sheet.cell(row= i,column=13).value) == 'X':
+            if (BOM_sheet.cell(row= i,column=14).value) == 'X':
                 for j in range(1,ID):
                     if (BOM_sheet.cell(row= i,column=4).value in tree.item(ECU_LIST[j])["values"]) == True:
                         if tree.item(ECU_LIST[j])["values"][2] == BOM_sheet.cell(row= i,column=6).value:
@@ -3231,7 +4645,7 @@ def VF9Window_ECO():
     Export.add_command(label ='Export', command = Export_data)   
 
     VF9.config(menu = menubar1) 
-#====================================VF6 Window PLUS============================================		
+#====================================VF9 Window PLUS============================================		
 def VF9Window_PLUS():
     VF9 = Toplevel(root)
     VF9.title("New Window")
@@ -3284,6 +4698,7 @@ def VF9Window_PLUS():
     LDM_L_Status.set(0)
     LDM_R_Status.set(0)
     DCDC_Status.set(0)
+    ETG_Status.set(0)
     POD_Status.set(0)
     OBC_Status.set(0)
     EDS_Status.set(0)
@@ -3351,6 +4766,7 @@ def VF9Window_PLUS():
             MCR_RL_RADAR_Status.set(1)
             MFR1_RADAR_Status.set(1)  
             PSM_Status.set(1)
+            ETG_Status.set(1)
         else:
             ALL_Status.set(0)
             VCU_Status.set(0)
@@ -3389,6 +4805,7 @@ def VF9Window_PLUS():
             MFR1_RADAR_Status.set(0) 
             PSM_Status.set(0) 
             EPS_2_Status.set(0)
+            ETG_Status.set(0)
 
     ALL = tk.Checkbutton(scrollbar, text='ALL', bg='white', anchor='w',variable= ALL_Status,onvalue=1, offvalue=0,command= Click_Select)
     scrollbar.window_create('end', window=ALL)
@@ -3438,7 +4855,7 @@ def VF9Window_PLUS():
     OCS = tk.Checkbutton(scrollbar, text='OCS', bg='white', anchor='w',variable= OCS_Status,onvalue=1, offvalue=0)
     scrollbar.window_create('end', window=OCS)
     scrollbar.insert('end', '\n')
-    PSM = tk.Checkbutton(scrollbar, text='PSM', bg='white', anchor='w',variable= PSM_Status,onvalue=1, offvalue=0)
+    PSM = tk.Checkbutton(scrollbar, text='PSM_D', bg='white', anchor='w',variable= PSM_Status,onvalue=1, offvalue=0)
     scrollbar.window_create('end', window=PSM)
     scrollbar.insert('end', '\n')
     SHVU_F = tk.Checkbutton(scrollbar, text='SHVU_F', bg='white', anchor='w',variable= SHVU_F_Status,onvalue=1, offvalue=0)
@@ -3517,16 +4934,10 @@ def VF9Window_PLUS():
             VCU_READ_DID()           
         if DCDC_Status.get() == 1:
             POD_DCDC_READ_DID()
-        if POD_Status.get() == 1:
-            POD_GW_READ_DID()
-        if OBC_Status.get() == 1:
-            POD_OBC_READ_DID()
         if EDS_Status.get() == 1:
             EDS_F_READ_DID()
         if EDS_R_Status.get() == 1:
             EDS_R_READ_DID()
-        if ETG_Status.get() == 1:
-            ETG_READ_DID()
         if BMS_Status.get() == 1:
             BMS_READ_DID()
         if GS_Status.get() == 1:
@@ -3535,8 +4946,14 @@ def VF9Window_PLUS():
             IDB_READ_DID()
         if RCU_Status.get() == 1:
             RCU_READ_DID()
+        if LDM_L_Status.get() == 1:
+            LDM_L_READ_DID()
+        if LDM_R_Status.get() == 1:
+            LDM_R_READ_DID()
         if EPS_Status.get() == 1:
             EPS_READ_DID()
+        if ETG_Status.get() == 1:
+            ETG_READ_DID()
         if ACM_Status.get() == 1:
             ACM_READ_DID()
         if BCM_Status.get() == 1:
@@ -3563,10 +4980,10 @@ def VF9Window_PLUS():
             HUD_READ_DID()
         if AVAS_Status.get() == 1:          
             AVAS_READ_DID()
-        if AP_ECU_Status.get() == 1:          
-            PAS_READ_DID()
-        if FCAM_Status.get() == 1:          
-            FCAM_READ_DID()
+        #if ADAS_Status.get() == 1:          
+        #     #ADAS_READ_DID()
+        #if FCAM_Status.get() == 1:          
+        #     # SCAM_READ_DID()
         if MCR_FL_RADAR_Status.get() == 1:          
             SRR_FL_READ_DID()
         if MCR_FR_RADAR_Status.get() == 1:          
@@ -3637,7 +5054,7 @@ def VF9Window_PLUS():
         BOM_sheet = BOM.worksheets[1]
 
         for i in range(1,BOM_sheet.max_row + 1):
-            if (BOM_sheet.cell(row= i,column=14).value) == 'X':
+            if (BOM_sheet.cell(row= i,column=15).value) == 'X':
                 for j in range(1,ID):
                     if (BOM_sheet.cell(row= i,column=4).value in tree.item(ECU_LIST[j])["values"]) == True:
                         if tree.item(ECU_LIST[j])["values"][2] == BOM_sheet.cell(row= i,column=6).value:
@@ -3776,7 +5193,7 @@ def VF9Window_PLUS():
     Export.add_command(label ='Export', command = Export_data)   
 
     VF9.config(menu = menubar1) 
-    
+#============================================DTC===========================================
 def VF6Window_DTC():
     db = cantools.database.load_file(filename_D)
     DTC = Toplevel(root)
@@ -3972,7 +5389,9 @@ def VF6Window_DTC():
         if XGW_Status.get() == 1:
             DTC_Read('XGW')
         if RCU_Status.get() == 1:
-            DTC_Read('RCU')       
+            DTC_Read('RCU') 
+        if VCU_Status.get() == 1:
+            DTC_Read('VCU')
     def ECU_Req_INFOR(ECU):
         for i in range(1000):
             try:
@@ -4042,7 +5461,6 @@ def VF6Window_DTC():
             DTC_List_sheet = DTC_List.get_sheet_by_name('DTC List')
         except:
             messagebox.showerror("showerror", "Need to add Excel file")
-        
         ECU_Req_INFOR(ECU)
         ECU_Resp(ECU)      
         cout = 0
@@ -4076,13 +5494,6 @@ def VF6Window_DTC():
     Export.add_command(label ='Export', command = None)   
 
     DTC.config(menu = menubar1)            
-#====================================VF8 Window============================================		
-def VF8Window():     
-    newWindow = Toplevel(root)
-    newWindow.title("New Window")
-    newWindow.geometry("200x200") 
-    Label(newWindow, 
-          text ="This is a new VF8").pack()
 #==========================================================================================      
 # Creating Menubar 
 menubar = Menu(root) 
@@ -4098,7 +5509,16 @@ Model = Menu(menubar, tearoff = 0)
 menubar.add_cascade(label ='Read DID', menu = Model) 
 Model.add_separator() 
 Model.add_command(label ='VF3', command = VF3Window)
-Model.add_command(label ='VF5', command = VF5Window)
+
+sub_menu = Menu(Model, tearoff=0)
+sub_menu.add_command(label ='LHD', command = VFe34Window_LHD)
+sub_menu.add_command(label ='RHD', command = VFe34Window_RHD)
+sub_menu.add_cascade(label="VFe34",menu=sub_menu)
+
+sub_menu = Menu(Model, tearoff=0)
+sub_menu.add_command(label ='LHD', command = VF5Window_LHD)
+sub_menu.add_command(label ='RHD', command = VF5Window_RHD)
+sub_menu.add_cascade(label="VF5",menu=sub_menu)
 
 # add a submenu
 sub_menu = Menu(Model, tearoff=0)
@@ -4112,8 +5532,8 @@ sub_menu.add_command(label='PLUS',command=VF7Window_PLUS)
 Model.add_cascade(label="VF7",menu=sub_menu)
 
 sub_menu = Menu(Model, tearoff=0)
-sub_menu.add_command(label='ECO',command=None)
-sub_menu.add_command(label='PLUS',command=None)
+sub_menu.add_command(label='ECO',command=VF8Window_ECO)
+sub_menu.add_command(label='PLUS',command=VF8Window_PLUS)
 Model.add_cascade(label="VF8",menu=sub_menu)
 
 sub_menu = Menu(Model, tearoff=0)
